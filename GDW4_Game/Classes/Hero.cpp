@@ -1,8 +1,7 @@
 #include "Hero.h"
-
 Hero* Hero::hero = 0;
 
-Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/Hero.png"),
+Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	JUMP_VELOCITY(530),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850), //900
@@ -12,6 +11,8 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/Hero.png"),
 	isMovingRight(false), 
 	isAirborne(false)
 {
+	//this->animation = new marcos::Animation(4, 120, 135, 0.2f, this->sprite, "Sprites/Running_Spritesheet1.png");
+	
 	mass = 5;
 }
 
@@ -24,6 +25,8 @@ void Hero::createHero()
 void Hero::moveRight()
 {
 	velocity.x += movespeedIncrease;
+	this->animation = new marcos::Animation(4, 120, 135, 0.2f, this->sprite, "Sprites/Running_Spritesheet1.png");
+	hero->animation->runAnimation();
 }
 
 void Hero::moveLeft()
@@ -89,6 +92,4 @@ void Hero::updatePhysics(float dt)
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
-
-
 }

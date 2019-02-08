@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Animation.h"
 
 //singleton hero class
 class Hero : public GameObject
@@ -11,6 +12,7 @@ public:
 	const float DRAG_VELOCITY;
 
 	static Hero* hero; //single hero instance
+	marcos::Animation* animation;
 	void createHero();
 
 	float movespeedIncrease;
