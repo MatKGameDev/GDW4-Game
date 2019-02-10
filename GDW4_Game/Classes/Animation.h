@@ -9,7 +9,6 @@ namespace marcos
 
 		Animation();
 		Animation(int a_NumFrames, float a_Width, float a_Height, float a_Delay, cocos2d::Sprite *a_Sprite, std::string a_Name);
-		Animation(std::string a_Name);
 		~Animation();
 
 
@@ -22,33 +21,71 @@ namespace marcos
 		void setDelay(float a_Delay);
 		void setSprite(cocos2d::Sprite *a_Sprite);
 
+		cocos2d::Sprite *m_Sprite;
 
-	private:
 		int m_NumFrames;
 		float m_Width;
 		float m_Height;
 		float m_Delay;
 		cocos2d::Animation *m_Animation;
 		cocos2d::Animate *m_Animate;
-		cocos2d::Sprite *m_Sprite;
 		cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
+
+	private:
 	};
 
-	class RunningAnimation : public Animation
+
+	class BossAnimation
+	{
+	public:
+	
+	private:
+	};
+
+	class IdlingAnimation 
+	{
+	public:
+		IdlingAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_IdleAnimation;
+	private:
+
+	};
+
+	class LandingAnimation
+	{
+	public:
+		LandingAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_LandAnimation;
+	private:
+
+	};
+
+	class RunningAnimation 
 	{
 
 	public:
-		RunningAnimation();
+		RunningAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_MoveAnimation;
 
 	private:
 
 	};
 
-	class AttackingAnimation : public Animation
+	class GrapplingAnimation 
+	{
+	public:
+		GrapplingAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_GrappleAnimation;
+	private:
+
+	};
+
+	class AttackingAnimation 
 	{
 
 	public:
-		AttackingAnimation();
+		AttackingAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_AttackAnimation;
 
 	private:
 		//placeholder int attackType;
@@ -56,14 +93,36 @@ namespace marcos
 
 	};
 
-	class JumpingAnimation : public Animation
+	class JumpingAnimation 
 	{
 
 	public:
-		JumpingAnimation();
-
+		JumpingAnimation(cocos2d::Sprite* a_Sprite);
+		marcos::Animation m_JumpAnimation;
 	private:
 
 	};
 
+	class HeroAnimation
+	{
+
+	public:
+		HeroAnimation(cocos2d::Sprite* a_Sprite);
+		cocos2d::Sprite* getSprite();
+		cocos2d::Sprite* m_Sprite;
+		void runAnimation();
+
+		marcos::Animation *m_HeroAnimation;
+
+		JumpingAnimation m_JumpingAnimation;
+		LandingAnimation m_LandingAnimation;
+		RunningAnimation m_RunningAnimation;
+		AttackingAnimation m_AttackingAnimation;
+		GrapplingAnimation m_GrapplingAnimation;
+		IdlingAnimation m_IdlingAnimation;
+
+	private:
+
+
+	};
 }

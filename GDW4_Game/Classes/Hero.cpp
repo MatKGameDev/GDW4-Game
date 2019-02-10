@@ -11,9 +11,9 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	isMovingRight(false), 
 	isAirborne(false)
 {
-	//this->animation = new marcos::Animation(4, 120, 135, 0.2f, this->sprite, "Sprites/Running_Spritesheet1.png");
-	
 	mass = 5;
+	this->heroAnimation = new marcos::HeroAnimation(this->sprite);
+	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 }
 
 void Hero::createHero()
@@ -25,8 +25,16 @@ void Hero::createHero()
 void Hero::moveRight()
 {
 	velocity.x += movespeedIncrease;
-	this->animation = new marcos::Animation(4, 120, 135, 0.2f, this->sprite, "Sprites/Running_Spritesheet1.png");
-	hero->animation->runAnimation();
+
+	//heroAnimation needs a run animation override
+
+	// What should probably be done:
+	// runAnimation acts as a manager, it takes in certain params from hero, mainly state, and handles all behind the scenes work, displays the animation
+	// The one issue with setting it up this way is that I have no idea if it would even work with this level of inheritance, in order to get it to work, probably
+	// going to have to make 2 classes rather than 12, don't think I can handle integrating 12 classes
+
+	// Alternatively it can be done the way mario was done, where the animation is hidden in the class object and RunAnimation only manages one animation at a time 
+	// Based on the context it is called
 }
 
 void Hero::moveLeft()
