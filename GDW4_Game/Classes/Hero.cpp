@@ -1,4 +1,8 @@
 #include "Hero.h"
+#include "HeroAttack.h"
+#include "EmptyAttack.h"
+#include "MeleeFireAttack.h"
+#include "HeroAttackState.h"
 
 Hero* Hero::hero = 0;
 
@@ -10,9 +14,12 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/Hero.png"),
 	movespeedIncrease(20),
 	isMovingLeft(false), 
 	isMovingRight(false), 
-	isAirborne(false)
+	isAirborne(false),
+	currentAttack(HeroAttackState::empty)
 {
 	mass = 5;
+
+	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f);
 }
 
 void Hero::createHero()
@@ -62,11 +69,11 @@ void Hero::updatePhysics(float dt)
 	//no player input but hero is still moving
 	else if (velocity.x > 0)
 	{
-			velocity.x -= DRAG_VELOCITY; //apply drag
+		velocity.x -= DRAG_VELOCITY; //apply drag
 	}
 	else //velocity <= 0
 	{
-			velocity.x += DRAG_VELOCITY;
+		velocity.x += DRAG_VELOCITY;
 
 		//if velocity goes from negative to positive after drag is applied, set it to 0 to prevent a slight "drift" to occur in later frames if no movement key is pressed
 		if (velocity.x > 0)
@@ -90,5 +97,7 @@ void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
 
-
+	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f); //update the hurtbox location
+	
+	currentAttack.update(dt); //update current attack
 }

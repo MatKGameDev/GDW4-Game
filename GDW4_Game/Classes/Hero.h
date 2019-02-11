@@ -1,5 +1,13 @@
 #pragma once
+#ifndef HERO_H
+#define HERO_H
+
 #include "GameObject.h"
+#include "HeroAttack.h"
+
+//class EmptyAttack;
+//class MeleeFireAttack;
+//class HeroAttack;
 
 //singleton hero class
 class Hero : public GameObject
@@ -12,6 +20,10 @@ public:
 
 	static Hero* hero; //single hero instance
 	void createHero();
+
+	cocos2d::Rect hurtBox;
+
+	HeroAttack currentAttack;
 
 	float movespeedIncrease;
 
@@ -26,6 +38,11 @@ public:
 	void updatePhysics(float dt) override;
 	void update(float dt);
 
+	/*EmptyAttack *empty;
+	MeleeFireAttack *meleeFire;*/
+
 private:
 	Hero();
 };
+
+#endif

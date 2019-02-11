@@ -10,6 +10,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\HeroStuff">
+      <UniqueIdentifier>{333ba38c-0310-466e-ae1a-a9e9a7f5c8a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,9 +30,6 @@
     <ClCompile Include="..\Classes\Grapple.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\InputHandler.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -41,6 +41,21 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Vect2.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src\HeroStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroAttack.cpp">
+      <Filter>src\HeroStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MeleeFireAttack.cpp">
+      <Filter>src\HeroStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EmptyAttack.cpp">
+      <Filter>src\HeroStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroAttackState.cpp">
+      <Filter>src\HeroStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +74,6 @@
     <ClInclude Include="..\Classes\Grapple.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\InputHandler.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -73,6 +85,21 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Vect2.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Hero.h">
+      <Filter>src\HeroStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroAttack.h">
+      <Filter>src\HeroStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MeleeFireAttack.h">
+      <Filter>src\HeroStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EmptyAttack.h">
+      <Filter>src\HeroStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroAttackState.h">
+      <Filter>src\HeroStuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

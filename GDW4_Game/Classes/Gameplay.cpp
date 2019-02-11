@@ -1,4 +1,5 @@
 #include "Gameplay.h"
+#include <iostream>
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -45,6 +46,13 @@ void Gameplay::initSprites()
 	//add hero (singleton class)
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
+
+	//add hero hurtbox FOR TESTING PURPOSES
+	testHurtbox = DrawNode::create();
+	this->addChild(testHurtbox, 30);
+	//add fire melee attack hixbox FOR TESTING PURPOSES
+	testMeleeAttack = DrawNode::create();
+	this->addChild(testMeleeAttack, 40);
 
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 17);
@@ -115,6 +123,19 @@ void Gameplay::update(float dt)
 	Hero::hero->update(dt); //update our hero
 	//if (hero->invincibilityTimer > 0)
 	//	flickerSprite(); //flicker sprite if it's invincible
+	
+	testHurtbox->clear();
+	//DRAW HURTBOX FOR TESTING
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
+		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+		Color4F(1.0f, 0.0f, 0.0f, 0.7f));
+
+	testMeleeAttack->clear();
+	//DRAW MELEE ATTACK HITBOX FOR TESTING
+	testMeleeAttack->drawSolidRect(Hero::hero->currentAttack.hitbox.origin, 
+		Vec2(Hero::hero->currentAttack.hitbox.getMaxX(), Hero::hero->currentAttack.hitbox.getMaxY()),
+		Color4F(1.0f, 0.7f, 0.8f, 0.8f));
 
 	spawnEnemies();     //spawn enemies if needed 
 	updateObjects(dt);  //update objects
@@ -165,6 +186,11 @@ void Gameplay::mouseDownCallback(Event* event)
 	EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);
 	auto mouseButton = mouseEvent->getMouseButton();
 
+	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
+	{
+		std::cout << "hi i left clicked\n\n";
+		//Hero::hero->currentAttack = Hero::hero->meleeFire;
+	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
 	{
 		//Get the position of the mouse button press

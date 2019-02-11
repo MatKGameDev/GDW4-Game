@@ -150,10 +150,14 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\EmptyAttack.cpp" />
+    <ClCompile Include="..\Classes\HeroAttackState.cpp" />
+    <ClCompile Include="..\Classes\MeleeFireAttack.cpp" />
     <ClCompile Include="..\Classes\GameObject.cpp" />
     <ClCompile Include="..\Classes\Gameplay.cpp" />
     <ClCompile Include="..\Classes\Grapple.cpp" />
     <ClCompile Include="..\Classes\Hero.cpp" />
+    <ClCompile Include="..\Classes\HeroAttack.cpp" />
     <ClCompile Include="..\Classes\InputHandler.cpp" />
     <ClCompile Include="..\Classes\myHelper.cpp" />
     <ClCompile Include="..\Classes\Platform.cpp" />
@@ -162,10 +166,14 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\EmptyAttack.h" />
+    <ClInclude Include="..\Classes\HeroAttackState.h" />
+    <ClInclude Include="..\Classes\MeleeFireAttack.h" />
     <ClInclude Include="..\Classes\GameObject.h" />
     <ClInclude Include="..\Classes\Gameplay.h" />
     <ClInclude Include="..\Classes\Grapple.h" />
     <ClInclude Include="..\Classes\Hero.h" />
+    <ClInclude Include="..\Classes\HeroAttack.h" />
     <ClInclude Include="..\Classes\InputHandler.h" />
     <ClInclude Include="..\Classes\myHelper.h" />
     <ClInclude Include="..\Classes\Platform.h" />
