@@ -50,6 +50,8 @@ void Gameplay::initSprites()
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
 
+	Hero::hero->moveRight();
+
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 17);
 
@@ -200,9 +202,9 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	//WASD controls
 	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->isMovingLeft = true;
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->isMovingRight = true;
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_S)
 	{
 		//if hero is at the end of a grapple, hitting S allows them to remove the delay and immediately start falling
@@ -229,8 +231,8 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->isMovingLeft = false;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->isMovingRight = false;
+	if (keyCode == EventKeyboard::KeyCode::KEY_A && Hero::hero->moveState == Hero::MoveDirection::movingLeft)
+		Hero::hero->moveState = Hero::MoveDirection::idle;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
+		Hero::hero->moveState = Hero::MoveDirection::idle;
 }

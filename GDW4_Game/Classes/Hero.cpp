@@ -7,13 +7,11 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	MAX_VERTICAL_VELOCITY(850), //900
 	DRAG_VELOCITY(30),
 	movespeedIncrease(20),
-	isMovingLeft(false), 
-	isMovingRight(false), 
-	isAirborne(false)
+	isAirborne(false),
+	moveState(MoveDirection::idle)
 {
 	mass = 5;
 	this->heroAnimation = new marcos::HeroAnimation(this->sprite);
-	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 }
 
 void Hero::createHero()
@@ -25,6 +23,9 @@ void Hero::createHero()
 void Hero::moveRight()
 {
 	velocity.x += movespeedIncrease;
+	lookState = LookDirection::lookingRight;
+
+	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 
 	//heroAnimation needs a run animation override
 
@@ -40,6 +41,7 @@ void Hero::moveRight()
 void Hero::moveLeft()
 {
 	velocity.x -= movespeedIncrease;
+	lookState = LookDirection::lookingLeft;
 }
 
 //jump if not already airbourne
@@ -66,9 +68,9 @@ void Hero::updatePhysics(float dt)
 	this->GameObject::updatePhysics(dt); //call base class update
 
 	//check for movement and apply drag if necessary
-	if (isMovingRight)
+	if (moveState == MoveDirection::movingRight)
 		moveRight();
-	else if (isMovingLeft)
+	else if (moveState == MoveDirection::movingLeft)
 		moveLeft();
 	//no player input but hero is still moving
 	else if (velocity.x > 0)

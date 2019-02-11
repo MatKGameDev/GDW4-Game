@@ -17,8 +17,23 @@ public:
 
 	float movespeedIncrease;
 
-	bool isMovingRight;
-	bool isMovingLeft;
+	enum LookDirection
+	{
+		lookingRight,
+		lookingLeft
+	};
+
+	LookDirection lookState;
+
+	enum MoveDirection
+	{
+		idle,
+		movingRight,
+		movingLeft
+	};
+
+	MoveDirection moveState;
+
 	bool isAirborne;
 
 	void moveRight();
