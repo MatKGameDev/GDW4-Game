@@ -3,11 +3,6 @@
 #define HERO_H
 
 #include "GameObject.h"
-#include "HeroAttack.h"
-
-//class EmptyAttack;
-//class MeleeFireAttack;
-//class HeroAttack;
 
 //singleton hero class
 class Hero : public GameObject
@@ -23,8 +18,6 @@ public:
 
 	cocos2d::Rect hurtBox;
 
-	HeroAttack currentAttack;
-
 	float movespeedIncrease;
 
 	bool isMovingRight;
@@ -37,9 +30,6 @@ public:
 
 	void updatePhysics(float dt) override;
 	void update(float dt);
-
-	/*EmptyAttack *empty;
-	MeleeFireAttack *meleeFire;*/
 
 private:
 	Hero();

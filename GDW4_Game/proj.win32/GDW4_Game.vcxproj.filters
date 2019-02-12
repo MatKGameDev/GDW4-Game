@@ -10,96 +10,105 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\HeroStuff">
+    <Filter Include="src\Gameplay Stuff">
+      <UniqueIdentifier>{1a8fc41c-37db-4dd2-8e64-3243829cf89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Misc Stuff">
+      <UniqueIdentifier>{66519ddf-2ca5-4f69-989e-dc1117075a07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hero Stuff">
       <UniqueIdentifier>{333ba38c-0310-466e-ae1a-a9e9a7f5c8a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Helper Stuff">
+      <UniqueIdentifier>{9cbce2b3-3d2e-4ec3-81a0-17ee8ac68e8d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameObject.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Gameplay.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Grapple.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\InputHandler.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\myHelper.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Gameplay Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Platform.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Gameplay Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\myHelper.cpp">
+      <Filter>src\Helper Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Vect2.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Helper Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src\HeroStuff</Filter>
+    <ClCompile Include="..\Classes\Grapple.cpp">
+      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HeroAttack.cpp">
-      <Filter>src\HeroStuff</Filter>
+    <ClCompile Include="..\Classes\InputHandler.cpp">
+      <Filter>src\Helper Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\MeleeFireAttack.cpp">
-      <Filter>src\HeroStuff</Filter>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src\Misc Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameObject.cpp">
+      <Filter>src\Misc Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\EmptyAttack.cpp">
-      <Filter>src\HeroStuff</Filter>
+      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HeroAttackState.cpp">
-      <Filter>src\HeroStuff</Filter>
+    <ClCompile Include="..\Classes\HeroAttackBase.cpp">
+      <Filter>src\Hero Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroAttackManager.cpp">
+      <Filter>src\Hero Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MeleeFireAttack.cpp">
+      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameObject.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\Hero.h">
+      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Gameplay.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Grapple.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\InputHandler.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\myHelper.h">
-      <Filter>src</Filter>
+      <Filter>src\Gameplay Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Platform.h">
-      <Filter>src</Filter>
+      <Filter>src\Gameplay Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Vect2.h">
-      <Filter>src</Filter>
+      <Filter>src\Helper Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src\HeroStuff</Filter>
+    <ClInclude Include="..\Classes\myHelper.h">
+      <Filter>src\Helper Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HeroAttack.h">
-      <Filter>src\HeroStuff</Filter>
+    <ClInclude Include="..\Classes\Grapple.h">
+      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MeleeFireAttack.h">
-      <Filter>src\HeroStuff</Filter>
+    <ClInclude Include="..\Classes\InputHandler.h">
+      <Filter>src\Helper Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameObject.h">
+      <Filter>src\Misc Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src\Misc Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\EmptyAttack.h">
-      <Filter>src\HeroStuff</Filter>
+      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HeroAttackState.h">
-      <Filter>src\HeroStuff</Filter>
+    <ClInclude Include="..\Classes\HeroAttackBase.h">
+      <Filter>src\Hero Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroAttackManager.h">
+      <Filter>src\Hero Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MeleeFireAttack.h">
+      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

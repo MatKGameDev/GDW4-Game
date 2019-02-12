@@ -1,15 +1,10 @@
 #pragma once
-#ifndef MELEE_FIRE_ATTACK_H
-#define MELEE_FIRE_ATTACK_H
+#include "HeroAttackBase.h"
 
-#include "HeroAttack.h"
-
-class MeleeFireAttack : public HeroAttack
+class MeleeFireAttack : public HeroAttackBase
 {
 public:
 	MeleeFireAttack();
 	//cocos2d::Rect hitbox;
 	void update(float dt);
 };
-
-#endif

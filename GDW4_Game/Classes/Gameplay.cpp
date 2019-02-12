@@ -133,8 +133,8 @@ void Gameplay::update(float dt)
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
-	testMeleeAttack->drawSolidRect(Hero::hero->currentAttack.hitbox.origin, 
-		Vec2(Hero::hero->currentAttack.hitbox.getMaxX(), Hero::hero->currentAttack.hitbox.getMaxY()),
+	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin, 
+		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
 		Color4F(1.0f, 0.7f, 0.8f, 0.8f));
 
 	spawnEnemies();     //spawn enemies if needed 
@@ -189,7 +189,7 @@ void Gameplay::mouseDownCallback(Event* event)
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
 	{
 		std::cout << "hi i left clicked\n\n";
-		//Hero::hero->currentAttack = Hero::hero->meleeFire;
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
 	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
 	{
@@ -221,15 +221,26 @@ void Gameplay::mouseScrollCallback(Event* event)
 void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	//WASD controls
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->isMovingLeft = true;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->isMovingRight = true;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	switch (keyCode)
 	{
+	case EventKeyboard::KeyCode::KEY_A:
+		Hero::hero->isMovingLeft = true;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_D:
+		Hero::hero->isMovingRight = true;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_S:
 		//if hero is at the end of a grapple, hitting S allows them to remove the delay and immediately start falling
 		if (Grapple::grapple->isHeroAtEndPoint)
 			Grapple::grapple->unLatch();
+		HeroAttackBase::isSKeyHeld = true;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_W:
+		HeroAttackBase::isWKeyHeld = true;
+		break;
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
@@ -255,4 +266,8 @@ void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		Hero::hero->isMovingLeft = false;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
 		Hero::hero->isMovingRight = false;
+	if (keyCode == EventKeyboard::KeyCode::KEY_S)
+		HeroAttackBase::isSKeyHeld = false;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
+		HeroAttackBase::isWKeyHeld = false;
 }

@@ -1,8 +1,5 @@
 #include "Hero.h"
-#include "HeroAttack.h"
-#include "EmptyAttack.h"
-#include "MeleeFireAttack.h"
-#include "HeroAttackState.h"
+#include "HeroAttackManager.h"
 
 Hero* Hero::hero = 0;
 
@@ -14,8 +11,7 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/Hero.png"),
 	movespeedIncrease(20),
 	isMovingLeft(false), 
 	isMovingRight(false), 
-	isAirborne(false),
-	currentAttack(HeroAttackState::empty)
+	isAirborne(false)
 {
 	mass = 5;
 
@@ -99,5 +95,5 @@ void Hero::update(float dt)
 
 	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f); //update the hurtbox location
 	
-	currentAttack.update(dt); //update current attack
+	HeroAttackManager::update(dt);
 }

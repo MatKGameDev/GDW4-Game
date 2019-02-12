@@ -4,8 +4,7 @@
 #include "Hero.h"
 #include "Platform.h"
 #include "Grapple.h"
-#include "MeleeFireAttack.h"
-#include "EmptyAttack.h"
+#include "HeroAttackManager.h"
 
 using namespace cocos2d;
 

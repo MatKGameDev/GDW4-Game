@@ -1,7 +1,7 @@
 #pragma once
-#include "HeroAttack.h"
+#include "HeroAttackBase.h"
 
-class EmptyAttack : public HeroAttack
+class EmptyAttack : public HeroAttackBase
 {
 public:
 	EmptyAttack();
