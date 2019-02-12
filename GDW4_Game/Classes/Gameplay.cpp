@@ -58,8 +58,6 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
-	Hero::hero->moveRight();
-
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 17);
 
