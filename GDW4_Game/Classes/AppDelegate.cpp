@@ -42,6 +42,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
+	auto console = director->getConsole();
 
 	if (!glview)
 	{

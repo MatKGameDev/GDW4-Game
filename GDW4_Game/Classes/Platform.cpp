@@ -2,7 +2,7 @@
 
 std::vector<Platform*> Platform::platformList = std::vector<Platform*>();
 
-Platform::Platform(Vect2 position) : GameObject(position, "Sprites/Platform1.png")
+Platform::Platform(Vect2 position) : GameObject(position, "Sprites/Platform2.png")
 {
 	mass = 0;
 	platformList.push_back(this);
