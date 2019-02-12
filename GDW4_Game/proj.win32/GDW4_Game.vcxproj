@@ -14,7 +14,7 @@
     <ProjectGuid>{76A39BB2-9B84-4C65-98A5-654D86B86F2A}</ProjectGuid>
     <RootNamespace>test_win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -149,13 +149,41 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Classes\Animation.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\EmptyAttack.cpp" />
+    <ClCompile Include="..\Classes\IceProjectile.cpp" />
+    <ClCompile Include="..\Classes\IceProjectileAttack.cpp" />
+    <ClCompile Include="..\Classes\MeleeFireAttack.cpp" />
+    <ClCompile Include="..\Classes\GameObject.cpp" />
+    <ClCompile Include="..\Classes\Gameplay.cpp" />
+    <ClCompile Include="..\Classes\Grapple.cpp" />
+    <ClCompile Include="..\Classes\Hero.cpp" />
+    <ClCompile Include="..\Classes\HeroAttackBase.cpp" />
+    <ClCompile Include="..\Classes\HeroAttackManager.cpp" />
+    <ClCompile Include="..\Classes\InputHandler.cpp" />
+    <ClCompile Include="..\Classes\myHelper.cpp" />
+    <ClCompile Include="..\Classes\Platform.cpp" />
+    <ClCompile Include="..\Classes\Vect2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Classes\Animation.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\EmptyAttack.h" />
+    <ClInclude Include="..\Classes\IceProjectile.h" />
+    <ClInclude Include="..\Classes\IceProjectileAttack.h" />
+    <ClInclude Include="..\Classes\MeleeFireAttack.h" />
+    <ClInclude Include="..\Classes\GameObject.h" />
+    <ClInclude Include="..\Classes\Gameplay.h" />
+    <ClInclude Include="..\Classes\Grapple.h" />
+    <ClInclude Include="..\Classes\Hero.h" />
+    <ClInclude Include="..\Classes\HeroAttackBase.h" />
+    <ClInclude Include="..\Classes\HeroAttackManager.h" />
+    <ClInclude Include="..\Classes\InputHandler.h" />
+    <ClInclude Include="..\Classes\myHelper.h" />
+    <ClInclude Include="..\Classes\Platform.h" />
+    <ClInclude Include="..\Classes\Vect2.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
