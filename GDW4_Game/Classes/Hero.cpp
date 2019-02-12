@@ -10,7 +10,8 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(20),
 	isAirborne(false),
-	moveState(MoveDirection::idle)
+	moveState(MoveDirection::idle),
+	lookState(LookDirection::lookingRight)
 {
 	mass = 5;					
 	this->heroAnimation = new marcos::HeroAnimation(this->sprite);

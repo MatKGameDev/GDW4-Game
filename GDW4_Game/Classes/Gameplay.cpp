@@ -225,21 +225,14 @@ void Gameplay::mouseScrollCallback(Event* event)
 
 void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	//WASD controls
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->moveState = Hero::MoveDirection::movingRight;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_S)
-	{
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		Hero::hero->isMovingLeft = true;
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_D:
-		Hero::hero->isMovingRight = true;
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_S:
@@ -277,6 +270,7 @@ void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		Hero::hero->moveState = Hero::MoveDirection::idle;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
 		Hero::hero->moveState = Hero::MoveDirection::idle;
+
 	if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		HeroAttackBase::isSKeyHeld = false;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_W)

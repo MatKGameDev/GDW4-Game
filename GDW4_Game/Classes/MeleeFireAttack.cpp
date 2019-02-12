@@ -36,7 +36,7 @@ void MeleeFireAttack::update(float dt)
 				-120);
 		}
 		//aim right
-		else if (Hero::hero->isMovingRight) //TODO: change to looking right after merging
+		else if (Hero::hero->lookState == Hero::LookDirection::lookingRight)
 		{
 			hitbox.setRect(
 				Hero::hero->hurtBox.getMinX(),
@@ -45,7 +45,7 @@ void MeleeFireAttack::update(float dt)
 				50);
 		}
 		//aim left
-		else if (Hero::hero->isMovingLeft) //TODO: change to looking left after merging
+		else if (Hero::hero->Hero::hero->lookState == Hero::LookDirection::lookingLeft)
 		{
 			hitbox.setRect(
 				Hero::hero->hurtBox.getMaxX(),
