@@ -75,6 +75,9 @@
     <ClCompile Include="..\Classes\IceProjectileAttack.cpp">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Animation.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\IceProjectileAttack.h">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Animation.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

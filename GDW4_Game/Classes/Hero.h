@@ -3,6 +3,7 @@
 #define HERO_H
 
 #include "GameObject.h"
+#include "Animation.h"
 
 //singleton hero class
 class Hero : public GameObject
@@ -14,14 +15,30 @@ public:
 	const float DRAG_VELOCITY;
 
 	static Hero* hero; //single hero instance
+	marcos::HeroAnimation* heroAnimation; //TODO: This needs to become a heroAnimation object as the system develops
 	void createHero();
 
 	cocos2d::Rect hurtBox;
 
 	float movespeedIncrease;
 
-	bool isMovingRight;
-	bool isMovingLeft;
+	enum LookDirection
+	{
+		lookingRight,
+		lookingLeft
+	};
+
+	LookDirection lookState;
+
+	enum MoveDirection
+	{
+		idle,
+		movingRight,
+		movingLeft
+	};
+
+	MoveDirection moveState;
+
 	bool isAirborne;
 
 	void moveRight();

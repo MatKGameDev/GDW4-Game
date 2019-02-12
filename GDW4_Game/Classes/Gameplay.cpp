@@ -14,7 +14,10 @@ bool Gameplay::init()
 
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
-
+	//Setting the default animation rate for the director
+	director->setAnimationInterval(1.0/60);
+	director->setDisplayStats(1); //Remove this after debugging
+	
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -39,11 +42,12 @@ void Gameplay::initGameObjects()
 void Gameplay::initSprites()
 {
 	//add background
-	background = Sprite::create("Backgrounds/TestingBackground.png");
+	background = Sprite::create("Backgrounds/background.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
 	//add hero (singleton class)
+	
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
 
@@ -53,6 +57,8 @@ void Gameplay::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
+
+	Hero::hero->moveRight();
 
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 17);
@@ -220,6 +226,12 @@ void Gameplay::mouseScrollCallback(Event* event)
 void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	//WASD controls
+	if (keyCode == EventKeyboard::KeyCode::KEY_A)
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	{
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
@@ -261,10 +273,10 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->isMovingLeft = false;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->isMovingRight = false;
+	if (keyCode == EventKeyboard::KeyCode::KEY_A && Hero::hero->moveState == Hero::MoveDirection::movingLeft)
+		Hero::hero->moveState = Hero::MoveDirection::idle;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
+		Hero::hero->moveState = Hero::MoveDirection::idle;
 	if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		HeroAttackBase::isSKeyHeld = false;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
