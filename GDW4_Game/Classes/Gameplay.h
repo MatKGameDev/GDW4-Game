@@ -4,6 +4,7 @@
 #include "Hero.h"
 #include "Platform.h"
 #include "Grapple.h"
+#include "HeroAttackManager.h"
 
 using namespace cocos2d;
 
@@ -47,4 +48,7 @@ private:
 	Sprite* background;
 
 	Platform* platform;
+
+	DrawNode* testHurtbox; //for testing hurtbox
+	DrawNode* testMeleeAttack; //for testing melee attack
 };

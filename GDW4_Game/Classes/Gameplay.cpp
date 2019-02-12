@@ -1,4 +1,5 @@
 #include "Gameplay.h"
+#include <iostream>
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -49,6 +50,13 @@ void Gameplay::initSprites()
 	
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
+
+	//add hero hurtbox FOR TESTING PURPOSES
+	testHurtbox = DrawNode::create();
+	this->addChild(testHurtbox, 30);
+	//add fire melee attack hixbox FOR TESTING PURPOSES
+	testMeleeAttack = DrawNode::create();
+	this->addChild(testMeleeAttack, 40);
 
 	Hero::hero->moveRight();
 
@@ -121,6 +129,19 @@ void Gameplay::update(float dt)
 	Hero::hero->update(dt); //update our hero
 	//if (hero->invincibilityTimer > 0)
 	//	flickerSprite(); //flicker sprite if it's invincible
+	
+	testHurtbox->clear();
+	//DRAW HURTBOX FOR TESTING
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
+		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+		Color4F(1.0f, 0.0f, 0.0f, 0.7f));
+
+	testMeleeAttack->clear();
+	//DRAW MELEE ATTACK HITBOX FOR TESTING
+	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin, 
+		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
+		Color4F(1.0f, 0.7f, 0.8f, 0.8f));
 
 	spawnEnemies();     //spawn enemies if needed 
 	updateObjects(dt);  //update objects
@@ -171,6 +192,10 @@ void Gameplay::mouseDownCallback(Event* event)
 	EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);
 	auto mouseButton = mouseEvent->getMouseButton();
 
+	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
+	{
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
+	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
 	{
 		//Get the position of the mouse button press
@@ -200,16 +225,26 @@ void Gameplay::mouseScrollCallback(Event* event)
 
 void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	//WASD controls
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		Hero::hero->moveState = Hero::MoveDirection::movingRight;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	switch (keyCode)
 	{
+	case EventKeyboard::KeyCode::KEY_A:
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_D:
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_S:
 		//if hero is at the end of a grapple, hitting S allows them to remove the delay and immediately start falling
 		if (Grapple::grapple->isHeroAtEndPoint)
 			Grapple::grapple->unLatch();
+		HeroAttackBase::isSKeyHeld = true;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_W:
+		HeroAttackBase::isWKeyHeld = true;
+		break;
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
@@ -235,4 +270,9 @@ void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		Hero::hero->moveState = Hero::MoveDirection::idle;
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
 		Hero::hero->moveState = Hero::MoveDirection::idle;
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_S)
+		HeroAttackBase::isSKeyHeld = false;
+	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
+		HeroAttackBase::isWKeyHeld = false;
 }

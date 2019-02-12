@@ -1,4 +1,7 @@
 #pragma once
+#ifndef HERO_H
+#define HERO_H
+
 #include "GameObject.h"
 #include "Animation.h"
 
@@ -14,6 +17,8 @@ public:
 	static Hero* hero; //single hero instance
 	marcos::HeroAnimation* heroAnimation; //TODO: This needs to become a heroAnimation object as the system develops
 	void createHero();
+
+	cocos2d::Rect hurtBox;
 
 	float movespeedIncrease;
 
@@ -46,3 +51,5 @@ public:
 private:
 	Hero();
 };
+
+#endif

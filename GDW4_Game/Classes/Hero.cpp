@@ -1,4 +1,6 @@
 #include "Hero.h"
+#include "HeroAttackManager.h"
+
 Hero* Hero::hero = 0;
 
 Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
@@ -8,11 +10,13 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(20),
 	isAirborne(false),
-	moveState(MoveDirection::idle)
+	moveState(MoveDirection::idle),
+	lookState(LookDirection::lookingRight)
 {
 	mass = 5;					
 	this->heroAnimation = new marcos::HeroAnimation(this->sprite);
 	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
+	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f);
 }
 
 void Hero::createHero()
@@ -76,11 +80,11 @@ void Hero::updatePhysics(float dt)
 	//no player input but hero is still moving
 	else if (velocity.x > 0)
 	{
-			velocity.x -= DRAG_VELOCITY; //apply drag
+		velocity.x -= DRAG_VELOCITY; //apply drag
 	}
 	else //velocity <= 0
 	{
-			velocity.x += DRAG_VELOCITY;
+		velocity.x += DRAG_VELOCITY;
 
 		//if velocity goes from negative to positive after drag is applied, set it to 0 to prevent a slight "drift" to occur in later frames if no movement key is pressed
 		if (velocity.x > 0)
@@ -103,4 +107,8 @@ void Hero::updatePhysics(float dt)
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
+
+	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f); //update the hurtbox location
+	
+	HeroAttackManager::update(dt);
 }
