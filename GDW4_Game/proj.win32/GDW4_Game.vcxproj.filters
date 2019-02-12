@@ -22,6 +22,9 @@
     <Filter Include="src\Helper Stuff">
       <UniqueIdentifier>{9cbce2b3-3d2e-4ec3-81a0-17ee8ac68e8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hero Stuff\Attack Stuff">
+      <UniqueIdentifier>{94e98c08-61a3-4eea-b8a1-43652b76aed6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,17 +57,23 @@
     <ClCompile Include="..\Classes\GameObject.cpp">
       <Filter>src\Misc Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\EmptyAttack.cpp">
-      <Filter>src\Hero Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\HeroAttackBase.cpp">
-      <Filter>src\Hero Stuff</Filter>
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HeroAttackManager.cpp">
-      <Filter>src\Hero Stuff</Filter>
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MeleeFireAttack.cpp">
-      <Filter>src\Hero Stuff</Filter>
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EmptyAttack.cpp">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\IceProjectile.cpp">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\IceProjectileAttack.cpp">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,17 +107,23 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src\Misc Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\EmptyAttack.h">
-      <Filter>src\Hero Stuff</Filter>
+    <ClInclude Include="..\Classes\MeleeFireAttack.h">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HeroAttackBase.h">
-      <Filter>src\Hero Stuff</Filter>
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HeroAttackManager.h">
-      <Filter>src\Hero Stuff</Filter>
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\MeleeFireAttack.h">
-      <Filter>src\Hero Stuff</Filter>
+    <ClInclude Include="..\Classes\EmptyAttack.h">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IceProjectile.h">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IceProjectileAttack.h">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

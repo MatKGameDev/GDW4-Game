@@ -188,7 +188,6 @@ void Gameplay::mouseDownCallback(Event* event)
 
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
 	{
-		std::cout << "hi i left clicked\n\n";
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
 	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)

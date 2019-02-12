@@ -26,7 +26,7 @@ void MeleeFireAttack::update(float dt)
 				Hero::hero->hurtBox.size.width + 40,
 				120);
 		}
-		//aim upwards
+		//aim downwards
 		else if (HeroAttackBase::isSKeyHeld)
 		{
 			hitbox.setRect(
