@@ -105,7 +105,7 @@ marcos::HeroAnimation::HeroAnimation(cocos2d::Sprite * a_Sprite):
 	m_GrapplingAnimation(a_Sprite)
 {
 
-	m_HeroAnimation = new Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
+	m_HeroAnimation = new Animation(3, 90, 150, 0.2f, a_Sprite, "Sprites/standing-Sheet.png");
 	m_Sprite = a_Sprite;
 }
 
@@ -116,7 +116,7 @@ cocos2d::Sprite * marcos::HeroAnimation::getSprite()
 
 void marcos::HeroAnimation::runAnimation()
 {
-	this->getSprite()->runAction(cocos2d::RepeatForever::create(m_HeroAnimation->m_Animate));
+	this->getSprite()->runAction(cocos2d::Repeat::create(m_HeroAnimation->m_Animate, 1));
 }
 
 
@@ -175,23 +175,35 @@ marcos::LandingAnimation::LandingAnimation(cocos2d::Sprite* a_Sprite)
 marcos::IdlingAnimation::IdlingAnimation(cocos2d::Sprite* a_Sprite)
 {
 	m_IdleAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
+
+	m_Sprite = a_Sprite;
 }
 
-
-
-
-
-
+void marcos::IdlingAnimation::runAnimation()
+{
+	if (m_Sprite->getNumberOfRunningActions() == 0)
+	{
+		m_Sprite->runAction(cocos2d::Repeat::create(m_IdleAnimation.m_Animate, 1));
+	}
+}
 
 
 ////////////////////////////////////////////////// R U N N I N G ////////////////////////////////////////////////////////
 marcos::RunningAnimation::RunningAnimation(cocos2d::Sprite* a_Sprite)
 {
 	m_MoveAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
+
+	m_Sprite = a_Sprite;
 }
 
 
-
+void marcos::RunningAnimation::runAnimation()
+{
+	if(m_Sprite->getNumberOfRunningActions() == 0)
+	{
+		m_Sprite->runAction(cocos2d::Repeat::create(m_MoveAnimation.m_Animate, 1));
+	}
+}
 
 
 

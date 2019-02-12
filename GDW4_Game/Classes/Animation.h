@@ -47,6 +47,8 @@ namespace marcos
 	public:
 		IdlingAnimation(cocos2d::Sprite* a_Sprite);
 		marcos::Animation m_IdleAnimation;
+		cocos2d::Sprite* m_Sprite;
+		void runAnimation();
 	private:
 
 	};
@@ -65,7 +67,9 @@ namespace marcos
 
 	public:
 		RunningAnimation(cocos2d::Sprite* a_Sprite);
+		void runAnimation();
 		marcos::Animation m_MoveAnimation;
+		cocos2d::Sprite* m_Sprite;
 
 	private:
 

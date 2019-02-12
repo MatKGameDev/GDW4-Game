@@ -10,8 +10,9 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	isAirborne(false),
 	moveState(MoveDirection::idle)
 {
-	mass = 5;
+	mass = 5;					
 	this->heroAnimation = new marcos::HeroAnimation(this->sprite);
+	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 }
 
 void Hero::createHero()
@@ -22,10 +23,10 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
+	heroAnimation->m_RunningAnimation.runAnimation();
 	velocity.x += movespeedIncrease;
 	lookState = LookDirection::lookingRight;
 
-	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 
 	//heroAnimation needs a run animation override
 
