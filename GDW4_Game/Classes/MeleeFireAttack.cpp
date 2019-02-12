@@ -14,6 +14,9 @@ void MeleeFireAttack::update(float dt)
 {
 	if (attackTimer < attackDuration)
 	{
+		/*TODO: create init function for each hero attack (declare in base) that sets a function pointer. 
+		  the possible functions to point to are for each direction for attacking, and replace if-else chain with just the function pointer call.*/
+
 		//aim upwards
 		if (HeroAttackBase::isWKeyHeld)
 		{
