@@ -4,6 +4,8 @@
 cocos2d::Animation* marcos::AnimationManager::m_IdlingAnimation = new cocos2d::Animation();
 cocos2d::Action* marcos::AnimationManager::m_IdleActionAnimation = new cocos2d::Action();
 
+cocos2d::Animation* marcos::AnimationManager::m_RunningAnimation = new cocos2d::Animation();
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //																																			  //
 //															Animation Class																	  //
@@ -244,6 +246,9 @@ void marcos::AnimationManager::init()
 
 	m_IdlingAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingAnimation, "idle_animation_key");
+
+	m_RunningAnimation = setAnimation("Sprites/Running_Spritesheet1.png", 4, 120, 135, 0.2f);
+	AnimationCache::getInstance()->addAnimation(m_RunningAnimation, "running_animation_key");
 	//m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
 	//m_RunningAnimation = setAnimation("running_left.png", )
 	//m_JumpingAnimation = setAnimation("JumpingANimation.png", 4, 140, 135, 0.2f);

@@ -148,11 +148,11 @@ namespace marcos
 		static void init();
 		static cocos2d::Animation* setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay);
 
-		static cocos2d::Animate* m_JumpingAnimation;
-		static cocos2d::Animate* m_LandingAnimation;
-		static cocos2d::Animate* m_RunningAnimation;
-		static cocos2d::Animate* m_AttackingAnimation;
-		static cocos2d::Animate* m_GrapplingAnimation;
+		static cocos2d::Animation* m_JumpingAnimation;
+		static cocos2d::Animation* m_LandingAnimation;
+		static cocos2d::Animation* m_RunningAnimation;
+		static cocos2d::Animation* m_AttackingAnimation;
+		static cocos2d::Animation* m_GrapplingAnimation;
 		static cocos2d::Animation* m_IdlingAnimation;
 
 		static cocos2d::Action* m_IdleActionAnimation;
