@@ -1,8 +1,8 @@
 #include "GameObject.h"
 
 //set static const/variables
-const float GameObject::MAX_X = 2000;
-const float GameObject::MAX_Y = 1200;
+const float GameObject::MAX_X = 1477;
+const float GameObject::MAX_Y = 985;
 const Vect2 GameObject::GRAVITY = Vect2(0, -250); //set gravity
 
 GameObject::GameObject(Vect2 position, std::string spriteFilePath) :
@@ -80,28 +80,4 @@ void GameObject::updatePhysics(float dt)
 	acceleration = force + (GRAVITY * gravityMultiplier * mass);
 	velocity += acceleration * dt; //update velocity
 	sprite->setPosition(sprite->getPosition() + Vec2(velocity.x, velocity.y) * dt); //update position
-
-	//check for out of bounds
-	//on x
-	if (this->getLeftSidePos() < 0)
-	{
-		sprite->setPositionX(this->width/2);
-		velocity.x = 0;
-	}
-	else if (this->getRightSidePos() > MAX_X)
-	{
-		sprite->setPositionX(MAX_X - this->width/2);
-		velocity.x = 0;
-	}
-	//on y
-	if (this->getBottomPos() < 0)
-	{
-		sprite->setPositionY(this->height/2);
-		velocity.y = 0;
-	}
-	else if (this->getTopPos() > MAX_Y)
-	{
-		sprite->setPositionY(MAX_Y - this->height/2);
-		velocity.y = 0;
-	}
 }

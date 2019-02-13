@@ -19,7 +19,7 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	auto action = Animate::create(anim);
 	this->sprite->runAction(RepeatForever::create(action));
 	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
-	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f);
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
 void Hero::createHero()
@@ -59,6 +59,34 @@ void Hero::jump()
 {
 	if (!isAirborne)
 		velocity.y += JUMP_VELOCITY;
+}
+
+//checks if the character is out of bounds and performs appropriate actions
+void Hero::checkAndResolveOutOfBounds()
+{
+	//check for out of bounds
+	//on x
+	if (this->getLeftSidePos() < 0)
+	{
+		sprite->setPositionX(this->width / 2);
+		velocity.x = 0;
+	}
+	else if (this->getRightSidePos() > MAX_X)
+	{
+		sprite->setPositionX(MAX_X - this->width / 2);
+		velocity.x = 0;
+	}
+	//on y
+	if (this->getBottomPos() < 0)
+	{
+		sprite->setPositionY(this->height / 2);
+		velocity.y = 0;
+	}
+	else if (this->getTopPos() > MAX_Y)
+	{
+		sprite->setPositionY(MAX_Y - this->height / 2);
+		velocity.y = 0;
+	}
 }
 
 void Hero::updatePhysics(float dt)
@@ -107,6 +135,9 @@ void Hero::updatePhysics(float dt)
 		velocity.y = MAX_VERTICAL_VELOCITY;
 	else if (velocity.y < -MAX_VERTICAL_VELOCITY)
 		velocity.y = -MAX_VERTICAL_VELOCITY;
+
+	//check for hero out of bounds
+	checkAndResolveOutOfBounds();
 }
 
 void Hero::updateAnimations(float dt)
@@ -120,8 +151,9 @@ void Hero::updateAnimations(float dt)
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
+
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
 	//this->updateAnimations(dt);
-	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f); //update the hurtbox location
 	
 	HeroAttackManager::update(dt);
 

@@ -45,6 +45,7 @@ public:
 	void moveLeft();
 	void jump();
 
+	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
 	void updateAnimations(float dt);
 	void update(float dt);

@@ -14,5 +14,6 @@ public:
 	static bool isWKeyHeld;
 	static bool isSKeyHeld;
 
+	virtual void initAttack() {};
 	virtual void update(float dt) {};
 };

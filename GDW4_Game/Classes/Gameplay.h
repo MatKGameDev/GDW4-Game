@@ -5,6 +5,7 @@
 #include "Platform.h"
 #include "Grapple.h"
 #include "HeroAttackManager.h"
+#include "IceProjectile.h"
 
 using namespace cocos2d;
 
