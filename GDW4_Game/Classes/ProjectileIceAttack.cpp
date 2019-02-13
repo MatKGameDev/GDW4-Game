@@ -6,26 +6,30 @@
 ProjectileIceAttack::ProjectileIceAttack()
 {
 	attackTimer = 0.0f;
-	attackCooldown = 0.7f;
+	attackCooldown = 0.9f;
 }
 
-void ProjectileIceAttack::initAttack()
+void ProjectileIceAttack::initAttack(cocos2d::Scene* scene)
 {
+	IceProjectile* newProjectile = new IceProjectile();
+
 	//aim upwards
 	if (HeroAttackBase::isWKeyHeld)
-		IceProjectile* newProjectile = new IceProjectile(Vect2(0, IceProjectile::SPEED));
+		newProjectile->velocity = Vect2(0, IceProjectile::SPEED);
 
 	//aim downwards
 	else if (HeroAttackBase::isSKeyHeld)
-		IceProjectile* newProjectile = new IceProjectile(Vect2(0, -IceProjectile::SPEED));
+		newProjectile->velocity = Vect2(0, -IceProjectile::SPEED);
 
 	//aim right
 	else if (Hero::hero->lookState == Hero::LookDirection::lookingRight)
-		IceProjectile* newProjectile = new IceProjectile(Vect2(IceProjectile::SPEED, 0));
+		newProjectile->velocity = Vect2(IceProjectile::SPEED, 0);
 
 	//aim left
-	else if (Hero::hero->Hero::hero->lookState == Hero::LookDirection::lookingLeft)
-		IceProjectile* newProjectile = new IceProjectile(Vect2(-IceProjectile::SPEED, 0));
+	else //(Hero::hero->Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+		newProjectile->velocity = Vect2(-IceProjectile::SPEED, 0);
+
+	scene->addChild(newProjectile->sprite, 15);
 }
 
 void ProjectileIceAttack::update(float dt)
@@ -39,6 +43,6 @@ void ProjectileIceAttack::update(float dt)
 	else
 	{
 		attackTimer = 0.0f;
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::emptyA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::emptyA, nullptr);
 	}
 }

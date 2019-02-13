@@ -196,7 +196,7 @@ void Gameplay::mouseDownCallback(Event* event)
 
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
 	{
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
 	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
 	{
@@ -263,11 +263,11 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
 	if (keyCode == EventKeyboard::KeyCode::KEY_Q)
 	{
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
 	}
 	if (keyCode == EventKeyboard::KeyCode::KEY_E)
 	{
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)

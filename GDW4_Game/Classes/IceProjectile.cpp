@@ -2,11 +2,20 @@
 #include "Hero.h"
 #include <iostream>
 
-const float IceProjectile::SPEED = 500;
+const float IceProjectile::SPEED = 750;
 std::vector<IceProjectile*> IceProjectile::iceProjectileList = std::vector<IceProjectile*>();
 
+//default sets velocity to 0
+IceProjectile::IceProjectile() : GameObject(Hero::hero->getPosition(), "Sprites/IceProjectileTest.png")
+{
+	mass = 0;
+	velocity = Vect2(0, 0);
+	iceProjectileList.push_back(this);
+}
+//create projectile with starting velocity
 IceProjectile::IceProjectile(Vect2 startVelocity) : GameObject(Hero::hero->getPosition(), "Sprites/IceProjectileTest.png")
 {
+	mass = 0;
 	velocity = startVelocity;
 	iceProjectileList.push_back(this);
 }
@@ -34,9 +43,6 @@ void IceProjectile::update(float dt)
 {
 	//call base update
 	GameObject::updatePhysics(dt);
-	std::cout << "\nPROJECTILE: x: " << sprite->getPositionX() << " - y: " << sprite->getPositionY() << "\n\n";
 
 	checkAndResolveOutOfBounds();
-	std::cout << "\nPROJECTILE nx: " << sprite->getPositionX() << " - y: " << sprite->getPositionY() << "\n\n";
-
 }

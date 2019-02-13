@@ -6,6 +6,6 @@ class ProjectileIceAttack : public HeroAttackBase
 public:
 	ProjectileIceAttack();
 
-	void initAttack();
+	void initAttack(cocos2d::Scene* scene);
 	void update(float dt);
 };

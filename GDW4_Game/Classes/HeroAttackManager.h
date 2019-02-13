@@ -20,6 +20,6 @@ public:
 
 	static HeroAttackBase* currentAttack;
 
-	static void setCurrentAttack(HeroAttackTypes attackType);
+	static void setCurrentAttack(HeroAttackTypes attackType, cocos2d::Scene* scene);
 	static void update(float dt);
 };

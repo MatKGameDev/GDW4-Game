@@ -83,6 +83,6 @@ void MeleeFireAttack::update(float dt)
 	else
 	{
 		attackTimer = 0.0f;
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::emptyA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::emptyA, nullptr);
 	}
 }
