@@ -230,11 +230,11 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+		HeroMovementBase::setCurrentState(HeroMoveStates::moveLeft);
 		break;
 
 	case EventKeyboard::KeyCode::KEY_D:
-		Hero::hero->moveState = Hero::MoveDirection::movingRight;
+		HeroMovementBase::setCurrentState(HeroMoveStates::moveRight);
 		break;
 
 	case EventKeyboard::KeyCode::KEY_S:
@@ -278,10 +278,10 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A && Hero::hero->moveState == Hero::MoveDirection::movingLeft)
-		Hero::hero->moveState = Hero::MoveDirection::idle;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
-		Hero::hero->moveState = Hero::MoveDirection::idle;
+	if (keyCode == EventKeyboard::KeyCode::KEY_A)
+		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
+	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
+		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		HeroAttackBase::isSKeyHeld = false;
