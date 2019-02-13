@@ -30,15 +30,6 @@ public:
 
 	LookDirection lookState;
 
-	enum MoveDirection
-	{
-		idle,
-		movingRight,
-		movingLeft
-	};
-
-	MoveDirection moveState;
-
 	bool isAirborne;
 
 	void moveRight();

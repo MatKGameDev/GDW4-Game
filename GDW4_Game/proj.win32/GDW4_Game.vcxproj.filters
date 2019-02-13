@@ -25,13 +25,16 @@
     <Filter Include="src\Hero Stuff\Attack Stuff">
       <UniqueIdentifier>{94e98c08-61a3-4eea-b8a1-43652b76aed6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hero Stuff\General Stuff">
+      <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hero Stuff\Movement Stuff">
+      <UniqueIdentifier>{37b44207-7ecb-44aa-9d74-2b8bb2d6ab94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Gameplay.cpp">
       <Filter>src\Gameplay Stuff</Filter>
@@ -44,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Vect2.cpp">
       <Filter>src\Helper Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Grapple.cpp">
-      <Filter>src\Hero Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\InputHandler.cpp">
       <Filter>src\Helper Stuff</Filter>
@@ -78,13 +78,28 @@
     <ClCompile Include="..\Classes\ProjectileIceAttack.cpp">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Hero.cpp">
+      <Filter>src\Hero Stuff\General Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Grapple.cpp">
+      <Filter>src\Hero Stuff\General Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroIdle.cpp">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroMoveLeft.cpp">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroMovementBase.cpp">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HeroMoveRight.cpp">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Gameplay.h">
       <Filter>src\Gameplay Stuff</Filter>
@@ -97,9 +112,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\myHelper.h">
       <Filter>src\Helper Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Grapple.h">
-      <Filter>src\Hero Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\InputHandler.h">
       <Filter>src\Helper Stuff</Filter>
@@ -130,6 +142,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ProjectileIceAttack.h">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Hero.h">
+      <Filter>src\Hero Stuff\General Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Grapple.h">
+      <Filter>src\Hero Stuff\General Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroIdle.h">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroMoveLeft.h">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroMovementBase.h">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HeroMoveRight.h">
+      <Filter>src\Hero Stuff\Movement Stuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
