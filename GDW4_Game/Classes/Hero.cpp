@@ -15,7 +15,7 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 {
 	mass = 5;					
 	marcos::AnimationManager::init();
-	auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
+	auto anim = AnimationCache::getInstance()->getAnimation("idle_right_animation_key");
 	auto action = Animate::create(anim);
 	this->sprite->runAction(RepeatForever::create(action));
 	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
