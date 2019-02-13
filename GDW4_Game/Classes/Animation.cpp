@@ -247,7 +247,7 @@ void marcos::AnimationManager::init()
 	m_IdlingAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingAnimation, "idle_animation_key");
 
-	m_RunningAnimation = setAnimation("Sprites/Running_Spritesheet1.png", 4, 120, 135, 0.2f);
+	m_RunningAnimation = setAnimation("Sprites/running_right.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_RunningAnimation, "running_animation_key");
 	//m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
 	//m_RunningAnimation = setAnimation("running_left.png", )

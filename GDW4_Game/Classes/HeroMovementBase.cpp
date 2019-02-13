@@ -16,6 +16,7 @@ void HeroMovementBase::setCurrentState(HeroMoveStates newState)
 	{
 	case idle:
 		currentState = idleState;
+		idleState->init();
 		break;
 
 	case moveLeft:
