@@ -107,7 +107,7 @@ void Hero::updateAnimations(float dt)
 {
 	if (moveState == idle)
 	{
-		this->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation);
+		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation);
 	}
 }
 

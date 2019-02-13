@@ -1,6 +1,6 @@
 #pragma once
 #include "cocos2d.h"
-namespace marcos
+/*namespace marcos
 {
 	class Animation
 	{
@@ -124,6 +124,39 @@ namespace marcos
 		AttackingAnimation m_AttackingAnimation;
 		GrapplingAnimation m_GrapplingAnimation;
 		IdlingAnimation m_IdlingAnimation;
+
+	private:
+
+
+	};
+}
+*/
+
+
+
+
+namespace marcos
+{
+	class AnimationManager
+	{
+	public:
+
+		AnimationManager();
+		~AnimationManager();
+
+
+		static void init();
+		static cocos2d::Animate* setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay);
+
+		static cocos2d::Animate* m_JumpingAnimation;
+		static cocos2d::Animate* m_LandingAnimation;
+		static cocos2d::Animate* m_RunningAnimation;
+		static cocos2d::Animate* m_AttackingAnimation;
+		static cocos2d::Animate* m_GrapplingAnimation;
+		static cocos2d::Animate* m_IdlingAnimation;
+
+		static cocos2d::Action* m_IdleActionAnimation;
+
 
 	private:
 

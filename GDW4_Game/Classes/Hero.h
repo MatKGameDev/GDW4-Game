@@ -15,7 +15,7 @@ public:
 	const float DRAG_VELOCITY;
 
 	static Hero* hero; //single hero instance
-	marcos::HeroAnimation* heroAnimation; //TODO: This needs to become a heroAnimation object as the system develops
+	
 	void createHero();
 
 	cocos2d::Rect hurtBox;
@@ -46,6 +46,7 @@ public:
 	void jump();
 
 	void updatePhysics(float dt) override;
+	void updateAnimations(float dt);
 	void update(float dt);
 
 private:
