@@ -9,7 +9,7 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850), //900
 	DRAG_VELOCITY(30),
-	movespeedIncrease(90), //20
+	movespeedIncrease(70), //20
 	isAirborne(false),
 	lookState(LookDirection::lookingRight)
 {

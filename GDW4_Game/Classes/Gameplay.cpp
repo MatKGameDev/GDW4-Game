@@ -132,7 +132,7 @@ void Gameplay::update(float dt)
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.4f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
