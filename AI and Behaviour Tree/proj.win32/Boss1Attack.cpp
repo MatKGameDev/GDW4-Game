@@ -85,7 +85,7 @@ float LavaBall::calculateAngle(const cocos2d::Vec2& heroPosition, const cocos2d:
 
 FlameThrower::FlameThrower(Boss *bossInstance) : Boss1LavaAttack(bossInstance), onTime(1.0f), drawNode(cocos2d::DrawNode::create())
 {
-	drawNode->drawRect(bossInstance->getMouthPosition(), cocos2d::Vec2(bossInstance->getMouthPosition().x + 1920, bossInstance->getMouthPosition().y + 100), cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
+	drawNode->drawSolidRect(bossInstance->getMouthPosition(), cocos2d::Vec2(bossInstance->getMouthPosition().x + 1920, bossInstance->getMouthPosition().y + 100), cocos2d::Color4F(0.0f, 1.0f, 0.0f, 0.5f));
 	cocos2d::Director::getInstance()->getRunningScene()->addChild(drawNode);
 }
 
