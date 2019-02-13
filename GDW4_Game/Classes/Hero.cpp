@@ -14,8 +14,11 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	lookState(LookDirection::lookingRight)
 {
 	mass = 5;					
-	this->heroAnimation = new marcos::HeroAnimation(this->sprite);
-	heroAnimation->m_HeroAnimation->runAnimation(); //TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
+	marcos::AnimationManager::init();
+	auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
+	auto action = Animate::create(anim);
+	this->sprite->runAction(RepeatForever::create(action));
+	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
@@ -27,10 +30,12 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-	heroAnimation->m_RunningAnimation.runAnimation();
 	velocity.x += movespeedIncrease;
 	lookState = LookDirection::lookingRight;
 
+	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
+	auto action = Animate::create(anim);
+	hero->sprite->runAction(RepeatForever::create(action));*/
 
 	//heroAnimation needs a run animation override
 
@@ -135,11 +140,21 @@ void Hero::updatePhysics(float dt)
 	checkAndResolveOutOfBounds();
 }
 
+void Hero::updateAnimations(float dt)
+{
+	if (moveState == idle)
+	{
+		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
+	}
+}
+
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
 
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
+	//this->updateAnimations(dt);
 	
 	HeroAttackManager::update(dt);
+
 }

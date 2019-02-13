@@ -1,7 +1,8 @@
 #include "Animation.h"
 
 //static variable initialization
-
+cocos2d::Animation* marcos::AnimationManager::m_IdlingAnimation = new cocos2d::Animation();
+cocos2d::Action* marcos::AnimationManager::m_IdleActionAnimation = new cocos2d::Action();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //																																			  //
@@ -9,7 +10,9 @@
 //																																			  //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//default constructor initializes things to 0
+//default constructor initializes things to 0 
+
+/*
 marcos::Animation::Animation()
 {
 	m_NumFrames = 0;
@@ -213,4 +216,50 @@ void marcos::RunningAnimation::runAnimation()
 marcos::JumpingAnimation::JumpingAnimation(cocos2d::Sprite* a_Sprite)
 {
 	m_JumpAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
+}
+
+*/
+
+
+//ReWork
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//																																			  //
+//															Animation Class																	  //
+//																																			  //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+marcos::AnimationManager::AnimationManager()
+{
+
+}
+
+marcos::AnimationManager::~AnimationManager()
+{
+
+}
+
+void marcos::AnimationManager::init()
+{
+
+	m_IdlingAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
+	AnimationCache::getInstance()->addAnimation(m_IdlingAnimation, "idle_animation_key");
+	//m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
+	//m_RunningAnimation = setAnimation("running_left.png", )
+	//m_JumpingAnimation = setAnimation("JumpingANimation.png", 4, 140, 135, 0.2f);
+}
+
+cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay)
+{
+	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
+
+	for (int i = 0; i < a_NumFrames; i++)
+	{
+		auto frame = cocos2d::SpriteFrame::create(a_String, cocos2d::Rect(a_Width * i, 3, a_Width, a_Height));
+		m_AnimFrames.pushBack(frame);
+	}
+
+	auto Animation = cocos2d::Animation::createWithSpriteFrames(m_AnimFrames, a_Delay);
+	return Animation;
+
 }
