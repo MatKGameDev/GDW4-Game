@@ -6,6 +6,7 @@
 #include "Grapple.h"
 #include "HeroAttackManager.h"
 #include "IceProjectile.h"
+#include "HeroMovementBase.h"
 
 using namespace cocos2d;
 
