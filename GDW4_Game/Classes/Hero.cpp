@@ -15,6 +15,9 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 {
 	mass = 5;					
 	marcos::AnimationManager::init();
+	auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
+	auto action = Animate::create(anim);
+	this->sprite->runAction(RepeatForever::create(action));
 	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f);
 }
@@ -30,6 +33,9 @@ void Hero::moveRight()
 	velocity.x += movespeedIncrease;
 	lookState = LookDirection::lookingRight;
 
+	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
+	auto action = Animate::create(anim);
+	hero->sprite->runAction(RepeatForever::create(action));*/
 
 	//heroAnimation needs a run animation override
 
@@ -107,14 +113,14 @@ void Hero::updateAnimations(float dt)
 {
 	if (moveState == idle)
 	{
-		this->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation);
+		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
 	}
 }
 
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
-	this->updateAnimations(dt);
+	//this->updateAnimations(dt);
 	hurtBox.setRect(getLeftSidePos() + width / 3.0f, getBottomPos() + height / 6.0f, width / 4.0f, height / 1.5f); //update the hurtbox location
 	
 	HeroAttackManager::update(dt);

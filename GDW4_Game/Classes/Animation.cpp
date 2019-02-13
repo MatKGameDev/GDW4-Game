@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 //static variable initialization
-cocos2d::Animate* marcos::AnimationManager::m_IdlingAnimation = new cocos2d::Animate();
+cocos2d::Animation* marcos::AnimationManager::m_IdlingAnimation = new cocos2d::Animation();
 cocos2d::Action* marcos::AnimationManager::m_IdleActionAnimation = new cocos2d::Action();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,14 +241,15 @@ marcos::AnimationManager::~AnimationManager()
 
 void marcos::AnimationManager::init()
 {
+
 	m_IdlingAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
-	m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
-	//m_IdlingAnimation->setR
+	AnimationCache::getInstance()->addAnimation(m_IdlingAnimation, "idle_animation_key");
+	//m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
 	//m_RunningAnimation = setAnimation("running_left.png", )
 	//m_JumpingAnimation = setAnimation("JumpingANimation.png", 4, 140, 135, 0.2f);
 }
 
-cocos2d::Animate* marcos::AnimationManager::setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay)
+cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay)
 {
 	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
 
@@ -259,6 +260,6 @@ cocos2d::Animate* marcos::AnimationManager::setAnimation(const std::string a_Str
 	}
 
 	auto Animation = cocos2d::Animation::createWithSpriteFrames(m_AnimFrames, a_Delay);
-	return cocos2d::Animate::create(Animation);
+	return Animation;
 
 }
