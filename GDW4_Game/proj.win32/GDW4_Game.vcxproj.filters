@@ -72,11 +72,11 @@
     <ClCompile Include="..\Classes\IceProjectile.cpp">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\IceProjectileAttack.cpp">
-      <Filter>src\Hero Stuff\Attack Stuff</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Animation.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ProjectileIceAttack.cpp">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,11 +125,11 @@
     <ClInclude Include="..\Classes\IceProjectile.h">
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\IceProjectileAttack.h">
-      <Filter>src\Hero Stuff\Attack Stuff</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Animation.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ProjectileIceAttack.h">
+      <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

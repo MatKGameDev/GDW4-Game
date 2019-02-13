@@ -153,7 +153,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\EmptyAttack.cpp" />
     <ClCompile Include="..\Classes\IceProjectile.cpp" />
-    <ClCompile Include="..\Classes\IceProjectileAttack.cpp" />
+    <ClCompile Include="..\Classes\ProjectileIceAttack.cpp" />
     <ClCompile Include="..\Classes\MeleeFireAttack.cpp" />
     <ClCompile Include="..\Classes\GameObject.cpp" />
     <ClCompile Include="..\Classes\Gameplay.cpp" />
@@ -172,7 +172,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\EmptyAttack.h" />
     <ClInclude Include="..\Classes\IceProjectile.h" />
-    <ClInclude Include="..\Classes\IceProjectileAttack.h" />
+    <ClInclude Include="..\Classes\ProjectileIceAttack.h" />
     <ClInclude Include="..\Classes\MeleeFireAttack.h" />
     <ClInclude Include="..\Classes\GameObject.h" />
     <ClInclude Include="..\Classes\Gameplay.h" />
