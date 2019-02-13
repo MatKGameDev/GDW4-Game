@@ -47,7 +47,6 @@ void Gameplay::initSprites()
 	this->addChild(background, 1);
 
 	//add hero (singleton class)
-	
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
 
@@ -57,8 +56,6 @@ void Gameplay::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
-
-	Hero::hero->moveRight();
 
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 17);
@@ -157,8 +154,13 @@ void Gameplay::spawnEnemies()
 void Gameplay::updateObjects(float dt)
 {
 	//update all platforms
-	for (int i = 0; i < Platform::platformList.size(); i++)
+	int numPlatforms = Platform::platformList.size();
+	for (int i = 0; i < numPlatforms; i++)
 		Platform::platformList[i]->update();
+
+	//update all ice projectiles
+	for (int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
+		IceProjectile::iceProjectileList[i]->update(dt);
 
 	//update grapple
 	Grapple::grapple->update(dt, this);
@@ -194,7 +196,7 @@ void Gameplay::mouseDownCallback(Event* event)
 
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
 	{
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA);
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
 	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
 	{
@@ -256,6 +258,16 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		}
 
 		Hero::hero->jump();
+	}
+
+	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
+	if (keyCode == EventKeyboard::KeyCode::KEY_Q)
+	{
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
+	}
+	if (keyCode == EventKeyboard::KeyCode::KEY_E)
+	{
+		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
