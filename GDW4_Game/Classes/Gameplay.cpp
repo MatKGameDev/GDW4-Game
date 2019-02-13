@@ -132,7 +132,7 @@ void Gameplay::update(float dt)
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.7f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
@@ -230,11 +230,11 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+		HeroMovementBase::setCurrentState(HeroMoveStates::moveLeft);
 		break;
 
 	case EventKeyboard::KeyCode::KEY_D:
-		Hero::hero->moveState = Hero::MoveDirection::movingRight;
+		HeroMovementBase::setCurrentState(HeroMoveStates::moveRight);
 		break;
 
 	case EventKeyboard::KeyCode::KEY_S:
@@ -278,10 +278,10 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A && Hero::hero->moveState == Hero::MoveDirection::movingLeft)
-		Hero::hero->moveState = Hero::MoveDirection::idle;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D && Hero::hero->moveState == Hero::MoveDirection::movingRight)
-		Hero::hero->moveState = Hero::MoveDirection::idle;
+	if (keyCode == EventKeyboard::KeyCode::KEY_A)
+		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
+	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
+		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		HeroAttackBase::isSKeyHeld = false;

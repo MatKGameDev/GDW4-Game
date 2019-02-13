@@ -1,5 +1,6 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
+#include "HeroMovementBase.h"
 
 Hero* Hero::hero = 0;
 
@@ -8,9 +9,8 @@ Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850), //900
 	DRAG_VELOCITY(30),
-	movespeedIncrease(20),
+	movespeedIncrease(70), //20
 	isAirborne(false),
-	moveState(MoveDirection::idle),
 	lookState(LookDirection::lookingRight)
 {
 	mass = 5;					
@@ -30,8 +30,8 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-	velocity.x += movespeedIncrease;
 	lookState = LookDirection::lookingRight;
+	velocity.x += movespeedIncrease;
 
 	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
 	auto action = Animate::create(anim);
@@ -50,8 +50,8 @@ void Hero::moveRight()
 
 void Hero::moveLeft()
 {
-	velocity.x -= movespeedIncrease;
 	lookState = LookDirection::lookingLeft;
+	velocity.x -= movespeedIncrease;
 }
 
 //jump if not already airbourne
@@ -103,15 +103,12 @@ void Hero::updatePhysics(float dt)
 	else
 		gravityMultiplier = 1.0f;
 
+	HeroMovementBase::currentState->update(dt);
+
 	this->GameObject::updatePhysics(dt); //call base class update
 
-	//check for movement and apply drag if necessary
-	if (moveState == MoveDirection::movingRight)
-		moveRight();
-	else if (moveState == MoveDirection::movingLeft)
-		moveLeft();
 	//no player input but hero is still moving
-	else if (velocity.x > 0)
+	if (velocity.x > 0)
 	{
 		velocity.x -= DRAG_VELOCITY; //apply drag
 	}
@@ -142,10 +139,10 @@ void Hero::updatePhysics(float dt)
 
 void Hero::updateAnimations(float dt)
 {
-	if (moveState == idle)
+	/*if (moveState == idle)
 	{
 		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
-	}
+	}*/
 }
 
 void Hero::update(float dt)
@@ -156,5 +153,4 @@ void Hero::update(float dt)
 	//this->updateAnimations(dt);
 	
 	HeroAttackManager::update(dt);
-
 }
