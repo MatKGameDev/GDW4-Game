@@ -2,7 +2,7 @@
 #include "Hero.h"
 #include <iostream>
 
-const float IceProjectile::SPEED = 750;
+const float IceProjectile::SPEED = 900;
 std::vector<IceProjectile*> IceProjectile::iceProjectileList = std::vector<IceProjectile*>();
 
 //default sets velocity to 0

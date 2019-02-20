@@ -1,24 +1,23 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
-#include "HeroMovementBase.h"
+#include "HeroStateManager.h"
 
 Hero* Hero::hero = 0;
 
-Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
+Hero::Hero() : GameObject(Vect2(700, 0), "Sprites/shooting_test.png"),
 	JUMP_VELOCITY(530),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850), //900
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70), //20
 	isAirborne(false),
-	lookState(LookDirection::lookingRight)
+	lookState(LookDirection::lookingRight),
+	moveState(MoveDirection::idle)
 {
 	mass = 5;					
+
 	marcos::AnimationManager::init();
-	auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
-	auto action = Animate::create(anim);
-	this->sprite->runAction(RepeatForever::create(action));
-	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
+
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
@@ -30,8 +29,11 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-	lookState = LookDirection::lookingRight;
-	velocity.x += movespeedIncrease;
+
+	if (isAirborne)
+		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x += movespeedIncrease;
 
 	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
 	auto action = Animate::create(anim);
@@ -50,8 +52,10 @@ void Hero::moveRight()
 
 void Hero::moveLeft()
 {
-	lookState = LookDirection::lookingLeft;
-	velocity.x -= movespeedIncrease;
+	if (isAirborne)
+		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x -= movespeedIncrease;
 }
 
 //jump if not already airbourne
@@ -92,7 +96,7 @@ void Hero::checkAndResolveOutOfBounds()
 void Hero::updatePhysics(float dt)
 {
 	//check if airborne or not
-	if (velocity.y == 0 || velocity.y == (GRAVITY.y * mass))
+	if (velocity.y == 0)
 		isAirborne = false;
 	else
 		isAirborne = true;
@@ -103,7 +107,7 @@ void Hero::updatePhysics(float dt)
 	else
 		gravityMultiplier = 1.0f;
 
-	HeroMovementBase::currentState->update(dt);
+	HeroStateManager::currentState->update(dt);
 
 	this->GameObject::updatePhysics(dt); //call base class update
 
@@ -137,20 +141,9 @@ void Hero::updatePhysics(float dt)
 	checkAndResolveOutOfBounds();
 }
 
-void Hero::updateAnimations(float dt)
-{
-	/*if (moveState == idle)
-	{
-		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
-	}*/
-}
-
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
 
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
-	//this->updateAnimations(dt);
-	
-	HeroAttackManager::update(dt);
 }

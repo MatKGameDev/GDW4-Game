@@ -1,5 +1,6 @@
 #include "Gameplay.h"
 #include <iostream>
+#include "HeroStateManager.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -36,6 +37,7 @@ void Gameplay::initUI()
 void Gameplay::initGameObjects()
 {
 	Hero::hero->createHero(); //create hero (calls private constructor)
+	HeroStateManager::idle->onEnter();
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
 }
 
@@ -58,7 +60,7 @@ void Gameplay::initSprites()
 	this->addChild(testMeleeAttack, 40);
 
 	//add grapple (singleton class)
-	this->addChild(Grapple::grapple, 17);
+	this->addChild(Grapple::grapple, 5);
 
 	//add platforms for testing
 	platform = new Platform(Vect2(180, 60));
@@ -123,6 +125,8 @@ void Gameplay::initKeyboardListener()
 //UPDATE
 void Gameplay::update(float dt)
 {
+	Grapple::grapple->update(dt, this); //update grapple
+
 	Hero::hero->update(dt); //update our hero
 	//if (hero->invincibilityTimer > 0)
 	//	flickerSprite(); //flicker sprite if it's invincible
@@ -161,9 +165,6 @@ void Gameplay::updateObjects(float dt)
 	//update all ice projectiles
 	for (int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
-
-	//update grapple
-	Grapple::grapple->update(dt, this);
 }
 
 void Gameplay::updateEnemies(float dt)
@@ -210,6 +211,7 @@ void Gameplay::mouseDownCallback(Event* event)
 		mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
+		HeroStateManager::grappling->onEnter(); //put hero in grapple state
 	}
 }
 
@@ -230,17 +232,19 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		HeroMovementBase::setCurrentState(HeroMoveStates::moveLeft);
+		HeroStateManager::currentState->handleInput(InputType::p_a);
+		Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_D:
-		HeroMovementBase::setCurrentState(HeroMoveStates::moveRight);
+		HeroStateManager::currentState->handleInput(InputType::p_d);
+		Hero::hero->lookState = Hero::LookDirection::lookingRight;
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_S:
-		//if hero is at the end of a grapple, hitting S allows them to remove the delay and immediately start falling
-		if (Grapple::grapple->isHeroAtEndPoint)
-			Grapple::grapple->unLatch();
+		HeroStateManager::currentState->handleInput(InputType::p_s);
 		HeroAttackBase::isSKeyHeld = true;
 		break;
 
@@ -251,13 +255,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
 	{
-		if (Grapple::grapple->isHeroAtEndPoint)
-		{
-			Grapple::grapple->unLatch();
-			Hero::hero->velocity.y += Hero::hero->JUMP_VELOCITY / 4; //add extra jump height on a grapple jump
-		}
-
-		Hero::hero->jump();
+		HeroStateManager::currentState->handleInput(InputType::p_space);
 	}
 
 	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
@@ -279,12 +277,24 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
+	{
+		//make sure the hero is moving in this direction before we decide if they are now idle
+		if (Hero::hero->moveState == Hero::MoveDirection::movingLeft)
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
+	{
+		//make sure the hero is moving in this direction before we decide if they are now idle
+		if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	{
 		HeroAttackBase::isSKeyHeld = false;
+	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
+	{
 		HeroAttackBase::isWKeyHeld = false;
+	}
 }

@@ -62,7 +62,7 @@ void Boss::activateFlameThrower()
 
 void Boss::shootSucker()
 {
-	auto tempBullet = new SuckerBullet(cocos2d::Vec2(1000, 0), this);
+	auto tempBullet = new SuckerBullet(cocos2d::Vec2(1500, 200), this);
 	lavaList.push_back(tempBullet);
 }
 

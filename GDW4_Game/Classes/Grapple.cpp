@@ -89,7 +89,7 @@ bool Grapple::checkTunnelingCollision(GameObject* otherObject)
 		positionToCheck = Vect2::lerp(lastFrameGrappleTip, grappleTip, positionScale);
 		if (checkPointCollision(positionToCheck, otherObject))
 		{
-			latchPoint = positionToCheck;
+			latchPoint = positionToCheck = grappleTip;
 			return true;
 		}
 	}
@@ -142,11 +142,7 @@ void Grapple::update(float dt, Scene* scene)
 			}
 			//limit length scale factor to 1 (1 being the endpoint)
 			if (lengthScale > 1.0f)
-			{
-				latchPoint = grappleTip;
-				latch(); //for now call latch when it reaches max length, change later to be performed on collision
-				lengthScale = 1.0f;
-			}
+				unLatch();
 
 			lastFrameGrappleTip = grappleTip;
 		}
