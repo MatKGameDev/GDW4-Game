@@ -120,6 +120,9 @@
     <ClCompile Include="..\Classes\HoldingPlatformState.cpp">
       <Filter>src\Hero Stuff\State Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ShootingGrappleState.cpp">
+      <Filter>src\Hero Stuff\State Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -204,6 +207,9 @@
       <Filter>src\Hero Stuff\State Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HoldingPlatformState.h">
+      <Filter>src\Hero Stuff\State Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ShootingGrappleState.h">
       <Filter>src\Hero Stuff\State Stuff</Filter>
     </ClInclude>
   </ItemGroup>

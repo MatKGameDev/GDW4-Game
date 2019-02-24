@@ -16,7 +16,7 @@ bool Gameplay::init()
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
-	director->setAnimationInterval(1.0/60);
+	director->setAnimationInterval(1.0f/60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
 	
 	initGameObjects();
@@ -134,7 +134,7 @@ void Gameplay::update(float dt)
 	testHurtbox->clear();
 	//DRAW HURTBOX FOR TESTING
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
+		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
 		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
 
@@ -158,12 +158,12 @@ void Gameplay::spawnEnemies()
 void Gameplay::updateObjects(float dt)
 {
 	//update all platforms
-	int numPlatforms = Platform::platformList.size();
-	for (int i = 0; i < numPlatforms; i++)
+	unsigned int numPlatforms = Platform::platformList.size();
+	for (unsigned int i = 0; i < numPlatforms; i++)
 		Platform::platformList[i]->update();
 
 	//update all ice projectiles
-	for (int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
+	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
 }
 
@@ -211,7 +211,7 @@ void Gameplay::mouseDownCallback(Event* event)
 		mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
-		HeroStateManager::grappling->onEnter(); //put hero in grapple state
+		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
 	}
 }
 

@@ -10,6 +10,7 @@ IceProjectile::IceProjectile() : GameObject(Hero::hero->getPosition(), "Sprites/
 {
 	mass = 0;
 	velocity = Vect2(0, 0);
+	updateHitboxes();
 	iceProjectileList.push_back(this);
 }
 //create projectile with starting velocity
@@ -39,10 +40,16 @@ void IceProjectile::checkAndResolveOutOfBounds()
 		removeAndDelete();
 }
 
+void IceProjectile::updateHitboxes()
+{
+	moveBox.setRect(getLeftSidePos(), getBottomPos(), width, height);
+	hurtBox.setRect(getLeftSidePos(), getBottomPos(), width, height);
+}
+
 void IceProjectile::update(float dt)
 {
 	//call base update
 	GameObject::updatePhysics(dt);
-
+	updateHitboxes();
 	checkAndResolveOutOfBounds();
 }

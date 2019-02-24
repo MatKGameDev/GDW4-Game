@@ -18,8 +18,6 @@ public:
 	
 	void createHero();
 
-	cocos2d::Rect hurtBox;
-
 	float movespeedIncrease;
 
 	enum LookDirection
@@ -45,6 +43,7 @@ public:
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
+	void updateHitboxes() override;
 	void update(float dt);
 
 private:

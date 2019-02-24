@@ -8,6 +8,7 @@ JumpingState* HeroStateManager::jumping = new JumpingState();
 RunningState* HeroStateManager::running = new RunningState();
 GrappleJumpState* HeroStateManager::grappleJumping = new GrappleJumpState();
 HoldingPlatformState* HeroStateManager::holdingPlatform = new HoldingPlatformState();
+ShootingGrappleState* HeroStateManager::shootingGrapple = new ShootingGrappleState();
 
 HeroStateBase* HeroStateManager::currentState = idle; //initialize to idle state
 

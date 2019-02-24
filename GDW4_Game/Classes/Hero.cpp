@@ -1,6 +1,7 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
 #include "HeroStateManager.h"
+#include <iostream>
 
 Hero* Hero::hero = 0;
 
@@ -18,7 +19,7 @@ Hero::Hero() : GameObject(Vect2(700, 0), "Sprites/shooting_test.png"),
 
 	marcos::AnimationManager::init();
 
-	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
+	updateHitboxes();
 }
 
 void Hero::createHero()
@@ -141,9 +142,15 @@ void Hero::updatePhysics(float dt)
 	checkAndResolveOutOfBounds();
 }
 
+void Hero::updateHitboxes()
+{
+	moveBox.setRect(getLeftSidePos() + width / 5.0f, getBottomPos(), width / 1.6f, height);
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
+}
+
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
-
-	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
+	//std::cout << "\nX: " << sprite->getPositionX() << "  Y: " << sprite->getPositionY(); //yay for bugs
+	updateHitboxes();
 }

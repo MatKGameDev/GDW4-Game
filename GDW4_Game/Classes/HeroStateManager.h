@@ -7,6 +7,7 @@
 #include "RunningState.h"
 #include "GrappleJumpState.h"
 #include "HoldingPlatformState.h"
+#include "ShootingGrappleState.h"
 
 class HeroStateManager
 {
@@ -23,4 +24,5 @@ public:
 	static RunningState* running;
 	static GrappleJumpState* grappleJumping;
 	static HoldingPlatformState* holdingPlatform;
+	static ShootingGrappleState* shootingGrapple;
 };

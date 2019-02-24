@@ -9,6 +9,7 @@ public:
 	static std::vector<Platform*> platformList;
 
 	bool checkOneWayCollision(GameObject* otherObject);
+	void updateHitboxes() override;
 	void update();
 };
 

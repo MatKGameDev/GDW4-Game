@@ -3,11 +3,9 @@
 #include "HeroStateManager.h"
 #include "Hero.h"
 
-
 GrapplingState::GrapplingState()
 {
 }
-
 
 GrapplingState::~GrapplingState()
 {
