@@ -24,11 +24,21 @@ void GrappleJumpState::onEnter()
 
 void GrappleJumpState::onExit()
 {
-	HeroStateManager::falling->onEnter();
+	if (Hero::hero->velocity.y < 0)
+		HeroStateManager::falling->onEnter();
+	else if (Hero::hero->velocity.y == 0)
+		HeroStateManager::idle->onEnter();
 }
 
 void GrappleJumpState::handleInput(InputType input)
 {
+	switch (input)
+	{
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
+		break;
+	}
 }
 
 void GrappleJumpState::update(float dt)
@@ -38,6 +48,6 @@ void GrappleJumpState::update(float dt)
 	else if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
 		Hero::hero->moveRight();
 
-	if (Hero::hero->velocity.y < 0)
+	if (Hero::hero->velocity.y <= 0)
 		onExit();
 }

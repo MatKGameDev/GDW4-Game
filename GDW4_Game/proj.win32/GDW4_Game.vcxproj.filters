@@ -28,9 +28,6 @@
     <Filter Include="src\Hero Stuff\General Stuff">
       <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Hero Stuff\Movement Stuff">
-      <UniqueIdentifier>{37b44207-7ecb-44aa-9d74-2b8bb2d6ab94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Animation Stuff">
       <UniqueIdentifier>{b1be3e2c-5a57-4734-8a9f-de0eea9598c4}</UniqueIdentifier>
     </Filter>

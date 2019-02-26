@@ -137,6 +137,10 @@ void Gameplay::update(float dt)
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
 		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
+	/*testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+		Color4F(0.0f, 1.0f, 0.0f, 0.3f));*/
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
@@ -251,50 +255,48 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = true;
 		break;
-	}
 
-	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-	{
+	case EventKeyboard::KeyCode::KEY_SPACE:
 		HeroStateManager::currentState->handleInput(InputType::p_space);
-	}
+		break;
 
 	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	if (keyCode == EventKeyboard::KeyCode::KEY_Q)
-	{
+	case EventKeyboard::KeyCode::KEY_Q:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
-	}
-	if (keyCode == EventKeyboard::KeyCode::KEY_E)
-	{
+		break;
+
+	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
-	{
-
+		break;
 	}
 }
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
+	switch (keyCode)
 	{
+	case EventKeyboard::KeyCode::KEY_A:
 		//make sure the hero is moving in this direction before we decide if they are now idle
 		if (Hero::hero->moveState == Hero::MoveDirection::movingLeft)
 			Hero::hero->moveState = Hero::MoveDirection::idle;
-	}
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-	{
+		break;
+
+	case EventKeyboard::KeyCode::KEY_D:
 		//make sure the hero is moving in this direction before we decide if they are now idle
 		if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
 			Hero::hero->moveState = Hero::MoveDirection::idle;
-	}
+		break;
 
-	if (keyCode == EventKeyboard::KeyCode::KEY_S)
-	{
+	case EventKeyboard::KeyCode::KEY_S:
 		HeroAttackBase::isSKeyHeld = false;
-	}
-	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
-	{
+		break;
+
+	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = false;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
 	}
 }
