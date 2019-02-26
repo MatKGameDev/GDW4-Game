@@ -48,6 +48,24 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilesets/untitled.tmx"); //ayy it works
+	addChild(testTileMap, 1);
+	cocos2d::TMXLayer* tileLayer = testTileMap->getLayer("layer1");
+
+	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
+	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
+	for (unsigned int x = 0; x < tileMapWidth; x++)       //width of map
+	{
+		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map
+		{
+			cocos2d::Sprite* currentTile = tileLayer->getTileAt(Vec2(x, y));
+			if (currentTile != NULL)
+			{
+				std::cout << x << ", " << y << "\n";
+			}
+		}
+	}
+
 	//add hero (singleton class)
 	this->addChild(Hero::hero->sprite, 20);
 	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
