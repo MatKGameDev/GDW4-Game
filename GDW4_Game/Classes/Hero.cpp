@@ -153,10 +153,6 @@ void Hero::update(float dt)
 	this->updatePhysics(dt);
 	//std::cout << "\nX: " << sprite->getPositionX() << "  Y: " << sprite->getPositionY(); //yay for bugs
 
-	//if (HeroAttackManager::currentAttack == HeroAttackManager::empty)
-	//	std::cout << "E M P T Y\n";
-	//else 
-	//	std::cout << "N O T   E M P T Y\n"; //yay for more bugs
-
 	updateHitboxes();
+	HeroAttackManager::update(dt);
 }

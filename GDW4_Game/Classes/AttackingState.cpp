@@ -48,6 +48,10 @@ void AttackingState::handleInput(InputType input)
 	case InputType::p_d:
 		Hero::hero->moveRight();
 		break;
+
+	case InputType::p_space:
+		Hero::hero->jump();
+		break;
 	}
 }
 
@@ -58,7 +62,6 @@ void AttackingState::update(float dt)
 	else if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
 		Hero::hero->moveRight();
 
-	HeroAttackManager::update(dt);
 	if (HeroAttackManager::currentAttack == HeroAttackManager::empty)
 		onExit();
 }
