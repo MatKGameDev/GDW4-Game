@@ -144,7 +144,6 @@ void Gameplay::initKeyboardListener()
 void Gameplay::update(float dt)
 {
 	Grapple::grapple->update(dt, this); //update grapple
-
 	Hero::hero->update(dt); //update our hero
 	//if (hero->invincibilityTimer > 0)
 	//	flickerSprite(); //flicker sprite if it's invincible

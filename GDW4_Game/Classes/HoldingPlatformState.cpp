@@ -7,7 +7,6 @@ HoldingPlatformState::HoldingPlatformState()
 {
 }
 
-
 HoldingPlatformState::~HoldingPlatformState()
 {
 }

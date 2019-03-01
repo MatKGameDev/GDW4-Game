@@ -35,20 +35,6 @@ void Hero::moveRight()
 		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
 	else
 		velocity.x += movespeedIncrease;
-
-	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
-	auto action = Animate::create(anim);
-	hero->sprite->runAction(RepeatForever::create(action));*/
-
-	//heroAnimation needs a run animation override
-
-	// What should probably be done:
-	// runAnimation acts as a manager, it takes in certain params from hero, mainly state, and handles all behind the scenes work, displays the animation
-	// The one issue with setting it up this way is that I have no idea if it would even work with this level of inheritance, in order to get it to work, probably
-	// going to have to make 2 classes rather than 12, don't think I can handle integrating 12 classes
-
-	// Alternatively it can be done the way mario was done, where the animation is hidden in the class object and RunAnimation only manages one animation at a time 
-	// Based on the context it is called
 }
 
 void Hero::moveLeft()
@@ -63,7 +49,7 @@ void Hero::moveLeft()
 void Hero::jump()
 {
 	if (!isAirborne)
-		velocity.y += JUMP_VELOCITY;
+		velocity.y = JUMP_VELOCITY;
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -102,13 +88,14 @@ void Hero::updatePhysics(float dt)
 	else
 		isAirborne = true;
 
-	//check if moving downwards (increase gravity)
+	HeroStateManager::currentState->update(dt);
+
+	//have hero fall faster than rise
 	if (velocity.y < 0)
 		gravityMultiplier = 1.7f;
 	else
 		gravityMultiplier = 1.0f;
 
-	HeroStateManager::currentState->update(dt);
 
 	this->GameObject::updatePhysics(dt); //call base class update
 

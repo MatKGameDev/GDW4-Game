@@ -11,7 +11,7 @@ RunningState::~RunningState()
 }
 
 void RunningState::onEnter()
-{
+ {
 	HeroStateManager::currentState = this;
 
 	//get rid of this shit once we get separate animations for both sides and put them in the if statements

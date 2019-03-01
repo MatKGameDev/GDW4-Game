@@ -15,14 +15,12 @@ FallingState::~FallingState()
 void FallingState::onEnter()
 {
 	HeroStateManager::currentState = this;
-	Hero::hero->gravityMultiplier = 1.7f;
 
 	Hero::hero->sprite->stopAllActions();
 }
 
 void FallingState::onExit()
 {
-	Hero::hero->gravityMultiplier = 1.0f;
 	HeroStateManager::idle->onEnter();
 }
 

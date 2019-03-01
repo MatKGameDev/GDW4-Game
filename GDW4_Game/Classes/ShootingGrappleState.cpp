@@ -16,7 +16,6 @@ void ShootingGrappleState::onEnter()
 	HeroStateManager::currentState = this;
 
 	Hero::hero->sprite->stopAllActions();
-
 }
 
 void ShootingGrappleState::onExit()

@@ -110,13 +110,13 @@ void Grapple::update(float dt, Scene* scene)
 
 			Vect2 newHeroPosition = Vect2::lerp(heroLatchPosition, latchPoint, heroMoveScale);
 			Hero::hero->sprite->setPosition(Vec2(newHeroPosition.x, newHeroPosition.y));
+			Hero::hero->velocity.y = 0;
 
 			//check if the hero has reached the end of the grapple latch point
 			if (heroMoveScale > 1.0f)
 			{
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
-				Hero::hero->velocity.y = 0;
 
 				if (latchDuration > 0.3f)
 					unLatch();
