@@ -15,6 +15,11 @@ void JumpingState::onEnter()
 {
 	HeroStateManager::currentState = this;
 
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("jumping_right_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+
 	Hero::hero->jump();
 
 	Hero::hero->sprite->stopAllActions();
