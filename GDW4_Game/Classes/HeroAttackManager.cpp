@@ -1,4 +1,5 @@
 #include "HeroAttackManager.h"
+#include "HeroStateManager.h"
 
 EmptyAttack* HeroAttackManager::empty = new EmptyAttack();
 MeleeFireAttack* HeroAttackManager::meleeFire = new MeleeFireAttack();
@@ -10,6 +11,7 @@ void HeroAttackManager::setCurrentAttack(HeroAttackTypes attackType, cocos2d::Sc
 {
 	if (currentAttack == empty) //make sure there isnt already an attack in progress
 	{
+		HeroStateManager::attacking->onEnter();
 		//check which attack type to set and call init function if applicable
 		switch (attackType)
 		{

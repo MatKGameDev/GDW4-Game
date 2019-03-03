@@ -26,6 +26,9 @@ public:
 
 	Sprite* sprite;
 
+	cocos2d::Rect hurtBox;
+	cocos2d::Rect moveBox; //like a hitbox but for movement and shit
+
 	//get sprite position functions
 	Vect2 getPosition();
 	float getLeftSidePos();
@@ -34,7 +37,8 @@ public:
 	float getTopPos();
 
 	void destroySprite();
-	bool isCollidingWith(GameObject* otherObject);
+	bool isMovementCollision(GameObject* otherObject);
 
+	virtual void updateHitboxes() = 0;
 	virtual void updatePhysics(float dt);
 };

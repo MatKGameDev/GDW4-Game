@@ -1,25 +1,30 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
-#include "HeroMovementBase.h"
+#include "HeroStateManager.h"
+#include <iostream>
 
 Hero* Hero::hero = 0;
 
-Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
+Hero::Hero() : GameObject(Vect2(700, 0), "Sprites/shooting_test.png"),
 	JUMP_VELOCITY(530),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850), //900
 	DRAG_VELOCITY(30),
-	movespeedIncrease(90), //20
+	movespeedIncrease(70), //20
 	isAirborne(false),
-	lookState(LookDirection::lookingRight)
+	lookState(LookDirection::lookingRight),
+	moveState(MoveDirection::idle)
 {
 	mass = 5;					
+
 	marcos::AnimationManager::init();
 	auto anim = AnimationCache::getInstance()->getAnimation("idle_right_animation_key");
 	auto action = Animate::create(anim);
 	this->sprite->runAction(RepeatForever::create(action));
 	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
+
+	updateHitboxes();
 }
 
 void Hero::createHero()
@@ -30,35 +35,26 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-	lookState = LookDirection::lookingRight;
-	velocity.x += movespeedIncrease;
 
-	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
-	auto action = Animate::create(anim);
-	hero->sprite->runAction(RepeatForever::create(action));*/
-
-	//heroAnimation needs a run animation override
-
-	// What should probably be done:
-	// runAnimation acts as a manager, it takes in certain params from hero, mainly state, and handles all behind the scenes work, displays the animation
-	// The one issue with setting it up this way is that I have no idea if it would even work with this level of inheritance, in order to get it to work, probably
-	// going to have to make 2 classes rather than 12, don't think I can handle integrating 12 classes
-
-	// Alternatively it can be done the way mario was done, where the animation is hidden in the class object and RunAnimation only manages one animation at a time 
-	// Based on the context it is called
+	if (isAirborne)
+		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x += movespeedIncrease;
 }
 
 void Hero::moveLeft()
 {
-	lookState = LookDirection::lookingLeft;
-	velocity.x -= movespeedIncrease;
+	if (isAirborne)
+		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x -= movespeedIncrease;
 }
 
 //jump if not already airbourne
 void Hero::jump()
 {
 	if (!isAirborne)
-		velocity.y += JUMP_VELOCITY;
+		velocity.y = JUMP_VELOCITY;
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -92,18 +88,19 @@ void Hero::checkAndResolveOutOfBounds()
 void Hero::updatePhysics(float dt)
 {
 	//check if airborne or not
-	if (velocity.y == 0 || velocity.y == (GRAVITY.y * mass))
+	if (velocity.y == 0)
 		isAirborne = false;
 	else
 		isAirborne = true;
 
-	//check if moving downwards (increase gravity)
+	HeroStateManager::currentState->update(dt);
+
+	//have hero fall faster than rise
 	if (velocity.y < 0)
 		gravityMultiplier = 1.7f;
 	else
 		gravityMultiplier = 1.0f;
 
-	HeroMovementBase::currentState->update(dt);
 
 	this->GameObject::updatePhysics(dt); //call base class update
 
@@ -137,20 +134,17 @@ void Hero::updatePhysics(float dt)
 	checkAndResolveOutOfBounds();
 }
 
-void Hero::updateAnimations(float dt)
+void Hero::updateHitboxes()
 {
-	/*if (moveState == idle)
-	{
-		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
-	}*/
+	moveBox.setRect(getLeftSidePos() + width / 5.0f, getBottomPos(), width / 1.6f, height);
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
+	//std::cout << "\nX: " << sprite->getPositionX() << "  Y: " << sprite->getPositionY(); //yay for bugs
 
-	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
-	//this->updateAnimations(dt);
-	
+	updateHitboxes();
 	HeroAttackManager::update(dt);
 }

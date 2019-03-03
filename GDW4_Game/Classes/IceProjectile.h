@@ -12,5 +12,6 @@ public:
 
 	void removeAndDelete();
 	void checkAndResolveOutOfBounds();
+	void updateHitboxes() override;
 	void update(float dt);
 };

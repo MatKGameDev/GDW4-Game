@@ -1,5 +1,6 @@
 #include "Gameplay.h"
 #include <iostream>
+#include "HeroStateManager.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -15,7 +16,7 @@ bool Gameplay::init()
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
-	director->setAnimationInterval(1.0/60);
+	director->setAnimationInterval(1.0f/60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
 	
 	initGameObjects();
@@ -36,6 +37,7 @@ void Gameplay::initUI()
 void Gameplay::initGameObjects()
 {
 	Hero::hero->createHero(); //create hero (calls private constructor)
+	HeroStateManager::idle->onEnter();
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
 }
 
@@ -45,6 +47,24 @@ void Gameplay::initSprites()
 	background = Sprite::create("Backgrounds/background.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
+
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilesets/untitled.tmx"); //ayy it works
+	addChild(testTileMap, 1);
+	cocos2d::TMXLayer* tileLayer = testTileMap->getLayer("layer1");
+
+	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
+	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
+	for (unsigned int x = 0; x < tileMapWidth; x++)       //width of map
+	{
+		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map
+		{
+			cocos2d::Sprite* currentTile = tileLayer->getTileAt(Vec2(x, y));
+			if (currentTile != NULL)
+			{
+				std::cout << x << ", " << y << "\n";
+			}
+		}
+	}
 
 	//add hero (singleton class)
 	this->addChild(Hero::hero->sprite, 20);
@@ -58,7 +78,7 @@ void Gameplay::initSprites()
 	this->addChild(testMeleeAttack, 40);
 
 	//add grapple (singleton class)
-	this->addChild(Grapple::grapple, 17);
+	this->addChild(Grapple::grapple, 5);
 
 	//add platforms for testing
 	platform = new Platform(Vect2(180, 60));
@@ -123,6 +143,7 @@ void Gameplay::initKeyboardListener()
 //UPDATE
 void Gameplay::update(float dt)
 {
+	Grapple::grapple->update(dt, this); //update grapple
 	Hero::hero->update(dt); //update our hero
 	//if (hero->invincibilityTimer > 0)
 	//	flickerSprite(); //flicker sprite if it's invincible
@@ -130,9 +151,13 @@ void Gameplay::update(float dt)
 	testHurtbox->clear();
 	//DRAW HURTBOX FOR TESTING
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width, 
+		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.7f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
+	/*testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+		Color4F(0.0f, 1.0f, 0.0f, 0.3f));*/
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
@@ -154,16 +179,13 @@ void Gameplay::spawnEnemies()
 void Gameplay::updateObjects(float dt)
 {
 	//update all platforms
-	int numPlatforms = Platform::platformList.size();
-	for (int i = 0; i < numPlatforms; i++)
+	unsigned int numPlatforms = Platform::platformList.size();
+	for (unsigned int i = 0; i < numPlatforms; i++)
 		Platform::platformList[i]->update();
 
 	//update all ice projectiles
-	for (int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
+	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
-
-	//update grapple
-	Grapple::grapple->update(dt, this);
 }
 
 void Gameplay::updateEnemies(float dt)
@@ -210,6 +232,7 @@ void Gameplay::mouseDownCallback(Event* event)
 		mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
+		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
 	}
 }
 
@@ -230,61 +253,67 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		HeroMovementBase::setCurrentState(HeroMoveStates::moveLeft);
+		HeroStateManager::currentState->handleInput(InputType::p_a);
+		Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_D:
-		HeroMovementBase::setCurrentState(HeroMoveStates::moveRight);
+		HeroStateManager::currentState->handleInput(InputType::p_d);
+		Hero::hero->lookState = Hero::LookDirection::lookingRight;
+		Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_S:
-		//if hero is at the end of a grapple, hitting S allows them to remove the delay and immediately start falling
-		if (Grapple::grapple->isHeroAtEndPoint)
-			Grapple::grapple->unLatch();
+		HeroStateManager::currentState->handleInput(InputType::p_s);
 		HeroAttackBase::isSKeyHeld = true;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = true;
 		break;
-	}
 
-	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-	{
-		if (Grapple::grapple->isHeroAtEndPoint)
-		{
-			Grapple::grapple->unLatch();
-			Hero::hero->velocity.y += Hero::hero->JUMP_VELOCITY / 4; //add extra jump height on a grapple jump
-		}
-
-		Hero::hero->jump();
-	}
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		HeroStateManager::currentState->handleInput(InputType::p_space);
+		break;
 
 	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	if (keyCode == EventKeyboard::KeyCode::KEY_Q)
-	{
+	case EventKeyboard::KeyCode::KEY_Q:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
-	}
-	if (keyCode == EventKeyboard::KeyCode::KEY_E)
-	{
+		break;
+
+	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
-	{
-
+		break;
 	}
 }
 
 void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
-	else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		HeroMovementBase::setCurrentState(HeroMoveStates::idle);
+	switch (keyCode)
+	{
+	case EventKeyboard::KeyCode::KEY_A:
+		//make sure the hero is moving in this direction before we decide if they are now idle
+		if (Hero::hero->moveState == Hero::MoveDirection::movingLeft)
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+		break;
 
-	if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	case EventKeyboard::KeyCode::KEY_D:
+		//make sure the hero is moving in this direction before we decide if they are now idle
+		if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_S:
 		HeroAttackBase::isSKeyHeld = false;
-	else if (keyCode == EventKeyboard::KeyCode::KEY_W)
+		break;
+
+	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = false;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
+	}
 }

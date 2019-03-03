@@ -18,8 +18,6 @@ public:
 	
 	void createHero();
 
-	cocos2d::Rect hurtBox;
-
 	float movespeedIncrease;
 
 	enum LookDirection
@@ -27,8 +25,15 @@ public:
 		lookingRight,
 		lookingLeft
 	};
-
 	LookDirection lookState;
+
+	enum MoveDirection
+	{
+		idle,
+		movingRight,
+		movingLeft
+	};
+	MoveDirection moveState;
 
 	bool isAirborne;
 
@@ -38,7 +43,7 @@ public:
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
-	void updateAnimations(float dt);
+	void updateHitboxes() override;
 	void update(float dt);
 
 private:
