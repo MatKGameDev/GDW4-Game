@@ -14,21 +14,20 @@ void RunningState::onEnter()
  {
 	HeroStateManager::currentState = this;
 
-	//get rid of this shit once we get separate animations for both sides and put them in the if statements
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_animation_key");
-	auto action = cocos2d::Animate::create(anim);
-	Hero::hero->sprite->stopAllActions();
-	Hero::hero->sprite->setFlippedX(0);
-	Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
-
 	if (Hero::hero->lookingLeft)
 	{
-		//play left-looking animation
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_left_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 
 	}
 	else
 	{
-		//play right-looking animation
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_right_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 
 	}
 }
