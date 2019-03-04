@@ -27,6 +27,9 @@ void ShootingGrappleState::onExit()
 	else if (Hero::hero->velocity < 0)
 		HeroStateManager::falling->onEnter();
 
+	else if (Hero::hero->velocity > 0)
+		HeroStateManager::jumping->onEnter();
+
 	else if (Hero::hero->moveState != Hero::MoveDirection::idle)
 		HeroStateManager::running->onEnter();
 
@@ -39,7 +42,7 @@ void ShootingGrappleState::handleInput(InputType input)
 	switch (input)
 	{
 	case InputType::p_space:
-		HeroStateManager::jumping->onEnter();
+		Hero::hero->jump();
 		break;
 	}
 }
