@@ -1,16 +1,17 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
 #include "HeroStateManager.h"
+#include "TileBase.h"
 #include <iostream>
 
 Hero* Hero::hero = 0;
 
 Hero::Hero() : GameObject(Vect2(700, 0), "Sprites/shooting_test.png"),
-	JUMP_VELOCITY(530),
+	JUMP_VELOCITY(550),
 	MAX_HORIZONTAL_VELOCITY(300),
-	MAX_VERTICAL_VELOCITY(850), //900
+	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
-	movespeedIncrease(70), //20
+	movespeedIncrease(70),
 	isAirborne(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
@@ -135,11 +136,20 @@ void Hero::updateHitboxes()
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
+//updates any collisions dealing with the hero and other objects
+void Hero::updateCollisions()
+{
+	unsigned int tileListSize = TileBase::tileList.size();
+	for (unsigned int i = 0; i < tileListSize; i++)
+		TileBase::tileList[i]->checkAndResolveCollision(this);
+}
+
+//updates all the things
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
-	//std::cout << "\nX: " << sprite->getPositionX() << "  Y: " << sprite->getPositionY(); //yay for bugs
 
 	updateHitboxes();
+	updateCollisions();
 	HeroAttackManager::update(dt);
 }

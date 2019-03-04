@@ -34,15 +34,15 @@
     <Filter Include="src\Hero Stuff\State Stuff">
       <UniqueIdentifier>{d20fc51f-58e7-4040-9236-0e8dc2ec14d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Environment Objects">
+      <UniqueIdentifier>{595ad416-5c84-44d8-93b6-b3b88390f843}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Gameplay.cpp">
-      <Filter>src\Gameplay Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Platform.cpp">
       <Filter>src\Gameplay Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\myHelper.cpp">
@@ -120,15 +120,24 @@
     <ClCompile Include="..\Classes\ShootingGrappleState.cpp">
       <Filter>src\Hero Stuff\State Stuff</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Platform.cpp">
+      <Filter>src\Environment Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GroundTile.cpp">
+      <Filter>src\Environment Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PlatformTile.cpp">
+      <Filter>src\Environment Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TileBase.cpp">
+      <Filter>src\Environment Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Gameplay.h">
-      <Filter>src\Gameplay Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Platform.h">
       <Filter>src\Gameplay Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Vect2.h">
@@ -208,6 +217,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ShootingGrappleState.h">
       <Filter>src\Hero Stuff\State Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Platform.h">
+      <Filter>src\Environment Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GroundTile.h">
+      <Filter>src\Environment Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PlatformTile.h">
+      <Filter>src\Environment Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TileBase.h">
+      <Filter>src\Environment Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

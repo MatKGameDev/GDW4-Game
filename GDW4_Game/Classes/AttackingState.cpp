@@ -37,6 +37,7 @@ void AttackingState::onExit()
 		HeroStateManager::idle->onEnter();
 }
 
+//handle any input that occurs in this state
 void AttackingState::handleInput(InputType input)
 {
 	switch (input)
@@ -62,6 +63,7 @@ void AttackingState::update(float dt)
 	else if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
 		Hero::hero->moveRight();
 
+	//if the attack ends, move onto another state
 	if (HeroAttackManager::currentAttack == HeroAttackManager::empty)
 		onExit();
 }
