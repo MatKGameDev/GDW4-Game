@@ -21,8 +21,6 @@ void JumpingState::onEnter()
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 
 	Hero::hero->jump();
-
-	Hero::hero->sprite->stopAllActions();
 }
 
 void JumpingState::onExit()

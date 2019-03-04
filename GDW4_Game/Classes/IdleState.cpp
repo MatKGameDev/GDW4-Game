@@ -14,7 +14,7 @@ void IdleState::onEnter()
 {
 	HeroStateManager::currentState = this;
 
-	if (Hero::hero->lookingLeft)
+	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
 	{
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("idle_left_animation_key");
 		auto action = cocos2d::Animate::create(anim);

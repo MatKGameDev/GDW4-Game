@@ -68,7 +68,7 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_RunningLeftAnimation, "running_left_animation_key");
 
 	/////////////////////////////////////// J U M P I N G ////////////////////////////////////////////
-	m_JumpingRightAnimation = setAnimation("Sprites/jumping_right.png", 6, 105, 135, 0.1f);
+	m_JumpingRightAnimation = setAnimation("Sprites/jump_right.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingRightAnimation, "jumping_right_animation_key");
 
 	m_JumpingLeftAnimation = setAnimation("Sprites/jumping_left.png", 6, 105, 135, 0.1f);
