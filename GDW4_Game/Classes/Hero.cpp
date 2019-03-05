@@ -7,7 +7,7 @@
 Hero* Hero::hero = 0;
 
 Hero::Hero() : GameObject(Vect2(700, 0), "Sprites/shooting_test.png"),
-	JUMP_VELOCITY(550),
+	JUMP_VELOCITY(575),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),

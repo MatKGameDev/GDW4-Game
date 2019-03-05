@@ -50,7 +50,9 @@ void Gameplay::initSprites()
 
 	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
 	addChild(testTileMap, 1);
-	cocos2d::TMXLayer* tileLayer = testTileMap->getLayer("layer1");
+
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -58,10 +60,16 @@ void Gameplay::initSprites()
 	{
 		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map grid
 		{
-			cocos2d::Sprite* currentTile = tileLayer->getTileAt(Vec2(x, y));
+			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				PlatformTile* newTile = new PlatformTile(currentTile->getPosition(), 128);
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+			}
+
+			currentTile = platformLayer->getTileAt(Vec2(x, y));
+			if (currentTile != NULL)
+			{
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
 			}
 		}
 	}
@@ -138,10 +146,10 @@ void Gameplay::update(float dt)
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
 		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
-	/*testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, 0.3f));*/
+		Color4F(0.0f, 1.0f, 0.0f, 0.3f));
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
