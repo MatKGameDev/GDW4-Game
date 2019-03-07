@@ -7,7 +7,7 @@ MeleeFireAttack::MeleeFireAttack()
 {
 	attackTimer = 0.0f;
 	attackDuration = 0.3f;
-	attackCooldown = 0.7f;
+	attackCooldown = 0.2f;
 }
 
 //directional attacks (set attack hitbox based on direction)
@@ -57,11 +57,28 @@ void MeleeFireAttack::initAttack()
 
 	//aim right
 	else if (Hero::hero->lookState == Hero::LookDirection::lookingRight)
+	{
 		performAttack = &MeleeFireAttack::attackRight;
+
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("melee_right_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::CCRepeat::create(action->clone(),1));
+
+	}
 
 	//aim left
 	else if (Hero::hero->Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	{
+		
 		performAttack = &MeleeFireAttack::attackLeft;
+
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("melee_left_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::CCRepeat::create(action->clone(), 1));
+
+	}
 }
 
 void MeleeFireAttack::update(float dt)

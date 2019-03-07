@@ -54,10 +54,10 @@ marcos::AnimationManager::~AnimationManager()
 void marcos::AnimationManager::init()
 {
 	/////////////////////////////////////// I D L I N G ///////////////////////////////////////////////
-	m_IdlingRightAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
+	m_IdlingRightAnimation = setAnimation("Sprites/boss.png", 1, 1000, 1000, 0.2f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingRightAnimation, "idle_right_animation_key");
 
-	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 21, 75, 135, 0.2f);
+	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 20, 75, 135, 0.2f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingLeftAnimation, "idle_left_animation_key");
 
 	/////////////////////////////////////// R U N N I N G /////////////////////////////////////////////
@@ -68,17 +68,17 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_RunningLeftAnimation, "running_left_animation_key");
 
 	/////////////////////////////////////// J U M P I N G ////////////////////////////////////////////
-	m_JumpingRightAnimation = setAnimation("Sprites/jump_right.png", 6, 105, 135, 0.1f);
+	m_JumpingRightAnimation = setAnimation("Sprites/jump_right.png", 15, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingRightAnimation, "jumping_right_animation_key");
 
-	m_JumpingLeftAnimation = setAnimation("Sprites/jumping_left.png", 6, 105, 135, 0.1f);
+	m_JumpingLeftAnimation = setAnimation("Sprites/jumping_left.png", 15, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingLeftAnimation, "jumping_left_animation_key");
 
 	/////////////////////////////////////// A T T A C K I N G /////////////////////////////////////////
-	m_MeleeAttackRightAnimation = setAnimation("Sprites/melee_right.png", 6, 105, 135, 0.1f);
+	m_MeleeAttackRightAnimation = setAnimation("Sprites/melee_right.png", 4, 177, 138, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_MeleeAttackRightAnimation, "melee_right_animation_key");
 
-	m_MeleeAttackLeftAnimation = setAnimation("Sprites/melee_left.png", 6, 105, 135, 0.1f);
+	m_MeleeAttackLeftAnimation = setAnimation("Sprites/melee_left.png", 4, 177, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_MeleeAttackLeftAnimation, "melee_left_animation_key");
 
 
@@ -89,17 +89,17 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackLeftAnimation, "projectile_left_animation_key");
 
 	/////////////////////////////////////// G R A P P L I N G /////////////////////////////////////////
-	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 6, 105, 135, 0.1f);
+	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 3, 105, 135, 0.06f);
 	AnimationCache::getInstance()->addAnimation(m_GrapplingRightAnimation, "grapple_right_animation_key");
 
-	m_GrapplingLeftAnimation = setAnimation("Sprites/grapple_left.png", 6, 105, 135, 0.1f);
+	m_GrapplingLeftAnimation = setAnimation("Sprites/grapple_left.png", 3, 105, 135, 0.06f);
 	AnimationCache::getInstance()->addAnimation(m_GrapplingLeftAnimation, "grapple_left_animation_key");
 
 
 	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleLeftAnimation, "shooting_grapple_right_animation_key");
 
-	m_ShootingGrappleRightAnimation = setAnimation("Sprites/grapple_left.png", 6, 105, 135, 0.1f);
+	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleRightAnimation, "shooting_grapple_left_animation_key");
 
 
