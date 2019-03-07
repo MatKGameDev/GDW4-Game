@@ -1,5 +1,6 @@
 #include "Grapple.h"
 #include "PlatformTile.h"
+#include "GroundTile.h"
 
 Grapple* Grapple::grapple = 0;
 
@@ -163,7 +164,7 @@ void Grapple::update(float dt, Scene* scene)
 			Hero::hero->velocity.y = 0;
 
 			//check to see if the hero has been latched for beyond the max duration
-			if (latchDuration > 0.3f)
+			if (latchDuration > 0.5f)
 				unLatch();
 		}
 		else
@@ -184,6 +185,18 @@ void Grapple::update(float dt, Scene* scene)
 					break;
 				}
 			}
+
+			//check for collision on each ground tile
+			unsigned int numGroundTiles = GroundTile::groundTileList.size();
+			for (unsigned int i = 0; i < numGroundTiles; i++)
+			{
+				if (checkTunnelingCollision(GroundTile::groundTileList[i]->hitBox))
+				{
+					unLatch();
+					break;
+				}
+			}
+
 			//limit length scale factor to 1 (1 being the endpoint)
 			if (lengthScale > 1.0f)
 				unLatch();

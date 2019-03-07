@@ -64,6 +64,32 @@ void Gameplay::initSprites()
 			if (currentTile != NULL)
 			{
 				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+
+				//set collision flags if there are adjacent ground tiles
+				//we have to do our own x and y validation because cocos sucks and crashes otherwise
+				if (x != 0)
+				{
+					if (groundLayer->getTileAt(Vec2(x - 1, y)) != NULL)
+						newGroundTile->ignoreLeftCollision = true;
+				}
+
+				if (x != tileMapWidth - 1)
+				{
+					if (groundLayer->getTileAt(Vec2(x + 1, y)) != NULL)
+						newGroundTile->ignoreRightCollision = true;
+				}
+
+				if (y != 0)
+				{
+					if (groundLayer->getTileAt(Vec2(x, y - 1)) != NULL)
+						newGroundTile->ignoreTopCollision = true;
+				}
+
+				if (y != tileMapHeight - 1)
+				{
+					if (groundLayer->getTileAt(Vec2(x, y + 1)) != NULL)
+						newGroundTile->ignoreBottomCollision = true;
+				}
 			}
 
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
@@ -149,7 +175,7 @@ void Gameplay::update(float dt)
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, 0.3f));
+		Color4F(0.0f, 1.0f, 0.0f, .0f));
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
