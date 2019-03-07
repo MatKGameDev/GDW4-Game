@@ -19,6 +19,11 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	mass = 5;					
 
 	marcos::AnimationManager::init();
+	//auto anim = AnimationCache::getInstance()->getAnimation("idle_right_animation_key");
+	//auto action = Animate::create(anim);
+	//this->sprite->runAction(RepeatForever::create(action));
+	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 
 	updateHitboxes();
 }

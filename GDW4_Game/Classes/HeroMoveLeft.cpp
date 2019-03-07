@@ -7,7 +7,7 @@ HeroMoveLeft::HeroMoveLeft()
 
 void HeroMoveLeft::init()
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_left_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	Hero::hero->sprite->stopAllActions();
 	Hero::hero->sprite->setFlippedX(1);
