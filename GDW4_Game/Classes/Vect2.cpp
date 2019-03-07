@@ -243,5 +243,5 @@ float Vect2::calculateDistanceSquared(const Vect2 vectA, const Vect2 vectB)
 //returns a point between two points with a given scale factor
 Vect2 Vect2::lerp(Vect2 vectA, Vect2 vectB, float scaleFactor)
 {
-	return (vectA * (1.0 - scaleFactor)) + (vectB * scaleFactor);
+	return (vectA * (1.0f - scaleFactor)) + (vectB * scaleFactor);
 }

@@ -19,12 +19,16 @@ public:
 	float mass;
 	float gravityMultiplier;
 
+	Vect2 lastFramePosition;
 	Vect2 velocity;
 	Vect2 acceleration;
 	Vect2 force;
 	static const Vect2 GRAVITY;
 
 	Sprite* sprite;
+
+	cocos2d::Rect hurtBox;
+	cocos2d::Rect moveBox; //like a hitbox but for movement and shit
 
 	//get sprite position functions
 	Vect2 getPosition();
@@ -34,7 +38,8 @@ public:
 	float getTopPos();
 
 	void destroySprite();
-	bool isCollidingWith(GameObject* otherObject);
+	bool isMovementCollision(GameObject* otherObject);
 
+	virtual void updateHitboxes() = 0;
 	virtual void updatePhysics(float dt);
 };

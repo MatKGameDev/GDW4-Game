@@ -151,12 +151,19 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\Animation.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\AttackingState.cpp" />
     <ClCompile Include="..\Classes\EmptyAttack.cpp" />
-    <ClCompile Include="..\Classes\HeroIdle.cpp" />
-    <ClCompile Include="..\Classes\HeroMoveLeft.cpp" />
-    <ClCompile Include="..\Classes\HeroMovementBase.cpp" />
-    <ClCompile Include="..\Classes\HeroMoveRight.cpp" />
+    <ClCompile Include="..\Classes\FallingState.cpp" />
+    <ClCompile Include="..\Classes\GrappleJumpState.cpp" />
+    <ClCompile Include="..\Classes\GrapplingState.cpp" />
+    <ClCompile Include="..\Classes\GroundTile.cpp" />
+    <ClCompile Include="..\Classes\HeroStateBase.cpp" />
+    <ClCompile Include="..\Classes\HeroStateManager.cpp" />
+    <ClCompile Include="..\Classes\HoldingPlatformState.cpp" />
     <ClCompile Include="..\Classes\IceProjectile.cpp" />
+    <ClCompile Include="..\Classes\IdleState.cpp" />
+    <ClCompile Include="..\Classes\JumpingState.cpp" />
+    <ClCompile Include="..\Classes\PlatformTile.cpp" />
     <ClCompile Include="..\Classes\ProjectileIceAttack.cpp" />
     <ClCompile Include="..\Classes\MeleeFireAttack.cpp" />
     <ClCompile Include="..\Classes\GameObject.cpp" />
@@ -168,18 +175,29 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\InputHandler.cpp" />
     <ClCompile Include="..\Classes\myHelper.cpp" />
     <ClCompile Include="..\Classes\Platform.cpp" />
+    <ClCompile Include="..\Classes\RunningState.cpp" />
+    <ClCompile Include="..\Classes\ShootingGrappleState.cpp" />
+    <ClCompile Include="..\Classes\TileBase.cpp" />
     <ClCompile Include="..\Classes\Vect2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\Animation.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\AttackingState.h" />
     <ClInclude Include="..\Classes\EmptyAttack.h" />
-    <ClInclude Include="..\Classes\HeroIdle.h" />
-    <ClInclude Include="..\Classes\HeroMoveLeft.h" />
-    <ClInclude Include="..\Classes\HeroMovementBase.h" />
-    <ClInclude Include="..\Classes\HeroMoveRight.h" />
+    <ClInclude Include="..\Classes\FallingState.h" />
+    <ClInclude Include="..\Classes\GrappleJumpState.h" />
+    <ClInclude Include="..\Classes\GrapplingState.h" />
+    <ClInclude Include="..\Classes\GroundTile.h" />
+    <ClInclude Include="..\Classes\HeroStateBase.h" />
+    <ClInclude Include="..\Classes\HeroStateManager.h" />
+    <ClInclude Include="..\Classes\HoldingPlatformState.h" />
     <ClInclude Include="..\Classes\IceProjectile.h" />
+    <ClInclude Include="..\Classes\IdleState.h" />
+    <ClInclude Include="..\Classes\InputType.h" />
+    <ClInclude Include="..\Classes\JumpingState.h" />
+    <ClInclude Include="..\Classes\PlatformTile.h" />
     <ClInclude Include="..\Classes\ProjectileIceAttack.h" />
     <ClInclude Include="..\Classes\MeleeFireAttack.h" />
     <ClInclude Include="..\Classes\GameObject.h" />
@@ -191,6 +209,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\InputHandler.h" />
     <ClInclude Include="..\Classes\myHelper.h" />
     <ClInclude Include="..\Classes\Platform.h" />
+    <ClInclude Include="..\Classes\RunningState.h" />
+    <ClInclude Include="..\Classes\ShootingGrappleState.h" />
+    <ClInclude Include="..\Classes\TileBase.h" />
     <ClInclude Include="..\Classes\Vect2.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

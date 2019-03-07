@@ -1,4 +1,6 @@
 #include "Grapple.h"
+#include "PlatformTile.h"
+#include "GroundTile.h"
 
 Grapple* Grapple::grapple = 0;
 
@@ -56,7 +58,7 @@ void Grapple::unLatch()
 	latchDuration = 0;
 }
 
-//checks collision between the grapple and a game object
+/*//checks collision between the grapple and a game object
 bool Grapple::isCollidingWith(GameObject* otherObject)
 {
 	if (grappleTip.x >= otherObject->getRightSidePos() || grappleTip.x <= otherObject->getLeftSidePos())
@@ -66,9 +68,19 @@ bool Grapple::isCollidingWith(GameObject* otherObject)
 	//if neither, there's a collision
 	else
 		return true;
+}*/
+bool Grapple::isCollidingWith(cocos2d::Rect otherObject)
+{
+	if (grappleTip.x >= otherObject.getMaxX() || grappleTip.x <= otherObject.getMinX())
+		return false;
+	else if (grappleTip.y >= otherObject.getMaxY() || grappleTip.y <= otherObject.getMinY())
+		return false;
+	//if neither, there's a collision
+	else
+		return true;
 }
 
-//performs collision detection with a given point to check
+/*//performs collision detection with a given point to check
 bool Grapple::checkPointCollision(Vect2 pointToCheck, GameObject * otherObject)
 {
 	if (pointToCheck.x >= otherObject->getRightSidePos() || pointToCheck.x <= otherObject->getLeftSidePos())
@@ -78,18 +90,47 @@ bool Grapple::checkPointCollision(Vect2 pointToCheck, GameObject * otherObject)
 	//if neither, there's a collision
 	else
 		return true;
+}*/
+bool Grapple::checkPointCollision(Vect2 pointToCheck, cocos2d::Rect otherObject)
+{
+	if (pointToCheck.x >= otherObject.getMaxX() || pointToCheck.x <= otherObject.getMinX())
+		return false;
+	else if (pointToCheck.y >= otherObject.getMaxY() || pointToCheck.y <= otherObject.getMinY())
+		return false;
+	//if neither, there's a collision
+	else
+		return true;
 }
 
-//performs collision detection that checks for multiple points per frame
+/*//performs collision detection that checks for multiple points per frame
 bool Grapple::checkTunnelingCollision(GameObject* otherObject)
 {
 	Vect2 positionToCheck;
 	for (float positionScale = 0.25f; positionScale < 1.0f; positionScale += 0.25f)
 	{
-		positionToCheck = Vect2::lerp(lastFrameGrappleTip, grappleTip, positionScale);
-		if (checkPointCollision(positionToCheck, otherObject))
+		positionToCheck = Vect2::lerp(lastFrameGrappleTip, grappleTip, positionScale); //lerp along the distance travelled last frame 
+
+		if (checkPointCollision(positionToCheck, otherObject)) //check for collision at the determined position
 		{
 			latchPoint = positionToCheck;
+			grappleTip = latchPoint;
+			return true;
+		}
+	}
+
+	return false;
+}*/
+bool Grapple::checkTunnelingCollision(cocos2d::Rect otherObject)
+{
+	Vect2 positionToCheck;
+	for (float positionScale = 0.25f; positionScale < 1.0f; positionScale += 0.25f)
+	{
+		positionToCheck = Vect2::lerp(lastFrameGrappleTip, grappleTip, positionScale); //lerp along the distance travelled last frame 
+
+		if (checkPointCollision(positionToCheck, otherObject)) //check for collision at the determined position
+		{
+			latchPoint = positionToCheck;
+			grappleTip = latchPoint;
 			return true;
 		}
 	}
@@ -108,21 +149,23 @@ void Grapple::update(float dt, Scene* scene)
 		{
 			heroMoveScale += 25 / heroToLatchPointDistance;
 
-			Vect2 newHeroPosition = Vect2::lerp(heroLatchPosition, latchPoint, heroMoveScale);
-			Hero::hero->sprite->setPosition(Vec2(newHeroPosition.x, newHeroPosition.y));
-
 			//check if the hero has reached the end of the grapple latch point
-			if (heroMoveScale > 1.0f)
+			if (heroMoveScale >= 1.0f)
 			{
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
-				Hero::hero->velocity.y = 0;
-
-				if (latchDuration > 0.3f)
-					unLatch();
 
 				latchDuration += dt;
 			}
+
+			//move the hero to the new position, determined by lerping along the grapple
+			Vect2 newHeroPosition = Vect2::lerp(heroLatchPosition, latchPoint, heroMoveScale);
+			Hero::hero->sprite->setPosition(Vec2(newHeroPosition.x, newHeroPosition.y));
+			Hero::hero->velocity.y = 0;
+
+			//check to see if the hero has been latched for beyond the max duration
+			if (latchDuration > 0.5f)
+				unLatch();
 		}
 		else
 		{
@@ -132,21 +175,31 @@ void Grapple::update(float dt, Scene* scene)
 
 			lengthScale += 35 / heroToDestinationDistance;
 
-			for (int i = 0; i < Platform::platformList.size(); i++)
+			//check for collision on each platform
+			unsigned int numPlatforms = PlatformTile::platformTileList.size();
+			for (unsigned int i = 0; i < numPlatforms; i++)
 			{
-				if (checkTunnelingCollision(Platform::platformList[i]))
+				if (checkTunnelingCollision(PlatformTile::platformTileList[i]->hitBox))
 				{
 					latch();
 					break;
 				}
 			}
+
+			//check for collision on each ground tile
+			unsigned int numGroundTiles = GroundTile::groundTileList.size();
+			for (unsigned int i = 0; i < numGroundTiles; i++)
+			{
+				if (checkTunnelingCollision(GroundTile::groundTileList[i]->hitBox))
+				{
+					unLatch();
+					break;
+				}
+			}
+
 			//limit length scale factor to 1 (1 being the endpoint)
 			if (lengthScale > 1.0f)
-			{
-				latchPoint = grappleTip;
-				latch(); //for now call latch when it reaches max length, change later to be performed on collision
-				lengthScale = 1.0f;
-			}
+				unLatch();
 
 			lastFrameGrappleTip = grappleTip;
 		}
