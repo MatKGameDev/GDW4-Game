@@ -8,5 +8,10 @@ public:
 
 	static std::vector<GroundTile*> groundTileList;
 
+	bool ignoreLeftCollision;
+	bool ignoreRightCollision;
+	bool ignoreBottomCollision;
+	bool ignoreTopCollision;
+
 	bool checkAndResolveCollision(GameObject* otherObject) override;
 };

@@ -1,11 +1,16 @@
 #include "GroundTile.h"
 #include "GameObject.h"
 #include "Vect2.h"
+#include <iostream>
 
 std::vector<GroundTile*> GroundTile::groundTileList = std::vector<GroundTile*>();
 
 GroundTile::GroundTile(cocos2d::Vec2 position, float tileSize)
-	: TileBase(position, tileSize)
+	: TileBase(position, tileSize),
+	ignoreLeftCollision(false),
+	ignoreRightCollision(false),
+	ignoreBottomCollision(false),
+	ignoreTopCollision(false)
 {
 	type = TileType::ground;
 	hitBox.setRect(position.x, position.y, tileSize, tileSize - 15); //set the rect of platforms to exclude the top few pixels
@@ -22,34 +27,48 @@ bool GroundTile::checkAndResolveCollision(GameObject * otherObject)
 	else
 	{
 		Vect2 overlap;
+		bool ignoreX = false;
+		bool ignoreY = false;
 
 		//get overlap on x
    		float leftSideOverlap = abs(otherObject->moveBox.getMaxX() - this->hitBox.getMinX());
 		float rightSideOverlap = abs(otherObject->moveBox.getMinX() - this->hitBox.getMaxX());
 		overlap.x = std::min(leftSideOverlap, rightSideOverlap);
 
+		//check for ignoring collision on x
+		if ((otherObject->moveBox.getMidX() > this->hitBox.getMidX() && ignoreRightCollision) || (otherObject->moveBox.getMidX() < this->hitBox.getMidX() && ignoreLeftCollision))
+			ignoreX = true;
+
 		//get overlap on y
 		float bottomOverlap = abs(otherObject->moveBox.getMaxY() - this->hitBox.getMinY());
 		float topOverlap = abs(otherObject->moveBox.getMinY() - this->hitBox.getMaxY());
 		overlap.y = std::min(bottomOverlap, topOverlap);
 
-		if (overlap.x < overlap.y) //overlap on x is more shallow, so we want to push the x back
+		//check for ignoring collision on y
+		if ((otherObject->moveBox.getMidY() > this->hitBox.getMidY() && ignoreTopCollision) || (otherObject->moveBox.getMidY() < this->hitBox.getMidY() && ignoreBottomCollision))
+			ignoreY = true;
+
+		if (overlap.y < overlap.x && !ignoreY) //overlap on y is more shallow, so we want to push the y back or if the object is at the top of the tile
 		{
-			if (leftSideOverlap < rightSideOverlap) //left is the shallow side
-				otherObject->sprite->setPositionX(otherObject->getPosition().x - overlap.x);
-			else //right side is the shallow side
-				otherObject->sprite->setPositionX(otherObject->getPosition().x + overlap.x);
-			//otherObject->sprite->setPositionX(otherObject->lastFramePosition.x); //push the object back to its x position last frame
-			otherObject->velocity.x = 0; //reset velocity after collision
-		}
-		else //overlap on y is more shallow, so we want to push the y back
-		{
-			if (bottomOverlap < topOverlap) //bottom is the shallow side
+			if (bottomOverlap < topOverlap) //bottom is the shallow collision side
 				otherObject->sprite->setPositionY(otherObject->getPosition().y - overlap.y);
-			else //top side is the shallow side
-				otherObject->sprite->setPositionY(otherObject->getPosition().y + overlap.y);
+			else //top side is the shallow collision side
+				otherObject->sprite->setPositionY(this->hitBox.getMaxY() + (otherObject->moveBox.size.height / 2));
+
+			//otherObject->sprite->setPositionY(otherObject->lastFramePosition.y); //push the object back to its y position last frame
 
 			otherObject->velocity.y = 0; //reset velocity after collision
+		}
+		else if (!ignoreX) //overlap on x is more shallow, so we want to push the x back
+		{
+			if (leftSideOverlap < rightSideOverlap) //left is the shallow collision side
+				otherObject->sprite->setPositionX(otherObject->getPosition().x - overlap.x);
+			else //right side is the shallow collision side
+				otherObject->sprite->setPositionX(otherObject->getPosition().x + overlap.x);
+
+			//otherObject->sprite->setPositionX(otherObject->lastFramePosition.x); //push the object back to its x position last frame
+
+			otherObject->velocity.x = 0; //reset velocity after collision
 		}
 		return true; //because a collision happened (and we resolved it)
 	}
