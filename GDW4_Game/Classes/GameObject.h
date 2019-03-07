@@ -19,6 +19,7 @@ public:
 	float mass;
 	float gravityMultiplier;
 
+	Vect2 lastFramePosition;
 	Vect2 velocity;
 	Vect2 acceleration;
 	Vect2 force;

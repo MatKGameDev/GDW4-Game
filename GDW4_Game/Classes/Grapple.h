@@ -39,9 +39,9 @@ public:
 	void latch();
 	void unLatch();
 
-	bool isCollidingWith(GameObject* otherObject);
-	bool checkPointCollision(Vect2 pointToCheck, GameObject* otherObject);
-	bool checkTunnelingCollision(GameObject* otherObject);
+	bool isCollidingWith(cocos2d::Rect otherObject);
+	bool checkPointCollision(Vect2 pointToCheck, cocos2d::Rect otherObject);
+	bool checkTunnelingCollision(cocos2d::Rect otherObject);
 
 	void update(float dt, Scene* scene);
 };

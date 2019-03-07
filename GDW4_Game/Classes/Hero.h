@@ -44,6 +44,7 @@ public:
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
 	void updateHitboxes() override;
+	void updateCollisions();
 	void update(float dt);
 
 private:

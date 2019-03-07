@@ -48,27 +48,35 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilesets/untitled.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
 	addChild(testTileMap, 1);
-	cocos2d::TMXLayer* tileLayer = testTileMap->getLayer("layer1");
+
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
-	for (unsigned int x = 0; x < tileMapWidth; x++)       //width of map
+	for (unsigned int x = 0; x < tileMapWidth; x++)       //width of map grid
 	{
-		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map
+		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map grid
 		{
-			cocos2d::Sprite* currentTile = tileLayer->getTileAt(Vec2(x, y));
+			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				std::cout << x << ", " << y << "\n";
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+			}
+
+			currentTile = platformLayer->getTileAt(Vec2(x, y));
+			if (currentTile != NULL)
+			{
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
 			}
 		}
 	}
 
 	//add hero (singleton class)
 	this->addChild(Hero::hero->sprite, 20);
-	runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
+	//runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -79,22 +87,6 @@ void Gameplay::initSprites()
 
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 5);
-
-	//add platforms for testing
-	platform = new Platform(Vect2(180, 60));
-	this->addChild(platform->sprite, 10);
-
-	platform = new Platform(Vect2(330, 100));
-	this->addChild(platform->sprite, 10);
-
-	platform = new Platform(Vect2(500, 400));
-	this->addChild(platform->sprite, 10);
-
-	platform = new Platform(Vect2(900, 450));
-	this->addChild(platform->sprite, 10);
-
-	platform = new Platform(Vect2(1100, 500));
-	this->addChild(platform->sprite, 10);
 }
 
 void Gameplay::initListeners()
@@ -154,10 +146,10 @@ void Gameplay::update(float dt)
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
 		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
-	/*testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, 0.3f));*/
+		Color4F(0.0f, 1.0f, 0.0f, 0.3f));
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
@@ -228,8 +220,8 @@ void Gameplay::mouseDownCallback(Event* event)
 
 		auto mouseGameViewPosition = mouseClickPosition;
 		//do some simple math to convert mouse click position on screen to in-game world position
-		mouseGameViewPosition -= Vec2(1920 / 2, 1080 / 2); //update if screen size changes
-		mouseGameViewPosition += Hero::hero->sprite->getPosition();
+		//mouseGameViewPosition -= Vec2(1920 / 2, 1080 / 2); //update if screen size changes
+		//mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
 		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state

@@ -81,6 +81,8 @@ bool GameObject::isMovementCollision(GameObject* otherObject)
 //updates the object's physics properties
 void GameObject::updatePhysics(float dt)
 {
+	lastFramePosition = getPosition();
+
 	acceleration = force + (GRAVITY * gravityMultiplier * mass);
 	velocity += acceleration * dt; //update velocity
 	sprite->setPosition(sprite->getPosition() + Vec2(velocity.x, velocity.y) * dt); //update position
