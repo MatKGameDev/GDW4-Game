@@ -15,6 +15,9 @@ Grapple::Grapple() : DrawNode(),
 {
 	Grapple::create(10.0f);
 	grappleColour = Color4F(255, 255, 255, 1.0f); //set grapple colour
+
+
+	testCase = false;
 }
 
 //initializes the grapple and creates a single object for the class (if one doesn't already exist)
@@ -33,9 +36,24 @@ void Grapple::shoot(Vect2 destination)
 	if (!isActive)
 	{
 		isActive = true;
-		endPoint = destination;
+		initialPosClicked = destination;
 		lastFrameGrappleTip = Hero::hero->getPosition();
+
+		extendGrapple();
 	}
+}
+
+//extends the grapple past the point the player aimed at
+void Grapple::extendGrapple()
+{
+	//find the angle at which the grapple is being shot at
+	Vect2 distance = initialPosClicked - Hero::hero->getPosition(); //calculate distance vector between the grapple and the hero
+	theta = atan2(distance.x, distance.y); //perform atan2 (returns the angle in radians between the positive x axis (1, 0) and the point provided) on the distance
+
+	//get normalized new endpoint
+	Vect2 normalizedEndPoint(sin(theta), cos(theta));
+
+	endPoint = normalizedEndPoint * 99999; //calculate new endpoint by extending the normalized version
 }
 
 //called when the grapple latches onto something
@@ -56,6 +74,16 @@ void Grapple::unLatch()
 	lengthScale = 0;
 	heroMoveScale = 0;
 	latchDuration = 0;
+}
+
+//check for grapple hook max length
+bool Grapple::isMaxLength()
+{
+	Vect2 grappleLength = grappleTip - Hero::hero->getPosition();
+	if (grappleLength.getMagnitude() > 1300)
+		return true;
+
+	return false;
 }
 
 /*//checks collision between the grapple and a game object
@@ -169,6 +197,9 @@ void Grapple::update(float dt, Scene* scene)
 		}
 		else
 		{
+			if (!testCase) //FOR TESTING
+				extendGrapple(); //recalculate endpoint, ensuring that the initial mouse clicked position is passed through
+
 			grappleTip = Vect2::lerp(startPoint, endPoint, lengthScale); //use lerp to increase the length of the grapple each frame until it reaches the end point
 
 			heroToDestinationDistance = Vect2::calculateDistance(startPoint, endPoint);
@@ -197,8 +228,8 @@ void Grapple::update(float dt, Scene* scene)
 				}
 			}
 
-			//limit length scale factor to 1 (1 being the endpoint)
-			if (lengthScale > 1.0f)
+			//limit length scale factor to 1 (1 being the endpoint) or max length being reached
+			if (lengthScale > 1.0f || isMaxLength())
 				unLatch();
 
 			lastFrameGrappleTip = grappleTip;

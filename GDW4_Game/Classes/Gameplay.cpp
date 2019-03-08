@@ -72,19 +72,16 @@ void Gameplay::initSprites()
 					if (groundLayer->getTileAt(Vec2(x - 1, y)) != NULL)
 						newGroundTile->ignoreLeftCollision = true;
 				}
-
 				if (x != tileMapWidth - 1)
 				{
 					if (groundLayer->getTileAt(Vec2(x + 1, y)) != NULL)
 						newGroundTile->ignoreRightCollision = true;
 				}
-
 				if (y != 0)
 				{
 					if (groundLayer->getTileAt(Vec2(x, y - 1)) != NULL)
 						newGroundTile->ignoreTopCollision = true;
 				}
-
 				if (y != tileMapHeight - 1)
 				{
 					if (groundLayer->getTileAt(Vec2(x, y + 1)) != NULL)
@@ -171,7 +168,8 @@ void Gameplay::update(float dt)
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.3f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.f));
+	//DRAW MOVEBOX FOR TESTING
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
@@ -302,6 +300,11 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
+		break;
+
+		//FOR TESTING
+	case EventKeyboard::KeyCode::KEY_I:
+		Grapple::grapple->testCase = !Grapple::grapple->testCase;
 		break;
 	}
 }
