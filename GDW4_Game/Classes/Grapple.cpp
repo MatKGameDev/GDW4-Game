@@ -39,6 +39,12 @@ void Grapple::shoot(Vect2 destination)
 		initialPosClicked = destination;
 		lastFrameGrappleTip = Hero::hero->getPosition();
 
+		//determine look position after latching
+		if (Hero::hero->getPosition().x <= initialPosClicked.x)
+			Hero::hero->lookState = Hero::LookDirection::lookingRight;
+		else //heroLatchPos.x > latchPoint.x
+			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+
 		extendGrapple();
 	}
 }
@@ -62,6 +68,12 @@ void Grapple::latch()
 	isLatched = true;
 	heroLatchPosition = Hero::hero->getPosition();
 	heroToLatchPointDistance = Vect2::calculateDistance(heroLatchPosition, latchPoint);
+
+	//determine look position after latching
+	if (heroLatchPosition.x <= latchPoint.x)
+		Hero::hero->lookState = Hero::LookDirection::lookingRight;
+	else //heroLatchPos.x > latchPoint.x
+		Hero::hero->lookState = Hero::LookDirection::lookingLeft;		
 }
 
 //grapple detaches and disappears, reset all values for the grapple
