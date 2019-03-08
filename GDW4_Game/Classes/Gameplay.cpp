@@ -99,7 +99,8 @@ void Gameplay::initSprites()
 
 	//add hero (singleton class)
 	this->addChild(Hero::hero->sprite, 20);
-	//runAction(Follow::create(Hero::hero->sprite)); //set camera to follow main character
+	this->addChild(Hero::hero->arm, 21); //add hero arm
+	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();

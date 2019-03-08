@@ -35,17 +35,28 @@ void Grapple::shoot(Vect2 destination)
 {
 	if (!isActive)
 	{
+		//set all initial variables upon grapple being shot out
 		isActive = true;
 		initialPosClicked = destination;
 		lastFrameGrappleTip = Hero::hero->getPosition();
 
 		//determine look position after latching
 		if (Hero::hero->getPosition().x <= initialPosClicked.x)
+		{
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
+		}
 		else //heroLatchPos.x > latchPoint.x
+		{
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+		}
 
 		extendGrapple();
+
+		//make arm visible and rotate it
+		Hero::hero->arm->setVisible(1);
+		Hero::hero->arm->setRotation(theta * 180 / M_PI);
 	}
 }
 
@@ -71,9 +82,15 @@ void Grapple::latch()
 
 	//determine look position after latching
 	if (heroLatchPosition.x <= latchPoint.x)
+	{
 		Hero::hero->lookState = Hero::LookDirection::lookingRight;
+		Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
+	}
 	else //heroLatchPos.x > latchPoint.x
-		Hero::hero->lookState = Hero::LookDirection::lookingLeft;		
+	{
+		Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+		Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+	}
 }
 
 //grapple detaches and disappears, reset all values for the grapple
@@ -192,6 +209,7 @@ void Grapple::update(float dt, Scene* scene)
 			//check if the hero has reached the end of the grapple latch point
 			if (heroMoveScale >= 1.0f)
 			{
+				Hero::hero->arm->setVisible(0); //make arm invisible
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
 
@@ -254,5 +272,8 @@ void Grapple::update(float dt, Scene* scene)
 				Vec2(grapple->grappleTip.x, grapple->grappleTip.y),
 				grapple->grappleColour);
 		}
+
+		//rotate arm
+		Hero::hero->arm->setRotation(theta * 180 / M_PI);
 	}
 }

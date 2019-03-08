@@ -16,6 +16,10 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
 {
+	//initialize arm
+	arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+
 	mass = 5;					
 
 	marcos::AnimationManager::init();
@@ -158,4 +162,6 @@ void Hero::update(float dt)
 	updateHitboxes();
 	updateCollisions();
 	HeroAttackManager::update(dt);
+
+	arm->setPosition(this->sprite->getPosition()); //update arm position each frame
 }
