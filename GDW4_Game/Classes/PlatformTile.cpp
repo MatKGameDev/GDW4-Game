@@ -6,7 +6,7 @@ std::vector<PlatformTile*> PlatformTile::platformTileList = std::vector<Platform
 PlatformTile::PlatformTile(cocos2d::Vec2 position, float tileSize)
 	: TileBase(position, tileSize)
 {
-	hitBox.setRect(position.x, position.y + tileSize - 30, tileSize, 15); //set the rect of platforms to only be the highest few pixels (for collision purposes)
+	hitBox.setRect(position.x, position.y + tileSize - 35, tileSize, 20); //set the rect of platforms to only be the highest few pixels (for collision purposes)
 	type = TileType::platform;
 
 	platformTileList.push_back(this);

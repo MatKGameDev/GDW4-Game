@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
 //set static const/variables
-const float GameObject::MAX_X = 1477;
-const float GameObject::MAX_Y = 985;
-const Vect2 GameObject::GRAVITY = Vect2(0, -250); //set gravity
+const float GameObject::MAX_X = 1477.0f;
+const float GameObject::MAX_Y = 985.0f;
+const Vect2 GameObject::GRAVITY = Vect2(0.0f, -250.0f); //set gravity
 
 GameObject::GameObject(Vect2 position, std::string spriteFilePath) :
 	theta(0.0f),

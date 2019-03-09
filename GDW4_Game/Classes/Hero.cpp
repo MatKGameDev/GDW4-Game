@@ -16,6 +16,10 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
 {
+	//initialize arm
+	arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+
 	mass = 5;					
 
 	marcos::AnimationManager::init();
@@ -63,26 +67,26 @@ void Hero::checkAndResolveOutOfBounds()
 {
 	//check for out of bounds
 	//on x
-	if (this->getLeftSidePos() < 0)
+	if (this->moveBox.getMinX() < 0.0f)
 	{
-		sprite->setPositionX(this->width / 2);
-		velocity.x = 0;
+		sprite->setPositionX(this->moveBox.size.width / 2.0f);
+		velocity.x = 0.0f;
 	}
-	else if (this->getRightSidePos() > MAX_X)
+	else if (this->moveBox.getMaxX() > MAX_X)
 	{
-		sprite->setPositionX(MAX_X - this->width / 2);
-		velocity.x = 0;
+		sprite->setPositionX(MAX_X - (this->moveBox.size.width / 2.0f) - 2);
+		velocity.x = 0.0f;
 	}
 	//on y
-	if (this->getBottomPos() < 0)
+	if (this->moveBox.getMinY() < 0.0f)
 	{
-		sprite->setPositionY(this->height / 2);
-		velocity.y = 0;
+		sprite->setPositionY(this->moveBox.size.height / 2.0f);
+		velocity.y = 0.0f;
 	}
-	else if (this->getTopPos() > MAX_Y)
+	else if (this->moveBox.getMaxY() > MAX_Y)
 	{
-		sprite->setPositionY(MAX_Y - this->height / 2);
-		velocity.y = 0;
+		sprite->setPositionY(MAX_Y - (this->moveBox.size.height / 2.0f));
+		velocity.y = 0.0f;
 	}
 }
 
@@ -132,6 +136,7 @@ void Hero::updatePhysics(float dt)
 		velocity.y = -MAX_VERTICAL_VELOCITY;
 
 	//check for hero out of bounds
+	updateHitboxes();
 	checkAndResolveOutOfBounds();
 }
 
@@ -157,4 +162,6 @@ void Hero::update(float dt)
 	updateHitboxes();
 	updateCollisions();
 	HeroAttackManager::update(dt);
+
+	arm->setPosition(this->sprite->getPosition()); //update arm position each frame
 }

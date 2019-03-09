@@ -213,9 +213,19 @@ void Vect2::set(float newX, float newY)
 	y = newY;
 }
 
+float Vect2::getMagnitude()
+{
+	return sqrt((x * x) + (y * y));
+}
+
 float Vect2::getMagnitudeSquared()
 {
 	return (x * x) + (y * y); //pythagorean theorum
+}
+
+float Vect2::getNormalized()
+{
+	return 0.0f;
 }
 
 float Vect2::dotProduct(const Vect2 rhs)

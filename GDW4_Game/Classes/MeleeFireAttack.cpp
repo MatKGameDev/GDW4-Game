@@ -6,7 +6,8 @@
 MeleeFireAttack::MeleeFireAttack()
 {
 	attackTimer = 0.0f;
-	attackDuration = 0.3f;
+	attackWindup = 0.15f;
+	attackDuration = 0.4f;
 	attackCooldown = 0.2f;
 }
 
@@ -32,7 +33,7 @@ void MeleeFireAttack::attackLeft()
 	hitbox.setRect(
 		Hero::hero->hurtBox.getMaxX(),
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		-110,
+		-130,
 		50);
 }
 void MeleeFireAttack::attackRight()
@@ -40,7 +41,7 @@ void MeleeFireAttack::attackRight()
 	hitbox.setRect(
 		Hero::hero->hurtBox.getMinX(),
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		110,
+		130,
 		50);
 }
 
@@ -83,15 +84,20 @@ void MeleeFireAttack::initAttack()
 
 void MeleeFireAttack::update(float dt)
 {
+	//before the attack hitbox should appear
+	if (attackTimer < attackWindup)
+	{
+		attackTimer += dt;
+	}
 	//during the attack duration
-	if (attackTimer < attackDuration)
+	else if (attackTimer < attackDuration + attackWindup)
 	{
 		(this->*performAttack)(); //calling member function pointer
 
 		attackTimer += dt;
 	}
 	//during the attack cooldown
-	else if (attackTimer < attackDuration + attackCooldown)
+	else if (attackTimer < attackDuration + attackCooldown + attackWindup)
 	{
 		attackTimer += dt;
 		hitbox = hitbox.ZERO; //deactivate hitbox

@@ -5,6 +5,7 @@ class HeroAttackBase
 {
 public:
 	float attackTimer;
+	float attackWindup;
 	float attackDuration;
 	float attackCooldown;
 

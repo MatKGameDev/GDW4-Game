@@ -18,6 +18,8 @@ public:
 	
 	void createHero();
 
+	cocos2d::Sprite* arm;
+
 	float movespeedIncrease;
 
 	enum LookDirection
