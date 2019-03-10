@@ -54,7 +54,7 @@ marcos::AnimationManager::~AnimationManager()
 void marcos::AnimationManager::init()
 {
 	/////////////////////////////////////// I D L I N G ///////////////////////////////////////////////
-	m_IdlingRightAnimation = setAnimation("Sprites/boss_flamethrow.png", 12, 500, 1300, 0.1f);
+	m_IdlingRightAnimation = setAnimation("Sprites/boss_flamethrow.png", 27, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingRightAnimation, "idle_right_animation_key");
 
 	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 20, 75, 135, 0.2f);
@@ -108,6 +108,11 @@ void marcos::AnimationManager::init()
 
 	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
+
+	
+	//////////////////////////////////////////// B O S S ///////////////////////////////////////////
+
+
 
 }
 
