@@ -9,6 +9,8 @@ public:
 	float attackDuration;
 	float attackCooldown;
 
+	bool disabled;
+
 	cocos2d::Rect hitbox;
 
 	static bool isWKeyHeld;

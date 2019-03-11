@@ -6,9 +6,10 @@
 MeleeFireAttack::MeleeFireAttack()
 {
 	attackTimer = 0.0f;
-	attackWindup = 0.15f;
-	attackDuration = 0.4f;
-	attackCooldown = 0.2f;
+	attackWindup = 0.2f;
+	attackDuration = 0.35f;
+	attackCooldown = 0.9f;
+	disabled = false;
 }
 
 //directional attacks (set attack hitbox based on direction)
@@ -92,20 +93,20 @@ void MeleeFireAttack::update(float dt)
 	//during the attack duration
 	else if (attackTimer < attackDuration + attackWindup)
 	{
-		(this->*performAttack)(); //calling member function pointer
+		if (disabled)
+			hitbox = hitbox.ZERO; //deactivate hitbox
+		else //attack is not disabled
+			(this->*performAttack)(); //calling member function pointer
 
 		attackTimer += dt;
 	}
-	//during the attack cooldown
-	else if (attackTimer < attackDuration + attackCooldown + attackWindup)
-	{
-		attackTimer += dt;
-		hitbox = hitbox.ZERO; //deactivate hitbox
-	}
-	//after the attack cooldown is finished
+	//after the attack is finished
 	else
 	{
 		attackTimer = 0.0f;
+		hitbox = hitbox.ZERO; //deactivate hitbox
+		disabled = false; //undisable if needed
+		HeroAttackManager::empty->attackCooldown = this->attackCooldown;
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::emptyA, nullptr);
 	}
 }
