@@ -54,7 +54,7 @@ marcos::AnimationManager::~AnimationManager()
 void marcos::AnimationManager::init()
 {
 	/////////////////////////////////////// I D L I N G ///////////////////////////////////////////////
-	m_IdlingRightAnimation = setAnimation("Sprites/boss_flamethrow.png", 27, 500, 1300, 0.1f);
+	m_IdlingRightAnimation = setAnimation("Sprites/flame.png", 17, 1000, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingRightAnimation, "idle_right_animation_key");
 
 	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 20, 75, 135, 0.2f);

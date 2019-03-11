@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="128" tileheight="128" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" source="full_tileset.tsx"/>
- <tileset firstgid="16" source="../../../../../GDW4 Concept art/top right.tsx"/>
- <tileset firstgid="25" source="../../../../../GDW4 Concept art/Tileset Lava.tsx"/>
  <layer id="1" name="ground" width="20" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -22,7 +20,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,10,13,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,1,4,0,0,0,0,0,0,0,0,
-0,0,16,26,26,16,0,0,0,0,1,4,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,1,4,0,0,0,0,0,0,0,0,
 10,0,0,0,0,0,0,0,0,0,1,4,0,0,0,0,0,0,0,0,
 1,2,0,2,2,2,2,2,2,2,7,4,0,0,0,0,0,0,0,0
 </data>
