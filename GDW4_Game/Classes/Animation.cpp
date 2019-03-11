@@ -35,6 +35,11 @@ cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpRightAnimation = new 
 cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpLeftAnimation = new cocos2d::Animation();
 
 
+//boss
+
+cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimation = new cocos2d::Animation();
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //																																			  //
 //															Animation Class																	  //
@@ -54,7 +59,7 @@ marcos::AnimationManager::~AnimationManager()
 void marcos::AnimationManager::init()
 {
 	/////////////////////////////////////// I D L I N G ///////////////////////////////////////////////
-	m_IdlingRightAnimation = setAnimation("Sprites/flame.png", 17, 1000, 500, 0.1f);
+	m_IdlingRightAnimation = setAnimation("Sprites/idle_right.png", 20, 75, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_IdlingRightAnimation, "idle_right_animation_key");
 
 	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 20, 75, 135, 0.2f);
@@ -112,7 +117,8 @@ void marcos::AnimationManager::init()
 	
 	//////////////////////////////////////////// B O S S ///////////////////////////////////////////
 
-
+	m_BossFlameAnimation = setAnimation("Sprites/flame.png", 8, 3, 1920, 500, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimation, "boss_flame_animation_key");
 
 }
 
@@ -125,6 +131,24 @@ cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_S
 	{
 		auto frame = cocos2d::SpriteFrame::create(a_String, cocos2d::Rect(a_Width * i, 3, a_Width, a_Height));
 		m_AnimFrames.pushBack(frame);
+	}
+
+	auto Animation = cocos2d::Animation::createWithSpriteFrames(m_AnimFrames, a_Delay);
+	return Animation;
+
+}
+
+cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_String, const int a_RowFrames, const int a_rows, const float a_Width, const float a_Height, const float a_Delay)
+{
+	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
+
+	for (int i = 0; i < a_rows; i++)
+	{
+		for (int j = 0; j < a_RowFrames || j < 8; j++)
+		{
+			auto frame = cocos2d::SpriteFrame::create(a_String, cocos2d::Rect(a_Width * j, a_Height * i, a_Width, a_Height));
+			m_AnimFrames.pushBack(frame);
+		}
 	}
 
 	auto Animation = cocos2d::Animation::createWithSpriteFrames(m_AnimFrames, a_Delay);
