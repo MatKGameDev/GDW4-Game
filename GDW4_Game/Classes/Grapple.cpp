@@ -96,6 +96,7 @@ void Grapple::latch()
 //grapple detaches and disappears, reset all values for the grapple
 void Grapple::unLatch()
 {
+	Hero::hero->arm->setVisible(0); //make arm invisible
 	isActive = false;
 	isLatched = false;
 	isHeroAtEndPoint = false;

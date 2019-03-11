@@ -180,7 +180,7 @@ void Gameplay::update(float dt)
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
 	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin, 
 		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-		Color4F(1.0f, 0.7f, 0.8f, 0.8f));
+		Color4F(1.0f, 0.7f, 0.8f, 0.3f));
 
 	spawnEnemies();     //spawn enemies if needed 
 	updateObjects(dt);  //update objects
