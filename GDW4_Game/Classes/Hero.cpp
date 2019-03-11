@@ -164,4 +164,5 @@ void Hero::update(float dt)
 	HeroAttackManager::update(dt);
 
 	arm->setPosition(this->sprite->getPosition()); //update arm position each frame
+	std::cout << "\nx: " << getPosition().x << " y: " << getPosition().y;
 }

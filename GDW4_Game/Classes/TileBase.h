@@ -16,6 +16,7 @@ public:
 	TileBase(cocos2d::Vec2 position, float tileSize);
 
 	static std::vector<TileBase*> tileList;
+	static void deleteAllTiles();
 
 	cocos2d::Rect hitBox;
 	TileType type;
