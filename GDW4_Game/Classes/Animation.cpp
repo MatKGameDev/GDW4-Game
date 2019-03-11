@@ -101,10 +101,10 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_GrapplingLeftAnimation, "grapple_left_animation_key");
 
 
-	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 6, 105, 135, 0.1f);
+	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 5, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleLeftAnimation, "shooting_grapple_right_animation_key");
 
-	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 6, 105, 135, 0.1f);
+	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 5, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleRightAnimation, "shooting_grapple_left_animation_key");
 
 
