@@ -2,8 +2,8 @@
 #include "Boss1Attack.h" 
 #include "Hero.h"
 
-Boss::Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height, float width)
-	: bossSprite(cocos2d::Sprite::create("Boss1.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
+Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
+	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
 	hitBox(sceneForBoss, height, width), heroPointer(heroInstance)
 {
 	bossSprite->setPosition(250, 750);

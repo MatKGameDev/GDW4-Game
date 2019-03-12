@@ -1,6 +1,7 @@
 #include "Gameplay.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "Boss/Boss.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -40,6 +41,8 @@ void Gameplay::initGameObjects()
 
 	GameObject::MAX_X = 1477.0f;
 	GameObject::MAX_Y = 985.0f;
+
+	boss = new Boss(Hero::hero, this);
 }
 
 void Gameplay::initSprites()
@@ -107,6 +110,9 @@ void Gameplay::initSprites()
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+
+	//add boss
+	this->addChild(boss->getSprite(), 17);
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -209,7 +215,7 @@ void Gameplay::update(float dt)
 void Gameplay::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
-
+	
 }
 
 void Gameplay::updateObjects(float dt)
@@ -226,7 +232,8 @@ void Gameplay::updateObjects(float dt)
 
 void Gameplay::updateEnemies(float dt)
 {
-	
+	//update boss
+	boss->update(dt, Hero::hero->sprite->getPosition());
 }
 
 //removes all game objects from the world
