@@ -115,9 +115,21 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
-	//add grapple (singleton class)
-	Grapple::create(10.0f);
-	this->addChild(Grapple::grapple, 5);
+	//add grapple sprite and tip
+	//add repeating pattern to grapple sprite
+	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+	Texture2D::TexParams params;
+	params.minFilter = GL_NEAREST;
+	params.magFilter = GL_NEAREST;
+	params.wrapS = GL_REPEAT;
+	params.wrapT = GL_REPEAT;
+	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
+	Grapple::grapple->sprite->setVisible(0);
+	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->sprite, 5);
+
+	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	this->addChild(Grapple::grapple->tip, 6);
 }
 
 void Gameplay::initListeners()

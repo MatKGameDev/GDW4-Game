@@ -163,5 +163,5 @@ void Hero::update(float dt)
 	updateCollisions();
 	HeroAttackManager::update(dt);
 
-	arm->setPosition(this->sprite->getPosition()); //update arm position each frame
+	arm->setPosition(Vec2(getPosition().x, getPosition().y + 12)); //update arm position each frame
 }

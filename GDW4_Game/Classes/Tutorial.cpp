@@ -112,28 +112,10 @@ void Tutorial::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
-
-
-	Grapple::grapple->textureGrapple = Sprite::create("Sprites/testGrapple.png");
-	Texture2D::TexParams params;
-	params.minFilter = GL_NEAREST;
-	params.magFilter = GL_NEAREST;
-	params.wrapS = GL_REPEAT;
-	params.wrapT = GL_REPEAT;
-	Grapple::grapple->textureGrapple->getTexture()->setTexParameters(params);
-	Grapple::grapple->textureGrapple->setTextureRect(cocos2d::Rect(0, 0, 8, 256));
-
-	//// Set an image to a texture, set the param "repeat"
-	//Texture2D *grappleTexture = Director::getInstance()->getTextureCache()->addImage("Sprites/testGrapple.png");
-
-	//// use the texture as Sprite
-	//Grapple::grapple->textureGrapple = Sprite::createWithTexture(grappleTexture, Rect(0, 0, 5, 10));
-	//Grapple::grapple->textureGrapple->getTexture()->setTexParameters({ GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_REPEAT });
-	//Grapple::grapple->textureGrapple->setPosition(Vec2(0, 0));
 	
-	//add grapple (singleton class)
-	this->addChild(Grapple::grapple, 5);
-	this->addChild(Grapple::grapple->textureGrapple, 6);
+	//add grapple sprite and tip
+	this->addChild(Grapple::grapple->sprite, 5);
+	this->addChild(Grapple::grapple->tip, 6);
 }
 
 void Tutorial::initListeners()

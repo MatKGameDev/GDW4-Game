@@ -3,7 +3,7 @@
 #include "Vect2.h"
 #include "Platform.h"
 
-class Grapple : public cocos2d::DrawNode
+class Grapple
 {
 private:
 	Grapple();
@@ -18,7 +18,8 @@ public:
 	bool testCase;
 
 
-	Sprite* textureGrapple;
+	Sprite* sprite;
+	Sprite* tip;
 
 	Vect2 initialPosClicked;
 	Vect2 startPoint;

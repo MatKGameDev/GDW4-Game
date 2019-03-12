@@ -4,7 +4,7 @@
 
 Grapple* Grapple::grapple = 0;
 
-Grapple::Grapple() : DrawNode(),
+Grapple::Grapple() :
 	MOVE_SPEED(800),
 	isActive(false),
 	isLatched(false),
@@ -13,8 +13,6 @@ Grapple::Grapple() : DrawNode(),
 	heroMoveScale(0),
 	latchDuration(0)
 {
-	Grapple::create(10.0f);
-	grappleColour = Color4F(255, 255, 255, 1.0f); //set grapple colour
 
 
 	testCase = false;
@@ -26,7 +24,21 @@ void Grapple::initGrapple()
 	if (!grapple)
 	{
 		grapple = new Grapple;
-		grapple->DrawNode::init();
+
+		//set up repeating pattern sprite
+		grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+		Texture2D::TexParams params;
+		params.minFilter = GL_NEAREST;
+		params.magFilter = GL_NEAREST;
+		params.wrapS = GL_REPEAT;
+		params.wrapT = GL_REPEAT;
+		grapple->sprite->getTexture()->setTexParameters(params);
+		grapple->sprite->setVisible(0);
+		grapple->sprite->setAnchorPoint(Vec2(0.5f, 0.0f));
+
+		//set up tip sprite
+		grapple->tip = Sprite::create("Sprites/grappleTip.png");
+		grapple->tip->setVisible(0);
 	}
 }
 
@@ -38,7 +50,7 @@ void Grapple::shoot(Vect2 destination)
 		//set all initial variables upon grapple being shot out
 		isActive = true;
 		initialPosClicked = destination;
-		lastFrameGrappleTip = Hero::hero->getPosition();
+		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
 		//determine look position after latching
 		if (Hero::hero->getPosition().x <= initialPosClicked.x)
@@ -57,6 +69,10 @@ void Grapple::shoot(Vect2 destination)
 		//make arm visible and rotate it
 		Hero::hero->arm->setVisible(1);
 		Hero::hero->arm->setRotation(theta * 180 / M_PI);
+
+		//make grapple sprite visible
+		sprite->setVisible(1);
+		grapple->tip->setVisible(1);
 	}
 }
 
@@ -64,7 +80,7 @@ void Grapple::shoot(Vect2 destination)
 void Grapple::extendGrapple()
 {
 	//find the angle at which the grapple is being shot at
-	Vect2 distance = initialPosClicked - Hero::hero->getPosition(); //calculate distance vector between the grapple and the hero
+	Vect2 distance = initialPosClicked - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //calculate distance vector between the grapple and the hero
 	theta = atan2(distance.x, distance.y); //perform atan2 (returns the angle in radians between the positive x axis (1, 0) and the point provided) on the distance
 
 	//get normalized new endpoint
@@ -77,7 +93,7 @@ void Grapple::extendGrapple()
 void Grapple::latch()
 {
 	isLatched = true;
-	heroLatchPosition = Hero::hero->getPosition();
+	heroLatchPosition = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 	heroToLatchPointDistance = Vect2::calculateDistance(heroLatchPosition, latchPoint);
 
 	//determine look position after latching
@@ -97,10 +113,12 @@ void Grapple::latch()
 void Grapple::unLatch()
 {
 	Hero::hero->arm->setVisible(0); //make arm invisible
+	sprite->setVisible(0);
+	grapple->tip->setVisible(0);
 	isActive = false;
 	isLatched = false;
 	isHeroAtEndPoint = false;
-	grapple->clear();
+	//grapple->clear();
 	lengthScale = 0;
 	heroMoveScale = 0;
 	latchDuration = 0;
@@ -109,7 +127,7 @@ void Grapple::unLatch()
 //check for grapple hook max length or out of bounds
 bool Grapple::isMaxLength()
 {
-	Vect2 grappleLength = grappleTip - Hero::hero->getPosition();
+	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 	if (grappleLength.getMagnitude() > 1300) //check max length
 		return true;
 	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
@@ -202,8 +220,8 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
-		grapple->clear(); //clear the drawn grapple before each frame
-		startPoint = Hero::hero->getPosition(); //have grapple start point move with the hero
+		//grapple->clear(); //clear the drawn grapple before each frame
+		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //have grapple start point move with the hero
 
 		if (isLatched)
 		{
@@ -213,6 +231,8 @@ void Grapple::update(float dt, Scene* scene)
 			if (heroMoveScale >= 1.0f)
 			{
 				Hero::hero->arm->setVisible(0); //make arm invisible
+				sprite->setVisible(0);
+				grapple->tip->setVisible(0);
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
 
@@ -270,12 +290,13 @@ void Grapple::update(float dt, Scene* scene)
 
 		if (isActive)
 		{
-			//draw grapple (start point, end point, colour)
-			grapple->drawLine(Vec2(grapple->startPoint.x, grapple->startPoint.y),
-				Vec2(grapple->grappleTip.x, grapple->grappleTip.y),
-				grapple->grappleColour);
+			float grappleDistance = Vect2::calculateDistance(startPoint, grappleTip);
 
-			
+			sprite->setTextureRect(cocos2d::Rect(startPoint.x, startPoint.y, 4, grappleDistance));
+			sprite->setPosition(Vec2(startPoint.x, startPoint.y + 10));
+			sprite->setRotation(theta * 180 / M_PI);
+
+			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 10));
 		}
 
 		//rotate arm
