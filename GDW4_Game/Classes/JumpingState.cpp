@@ -34,25 +34,7 @@ void JumpingState::onExit()
 void JumpingState::handleInput(InputType input)
 {
 	switch (input)
-	{
-	case InputType::p_a:
-		//if the hero is changing directions, call onEnter() again to play the proper animation
-		if (Hero::hero->lookState == Hero::LookDirection::lookingRight)
-		{
-			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-			onEnter();
-		}
-		break;
-
-	case InputType::p_d:
-		//if the hero is changing directions, call onEnter() again to play the proper animation
-		if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
-		{
-			Hero::hero->lookState = Hero::LookDirection::lookingRight;
-			onEnter();
-		}
-		break;
-	
+	{	
 	case InputType::r_space:
 		//variable jump height
 		Hero::hero->velocity.y /= 1.5;

@@ -18,6 +18,8 @@ public:
 	bool testCase;
 
 
+	Sprite* textureGrapple;
+
 	Vect2 initialPosClicked;
 	Vect2 startPoint;
 	Vect2 endPoint;

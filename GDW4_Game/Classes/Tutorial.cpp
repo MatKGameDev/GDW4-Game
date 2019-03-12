@@ -14,6 +14,7 @@ bool Tutorial::init()
 	if (!Scene::init())
 		return false;
 
+	isTransitioning = false;
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
@@ -112,8 +113,27 @@ void Tutorial::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
+
+	Grapple::grapple->textureGrapple = Sprite::create("Sprites/testGrapple.png");
+	Texture2D::TexParams params;
+	params.minFilter = GL_NEAREST;
+	params.magFilter = GL_NEAREST;
+	params.wrapS = GL_REPEAT;
+	params.wrapT = GL_REPEAT;
+	Grapple::grapple->textureGrapple->getTexture()->setTexParameters(params);
+	Grapple::grapple->textureGrapple->setTextureRect(cocos2d::Rect(0, 0, 8, 256));
+
+	//// Set an image to a texture, set the param "repeat"
+	//Texture2D *grappleTexture = Director::getInstance()->getTextureCache()->addImage("Sprites/testGrapple.png");
+
+	//// use the texture as Sprite
+	//Grapple::grapple->textureGrapple = Sprite::createWithTexture(grappleTexture, Rect(0, 0, 5, 10));
+	//Grapple::grapple->textureGrapple->getTexture()->setTexParameters({ GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_REPEAT });
+	//Grapple::grapple->textureGrapple->setPosition(Vec2(0, 0));
+	
 	//add grapple (singleton class)
 	this->addChild(Grapple::grapple, 5);
+	this->addChild(Grapple::grapple->textureGrapple, 6);
 }
 
 void Tutorial::initListeners()
@@ -162,40 +182,44 @@ void Tutorial::initKeyboardListener()
 //UPDATE
 void Tutorial::update(float dt)
 {
-	Grapple::grapple->update(dt, this); //update grapple
-	Hero::hero->update(dt); //update our hero
-	//if (hero->invincibilityTimer > 0)
-	//	flickerSprite(); //flicker sprite if it's invincible
-
-	testHurtbox->clear();
-	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-			Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
-	//DRAW MOVEBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-			Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, .0f));
-
-	testMeleeAttack->clear();
-	//DRAW MELEE ATTACK HITBOX FOR TESTING
-	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
-		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-		Color4F(1.0f, 0.7f, 0.8f, 0.3f));
-
-	spawnEnemies();     //spawn enemies if needed 
-	updateObjects(dt);  //update objects
-	updateEnemies(dt);  //update enemies
-
-	//check if we should move to the next scene
-	if (Hero::hero->moveBox.getMaxX() >= 1915)
+	if (!isTransitioning)
 	{
-		this->removeAllChildrenWithCleanup(true);
-		TileBase::deleteAllTiles();
-		director->replaceScene(Gameplay::createScene());
-		//director->replaceScene(TransitionFade::create(0.5, Gameplay::createScene(), Color3B(255, 255, 255)));
+		Grapple::grapple->update(dt, this); //update grapple
+		Hero::hero->update(dt); //update our hero
+		//if (hero->invincibilityTimer > 0)
+		//	flickerSprite(); //flicker sprite if it's invincible
+
+		testHurtbox->clear();
+		//DRAW HURTBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
+				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+			Color4F(1.0f, 0.0f, 0.0f, 0.f));
+		//DRAW MOVEBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+			Color4F(0.0f, 1.0f, 0.0f, .0f));
+
+		testMeleeAttack->clear();
+		//DRAW MELEE ATTACK HITBOX FOR TESTING
+		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
+			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
+			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+
+		spawnEnemies();     //spawn enemies if needed 
+		updateObjects(dt);  //update objects
+		updateEnemies(dt);  //update enemies
+
+		//check if we should move to the next scene
+		if (Hero::hero->moveBox.getMaxX() >= 1915)
+		{
+			Grapple::grapple->unLatch();
+			this->removeAllChildrenWithCleanup(true);
+			TileBase::deleteAllTiles();
+			director->replaceScene(TransitionFade::create(1.2f, Gameplay::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
 	}
 }
 

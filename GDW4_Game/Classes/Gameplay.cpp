@@ -36,6 +36,8 @@ void Gameplay::initUI()
 
 void Gameplay::initGameObjects()
 {
+	Hero::hero->moveState = Hero::MoveDirection::idle;
+
 	GameObject::MAX_X = 1477.0f;
 	GameObject::MAX_Y = 985.0f;
 }
@@ -96,14 +98,11 @@ void Gameplay::initSprites()
 		}
 	}
 
-	/*Hero::hero->sprite->removeFromParent();
-	Hero::hero->arm->removeFromParent();
-	Grapple::grapple->removeFromParent();*/
-
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(700, 150));
+	HeroStateManager::idle->onEnter();
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm

@@ -106,11 +106,13 @@ void Grapple::unLatch()
 	latchDuration = 0;
 }
 
-//check for grapple hook max length
+//check for grapple hook max length or out of bounds
 bool Grapple::isMaxLength()
 {
 	Vect2 grappleLength = grappleTip - Hero::hero->getPosition();
-	if (grappleLength.getMagnitude() > 1300)
+	if (grappleLength.getMagnitude() > 1300) //check max length
+		return true;
+	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
 		return true;
 
 	return false;
@@ -272,6 +274,8 @@ void Grapple::update(float dt, Scene* scene)
 			grapple->drawLine(Vec2(grapple->startPoint.x, grapple->startPoint.y),
 				Vec2(grapple->grappleTip.x, grapple->grappleTip.y),
 				grapple->grappleColour);
+
+			
 		}
 
 		//rotate arm
