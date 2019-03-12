@@ -213,9 +213,19 @@ void Vect2::set(float newX, float newY)
 	y = newY;
 }
 
+float Vect2::getMagnitude()
+{
+	return sqrt((x * x) + (y * y));
+}
+
 float Vect2::getMagnitudeSquared()
 {
 	return (x * x) + (y * y); //pythagorean theorum
+}
+
+float Vect2::getNormalized()
+{
+	return 0.0f;
 }
 
 float Vect2::dotProduct(const Vect2 rhs)
@@ -243,5 +253,5 @@ float Vect2::calculateDistanceSquared(const Vect2 vectA, const Vect2 vectB)
 //returns a point between two points with a given scale factor
 Vect2 Vect2::lerp(Vect2 vectA, Vect2 vectB, float scaleFactor)
 {
-	return (vectA * (1.0 - scaleFactor)) + (vectB * scaleFactor);
+	return (vectA * (1.0f - scaleFactor)) + (vectB * scaleFactor);
 }

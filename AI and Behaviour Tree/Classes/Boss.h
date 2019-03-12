@@ -18,7 +18,7 @@ public:
 	~Boss();
 
 	//Setters
-	virtual void setState(FirstBossState *newState);
+	void setState(FirstBossState *newState);
 
 	//Getters
 	cocos2d::Sprite* getSprite()const;

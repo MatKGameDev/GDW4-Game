@@ -46,10 +46,12 @@ public:
 	float & Vect2::operator[](int index);
 
 	void set(float newX, float newY);
+	float getMagnitude();
 	float getMagnitudeSquared();
+	float getNormalized();
 	float dotProduct(const Vect2 rhs);
 	float crossProduct(const Vect2 rhs);
-
+	
 	static float calculateDistance(const Vect2 vectA, const Vect2 vectB);
 	static float calculateDistanceSquared(const Vect2 vectA, const Vect2 vectB);
 	static Vect2 lerp(Vect2 vectA, Vect2 vectB, float scaleFactor);
