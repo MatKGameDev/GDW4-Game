@@ -40,6 +40,8 @@ cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpLeftAnimation = new c
 cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimation = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_BossFlameTellAnimation = new cocos2d::Animation();
 
+cocos2d::Animation* marcos::AnimationManager::m_BossSpitAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossSpitTellAnimation = new cocos2d::Animation();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //																																			  //
@@ -123,6 +125,12 @@ void marcos::AnimationManager::init()
 
 	m_BossFlameAnimation = setAnimation("Sprites/flame.png", 8, 3, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimation, "boss_flame_animation_key");
+
+	m_BossSpitAnimation = setAnimation("Sprites/fire_ball.png", 12, 70, 70, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossSpitAnimation, "boss_spit_animation_key");
+
+	m_BossSpitTellAnimation = setAnimation("Sprites/boss_projectile_attack.png", 23, 500, 1300, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossSpitTellAnimation, "boss_spit_tell_animation_key");
 
 }
 

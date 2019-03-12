@@ -16,7 +16,7 @@ void IdleState::onEnter()
 
 	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
 	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("idle_left_animation_key");
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
@@ -24,7 +24,7 @@ void IdleState::onEnter()
 	}
 	else
 	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("idle_right_animation_key");
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_animation_key");
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));

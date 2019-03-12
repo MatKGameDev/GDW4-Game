@@ -56,6 +56,9 @@ namespace marcos
 		static cocos2d::Animation* m_BossFlameAnimation;
 		static cocos2d::Animation* m_BossFlameTellAnimation;
 
+		static cocos2d::Animation* m_BossSpitAnimation;
+		static cocos2d::Animation* m_BossSpitTellAnimation;
+
 
 
 	private:
