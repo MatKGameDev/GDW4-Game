@@ -12,11 +12,15 @@
 
 using namespace cocos2d;
 
+class Boss; //forward declare
+
 class Gameplay : public cocos2d::Scene
 {
 public:
 	CREATE_FUNC(Gameplay);
 	static Scene* createScene();
+
+	Boss* boss;
 
 	virtual bool init();
 	void initUI();

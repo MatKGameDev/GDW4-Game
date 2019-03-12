@@ -25,7 +25,6 @@ protected:
 	State *currentState{nullptr};
 
 	//Utility Functions
-	
 	virtual void changeToFlameSplit(Boss *boss);
 	virtual void changeToFlameThrower(Boss *boss);
 	virtual void changeToSuckingBullet(Boss *boss);

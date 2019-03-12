@@ -14,6 +14,7 @@ bool Tutorial::init()
 	if (!Scene::init())
 		return false;
 
+	isTransitioning = false;
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
@@ -111,9 +112,10 @@ void Tutorial::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
-
-	//add grapple (singleton class)
-	this->addChild(Grapple::grapple, 5);
+	
+	//add grapple sprite and tip
+	this->addChild(Grapple::grapple->sprite, 5);
+	this->addChild(Grapple::grapple->tip, 6);
 }
 
 void Tutorial::initListeners()
@@ -162,40 +164,44 @@ void Tutorial::initKeyboardListener()
 //UPDATE
 void Tutorial::update(float dt)
 {
-	Grapple::grapple->update(dt, this); //update grapple
-	Hero::hero->update(dt); //update our hero
-	//if (hero->invincibilityTimer > 0)
-	//	flickerSprite(); //flicker sprite if it's invincible
-
-	testHurtbox->clear();
-	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-			Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
-	//DRAW MOVEBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-			Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, .0f));
-
-	testMeleeAttack->clear();
-	//DRAW MELEE ATTACK HITBOX FOR TESTING
-	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
-		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-		Color4F(1.0f, 0.7f, 0.8f, 0.3f));
-
-	spawnEnemies();     //spawn enemies if needed 
-	updateObjects(dt);  //update objects
-	updateEnemies(dt);  //update enemies
-
-	//check if we should move to the next scene
-	if (Hero::hero->moveBox.getMaxX() >= 1915)
+	if (!isTransitioning)
 	{
-		this->removeAllChildrenWithCleanup(true);
-		TileBase::deleteAllTiles();
-		director->replaceScene(Gameplay::createScene());
-		//director->replaceScene(TransitionFade::create(0.5, Gameplay::createScene(), Color3B(255, 255, 255)));
+		Grapple::grapple->update(dt, this); //update grapple
+		Hero::hero->update(dt); //update our hero
+		//if (hero->invincibilityTimer > 0)
+		//	flickerSprite(); //flicker sprite if it's invincible
+
+		testHurtbox->clear();
+		//DRAW HURTBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
+				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+			Color4F(1.0f, 0.0f, 0.0f, 0.f));
+		//DRAW MOVEBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+			Color4F(0.0f, 1.0f, 0.0f, .0f));
+
+		testMeleeAttack->clear();
+		//DRAW MELEE ATTACK HITBOX FOR TESTING
+		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
+			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
+			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+
+		spawnEnemies();     //spawn enemies if needed 
+		updateObjects(dt);  //update objects
+		updateEnemies(dt);  //update enemies
+
+		//check if we should move to the next scene
+		if (Hero::hero->moveBox.getMaxX() >= 1915)
+		{
+			Grapple::grapple->unLatch();
+			this->removeAllChildrenWithCleanup(true);
+			TileBase::deleteAllTiles();
+			director->replaceScene(TransitionFade::create(1.2f, Gameplay::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
 	}
 }
 

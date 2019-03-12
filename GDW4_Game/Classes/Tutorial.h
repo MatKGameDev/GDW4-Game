@@ -18,6 +18,8 @@ public:
 	CREATE_FUNC(Tutorial);
 	static Scene* createScene();
 
+	bool isTransitioning;
+
 	virtual bool init();
 	void initUI();
 	void initGameObjects();

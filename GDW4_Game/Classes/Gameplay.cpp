@@ -1,6 +1,7 @@
 #include "Gameplay.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "Boss/Boss.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -36,8 +37,12 @@ void Gameplay::initUI()
 
 void Gameplay::initGameObjects()
 {
+	Hero::hero->moveState = Hero::MoveDirection::idle;
+
 	GameObject::MAX_X = 1477.0f;
 	GameObject::MAX_Y = 985.0f;
+
+	boss = new Boss(Hero::hero, this);
 }
 
 void Gameplay::initSprites()
@@ -96,18 +101,18 @@ void Gameplay::initSprites()
 		}
 	}
 
-	/*Hero::hero->sprite->removeFromParent();
-	Hero::hero->arm->removeFromParent();
-	Grapple::grapple->removeFromParent();*/
-
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(700, 150));
+	HeroStateManager::idle->onEnter();
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+
+	//add boss
+	this->addChild(boss->getSprite(), 17);
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -116,9 +121,21 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
-	//add grapple (singleton class)
-	Grapple::create(10.0f);
-	this->addChild(Grapple::grapple, 5);
+	//add grapple sprite and tip
+	//add repeating pattern to grapple sprite
+	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+	Texture2D::TexParams params;
+	params.minFilter = GL_NEAREST;
+	params.magFilter = GL_NEAREST;
+	params.wrapS = GL_REPEAT;
+	params.wrapT = GL_REPEAT;
+	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
+	Grapple::grapple->sprite->setVisible(0);
+	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->sprite, 5);
+
+	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	this->addChild(Grapple::grapple->tip, 6);
 }
 
 void Gameplay::initListeners()
@@ -198,7 +215,7 @@ void Gameplay::update(float dt)
 void Gameplay::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
-
+	
 }
 
 void Gameplay::updateObjects(float dt)
@@ -215,7 +232,8 @@ void Gameplay::updateObjects(float dt)
 
 void Gameplay::updateEnemies(float dt)
 {
-	
+	//update boss
+	boss->update(dt, Hero::hero->sprite->getPosition());
 }
 
 //removes all game objects from the world

@@ -37,6 +37,9 @@
     <Filter Include="src\Scenes">
       <UniqueIdentifier>{1a8fc41c-37db-4dd2-8e64-3243829cf89e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Boss">
+      <UniqueIdentifier>{4607cd7f-6dad-43aa-9b42-a1b64cc466de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,6 +137,18 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Tutorial.cpp">
       <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\FirstBossState.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Boss.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Boss1Attack.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\HitBox.cpp">
+      <Filter>Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +250,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Tutorial.h">
       <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Boss1Attack.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\FirstBossState.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Boss.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\HitBox.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
