@@ -38,6 +38,7 @@ cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpLeftAnimation = new c
 //boss
 
 cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossFlameTellAnimation = new cocos2d::Animation();
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ void marcos::AnimationManager::init()
 	m_JumpingRightAnimation = setAnimation("Sprites/jump_right.png", 15, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingRightAnimation, "jumping_right_animation_key");
 
-	m_JumpingLeftAnimation = setAnimation("Sprites/jumping_left.png", 15, 105, 135, 0.1f);
+	m_JumpingLeftAnimation = setAnimation("Sprites/jump_left.png", 15, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingLeftAnimation, "jumping_left_animation_key");
 
 	/////////////////////////////////////// A T T A C K I N G /////////////////////////////////////////
@@ -101,10 +102,10 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_GrapplingLeftAnimation, "grapple_left_animation_key");
 
 
-	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 5, 105, 135, 0.1f);
+	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 2, 120, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleLeftAnimation, "shooting_grapple_right_animation_key");
 
-	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 5, 105, 135, 0.1f);
+	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 2, 120, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleRightAnimation, "shooting_grapple_left_animation_key");
 
 
@@ -116,6 +117,9 @@ void marcos::AnimationManager::init()
 
 	
 	//////////////////////////////////////////// B O S S ///////////////////////////////////////////
+
+	m_BossFlameTellAnimation = setAnimation("Sprites/boss_flamethrow.png", 27, 500, 1300, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossFlameTellAnimation, "boss_flame_tell_animation_key");
 
 	m_BossFlameAnimation = setAnimation("Sprites/flame.png", 8, 3, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimation, "boss_flame_animation_key");
