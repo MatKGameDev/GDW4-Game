@@ -1,25 +1,35 @@
 #include "Hero.h"
 #include "HeroAttackManager.h"
+#include "HeroStateManager.h"
+#include "TileBase.h"
+#include <iostream>
 
 Hero* Hero::hero = 0;
 
-Hero::Hero() : GameObject(Vect2(0, 0), "Sprites/shooting_test.png"),
-	JUMP_VELOCITY(530),
+Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
+	JUMP_VELOCITY(575),
 	MAX_HORIZONTAL_VELOCITY(300),
-	MAX_VERTICAL_VELOCITY(850), //900
+	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
-	movespeedIncrease(20),
+	movespeedIncrease(70),
 	isAirborne(false),
-	moveState(MoveDirection::idle),
-	lookState(LookDirection::lookingRight)
+	lookState(LookDirection::lookingRight),
+	moveState(MoveDirection::idle)
 {
+	//initialize arm
+	arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+
 	mass = 5;					
+
 	marcos::AnimationManager::init();
-	auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
-	auto action = Animate::create(anim);
-	this->sprite->runAction(RepeatForever::create(action));
+	//auto anim = AnimationCache::getInstance()->getAnimation("idle_right_animation_key");
+	//auto action = Animate::create(anim);
+	//this->sprite->runAction(RepeatForever::create(action));
 	//TODO: its not gonna be like this later change it. //this triggers a breakpoint, read acess violation
 	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
+
+	updateHitboxes();
 }
 
 void Hero::createHero()
@@ -30,35 +40,26 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-	velocity.x += movespeedIncrease;
-	lookState = LookDirection::lookingRight;
 
-	/*auto anim = AnimationCache::getInstance()->getAnimation("idle_animation_key");
-	auto action = Animate::create(anim);
-	hero->sprite->runAction(RepeatForever::create(action));*/
-
-	//heroAnimation needs a run animation override
-
-	// What should probably be done:
-	// runAnimation acts as a manager, it takes in certain params from hero, mainly state, and handles all behind the scenes work, displays the animation
-	// The one issue with setting it up this way is that I have no idea if it would even work with this level of inheritance, in order to get it to work, probably
-	// going to have to make 2 classes rather than 12, don't think I can handle integrating 12 classes
-
-	// Alternatively it can be done the way mario was done, where the animation is hidden in the class object and RunAnimation only manages one animation at a time 
-	// Based on the context it is called
+	if (isAirborne)
+		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x += movespeedIncrease;
 }
 
 void Hero::moveLeft()
 {
-	velocity.x -= movespeedIncrease;
-	lookState = LookDirection::lookingLeft;
+	if (isAirborne)
+		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
+	else
+		velocity.x -= movespeedIncrease;
 }
 
 //jump if not already airbourne
 void Hero::jump()
 {
 	if (!isAirborne)
-		velocity.y += JUMP_VELOCITY;
+		velocity.y = JUMP_VELOCITY;
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -66,52 +67,50 @@ void Hero::checkAndResolveOutOfBounds()
 {
 	//check for out of bounds
 	//on x
-	if (this->getLeftSidePos() < 0)
+	if (this->moveBox.getMinX() < 0.0f)
 	{
-		sprite->setPositionX(this->width / 2);
-		velocity.x = 0;
+		sprite->setPositionX(this->moveBox.size.width / 2.0f);
+		velocity.x = 0.0f;
 	}
-	else if (this->getRightSidePos() > MAX_X)
+	else if (this->moveBox.getMaxX() > MAX_X)
 	{
-		sprite->setPositionX(MAX_X - this->width / 2);
-		velocity.x = 0;
+		sprite->setPositionX(MAX_X - (this->moveBox.size.width / 2.0f) - 2);
+		velocity.x = 0.0f;
 	}
 	//on y
-	if (this->getBottomPos() < 0)
+	if (this->moveBox.getMinY() < 0.0f)
 	{
-		sprite->setPositionY(this->height / 2);
-		velocity.y = 0;
+		sprite->setPositionY(this->moveBox.size.height / 2.0f);
+		velocity.y = 0.0f;
 	}
-	else if (this->getTopPos() > MAX_Y)
+	else if (this->moveBox.getMaxY() > MAX_Y)
 	{
-		sprite->setPositionY(MAX_Y - this->height / 2);
-		velocity.y = 0;
+		sprite->setPositionY(MAX_Y - (this->moveBox.size.height / 2.0f));
+		velocity.y = 0.0f;
 	}
 }
 
 void Hero::updatePhysics(float dt)
 {
 	//check if airborne or not
-	if (velocity.y == 0 || velocity.y == (GRAVITY.y * mass))
+	if (velocity.y == 0)
 		isAirborne = false;
 	else
 		isAirborne = true;
 
-	//check if moving downwards (increase gravity)
+	HeroStateManager::currentState->update(dt);
+
+	//have hero fall faster than rise
 	if (velocity.y < 0)
 		gravityMultiplier = 1.7f;
 	else
 		gravityMultiplier = 1.0f;
 
+
 	this->GameObject::updatePhysics(dt); //call base class update
 
-	//check for movement and apply drag if necessary
-	if (moveState == MoveDirection::movingRight)
-		moveRight();
-	else if (moveState == MoveDirection::movingLeft)
-		moveLeft();
 	//no player input but hero is still moving
-	else if (velocity.x > 0)
+	if (velocity.x > 0)
 	{
 		velocity.x -= DRAG_VELOCITY; //apply drag
 	}
@@ -137,24 +136,33 @@ void Hero::updatePhysics(float dt)
 		velocity.y = -MAX_VERTICAL_VELOCITY;
 
 	//check for hero out of bounds
+	updateHitboxes();
 	checkAndResolveOutOfBounds();
 }
 
-void Hero::updateAnimations(float dt)
+void Hero::updateHitboxes()
 {
-	if (moveState == idle)
-	{
-		hero->sprite->runAction(marcos::AnimationManager::m_IdleActionAnimation->clone());
-	}
+	moveBox.setRect(getLeftSidePos() + width / 5.0f, getBottomPos(), width / 1.6f, height);
+	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 4.5f, height / 1.5f);
 }
 
+//updates any collisions dealing with the hero and other objects
+void Hero::updateCollisions()
+{
+	unsigned int tileListSize = TileBase::tileList.size();
+	for (unsigned int i = 0; i < tileListSize; i++)
+		TileBase::tileList[i]->checkAndResolveCollision(this);
+}
+
+//updates all the things
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
 
-	hurtBox.setRect(getLeftSidePos() + width / 2.7f, getBottomPos() + height / 6.0f, width / 5.0f, height / 1.5f); //update the hurtbox location
-	//this->updateAnimations(dt);
-	
+	updateHitboxes();
+	updateCollisions();
 	HeroAttackManager::update(dt);
 
+	arm->setPosition(this->sprite->getPosition()); //update arm position each frame
+	std::cout << "\nx: " << getPosition().x << " y: " << getPosition().y;
 }

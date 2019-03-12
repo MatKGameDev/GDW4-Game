@@ -6,6 +6,9 @@
 #include "Grapple.h"
 #include "HeroAttackManager.h"
 #include "IceProjectile.h"
+#include "HeroMovementBase.h"
+#include "PlatformTile.h"
+#include "GroundTile.h"
 
 using namespace cocos2d;
 
@@ -47,8 +50,6 @@ private:
 	Vect2 mousePosition;
 
 	Sprite* background;
-
-	Platform* platform;
 
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack

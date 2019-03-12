@@ -4,10 +4,12 @@
 class HeroAttackBase
 {
 public:
-	bool isActive;
 	float attackTimer;
+	float attackWindup;
 	float attackDuration;
 	float attackCooldown;
+
+	bool disabled;
 
 	cocos2d::Rect hitbox;
 

@@ -14,6 +14,11 @@ public:
 
 	const float MOVE_SPEED;
 
+
+	bool testCase;
+
+
+	Vect2 initialPosClicked;
 	Vect2 startPoint;
 	Vect2 endPoint;
 	Vect2 grappleTip;
@@ -36,12 +41,14 @@ public:
 	bool isHeroAtEndPoint;
 
 	void shoot(Vect2 destination);
+	void extendGrapple();
 	void latch();
 	void unLatch();
 
-	bool isCollidingWith(GameObject* otherObject);
-	bool checkPointCollision(Vect2 pointToCheck, GameObject* otherObject);
-	bool checkTunnelingCollision(GameObject* otherObject);
+	bool isMaxLength();
+	bool isCollidingWith(cocos2d::Rect otherObject);
+	bool checkPointCollision(Vect2 pointToCheck, cocos2d::Rect otherObject);
+	bool checkTunnelingCollision(cocos2d::Rect otherObject);
 
 	void update(float dt, Scene* scene);
 };

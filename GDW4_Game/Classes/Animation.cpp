@@ -1,227 +1,39 @@
 #include "Animation.h"
 
 //static variable initialization
-cocos2d::Animation* marcos::AnimationManager::m_IdlingAnimation = new cocos2d::Animation();
-cocos2d::Action* marcos::AnimationManager::m_IdleActionAnimation = new cocos2d::Action();
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//																																			  //
-//															Animation Class																	  //
-//																																			  //
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Idling
+cocos2d::Animation* marcos::AnimationManager::m_IdlingLeftAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_IdlingRightAnimation = new cocos2d::Animation();
 
-//default constructor initializes things to 0 
+//Running
+cocos2d::Animation* marcos::AnimationManager::m_RunningRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_RunningLeftAnimation = new cocos2d::Animation();
 
-/*
-marcos::Animation::Animation()
-{
-	m_NumFrames = 0;
-	m_Width = 0;
-	m_Height = 0;
-	m_Delay = 0.2f;
-	
-}
-//Constructor initializes 
-marcos::Animation::Animation(int a_NumFrames, float a_Width, float a_Height, float a_Delay, cocos2d::Sprite * a_Sprite, std::string a_Name): 
-	m_NumFrames(a_NumFrames),
-	m_Width(a_Width),
-	m_Height(a_Height),
-	m_Delay(a_Delay),
-	m_Sprite(a_Sprite)
-{
-	setAnimation(a_Name);
-}
+//Jumping
+cocos2d::Animation* marcos::AnimationManager::m_JumpingRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_JumpingLeftAnimation = new cocos2d::Animation();
 
-//destructor clears memory
-marcos::Animation::~Animation()
-{
-	//m_Sprite->release();
-	//m_Animate->release();
-	//m_Animation->release();
-}
+cocos2d::Animation* marcos::AnimationManager::m_FallingRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_FallingLeftAnimation = new cocos2d::Animation();
 
-//initializing animation class members
-void marcos::Animation::setAnimation(std::string a_String)
-{
-	for (int i = 0; i < m_NumFrames; i++)
-	{
-		auto frame = cocos2d::SpriteFrame::create(a_String, cocos2d::Rect(m_Width * i, 3, m_Width, m_Height));
-		m_AnimFrames.pushBack(frame);
-	}
+//Attacking
+cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackLeftAnimation = new cocos2d::Animation();
 
-	m_Animation = cocos2d::Animation::createWithSpriteFrames(m_AnimFrames, m_Delay);
-	m_Animate = cocos2d::Animate::create(m_Animation);
+cocos2d::Animation* marcos::AnimationManager::m_ProjectileAttackRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_ProjectileAttackLeftAnimation = new cocos2d::Animation();
 
-}
+//Grappling
+cocos2d::Animation* marcos::AnimationManager::m_GrapplingRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_GrapplingLeftAnimation = new cocos2d::Animation();
 
-//running the animation -> extend to this from class with animation object
-void marcos::Animation::runAnimation()
-{
-	m_Sprite->runAction(cocos2d::RepeatForever::create(m_Animate));
-}
+cocos2d::Animation* marcos::AnimationManager::m_ShootingGrappleLeftAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_ShootingGrappleRightAnimation = new cocos2d::Animation();
 
-//setting number of frames for base class
-void marcos::Animation::setNumFrames(int a_frames)
-{
-	m_NumFrames = a_frames;
-}
+cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpLeftAnimation = new cocos2d::Animation();
 
-//setting width for base class
-void marcos::Animation::setWidth(float a_Width)
-{
-	m_Width = a_Width;
-}
-
-//setting height for base class
-void marcos::Animation::setHeight(float a_Height)
-{
-	m_Height = a_Height;
-}
-
-//setting delay for base class
-void marcos::Animation::setDelay(float a_Delay)
-{
-	m_Delay = a_Delay;
-}
-
-//setting sprite for base class
-void marcos::Animation::setSprite(cocos2d::Sprite *a_Sprite)
-{
-	m_Sprite = a_Sprite;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//																																			  //
-//															HeroAnimaiton Class																  //
-//																																			  //
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-marcos::HeroAnimation::HeroAnimation(cocos2d::Sprite * a_Sprite):
-	m_AttackingAnimation(a_Sprite),
-	m_LandingAnimation(a_Sprite),
-	m_JumpingAnimation(a_Sprite),
-	m_IdlingAnimation(a_Sprite),
-	m_RunningAnimation(a_Sprite),
-	m_GrapplingAnimation(a_Sprite)
-{
-
-	m_HeroAnimation = new Animation(3, 90, 150, 0.2f, a_Sprite, "Sprites/standing-Sheet.png");
-	m_Sprite = a_Sprite;
-}
-
-cocos2d::Sprite * marcos::HeroAnimation::getSprite()
-{
-	return this->m_Sprite;
-}
-
-void marcos::HeroAnimation::runAnimation()
-{
-	this->getSprite()->runAction(cocos2d::Repeat::create(m_HeroAnimation->m_Animate, 1));
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//																																			  //
-//															Hero Animations																	  //
-//																																			  //
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-//////////////////////////////////////////////////// A T T A C K ///////////////////////////////////////////////////////
-marcos::AttackingAnimation::AttackingAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_AttackAnimation = Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-}
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////// G R A P P L E ///////////////////////////////////////////////////////
-marcos::GrapplingAnimation::GrapplingAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_GrappleAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-}
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////// L A N D I N G ////////////////////////////////////////////////////////
-marcos::LandingAnimation::LandingAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_LandAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-}
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////// I D L I N G /////////////////////////////////////////////////////////
-marcos::IdlingAnimation::IdlingAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_IdleAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-
-	m_Sprite = a_Sprite;
-}
-
-void marcos::IdlingAnimation::runAnimation()
-{
-	if (m_Sprite->getNumberOfRunningActions() == 0)
-	{
-		m_Sprite->runAction(cocos2d::Repeat::create(m_IdleAnimation.m_Animate, 1));
-	}
-}
-
-
-////////////////////////////////////////////////// R U N N I N G ////////////////////////////////////////////////////////
-marcos::RunningAnimation::RunningAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_MoveAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-
-	m_Sprite = a_Sprite;
-}
-
-
-void marcos::RunningAnimation::runAnimation()
-{
-	if(m_Sprite->getNumberOfRunningActions() == 0)
-	{
-		m_Sprite->runAction(cocos2d::Repeat::create(m_MoveAnimation.m_Animate, 1));
-	}
-}
-
-
-
-
-
-////////////////////////////////////////////////// J U M P I N G ////////////////////////////////////////////////////////
-marcos::JumpingAnimation::JumpingAnimation(cocos2d::Sprite* a_Sprite)
-{
-	m_JumpAnimation =  Animation(4, 120, 135, 0.2f, a_Sprite, "Sprites/Running_Spritesheet1.png");
-}
-
-*/
-
-
-//ReWork
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //																																			  //
@@ -241,14 +53,65 @@ marcos::AnimationManager::~AnimationManager()
 
 void marcos::AnimationManager::init()
 {
+	/////////////////////////////////////// I D L I N G ///////////////////////////////////////////////
+	m_IdlingRightAnimation = setAnimation("Sprites/idle_right.png", 20, 75, 135, 0.2f);
+	AnimationCache::getInstance()->addAnimation(m_IdlingRightAnimation, "idle_right_animation_key");
 
-	m_IdlingAnimation = setAnimation("Sprites/idle_right.png", 21, 75, 135, 0.2f);
-	AnimationCache::getInstance()->addAnimation(m_IdlingAnimation, "idle_animation_key");
-	//m_IdleActionAnimation = (cocos2d::RepeatForever::create(marcos::AnimationManager::m_IdlingAnimation));
-	//m_RunningAnimation = setAnimation("running_left.png", )
-	//m_JumpingAnimation = setAnimation("JumpingANimation.png", 4, 140, 135, 0.2f);
+	m_IdlingLeftAnimation = setAnimation("Sprites/idle_left.png", 20, 75, 135, 0.2f);
+	AnimationCache::getInstance()->addAnimation(m_IdlingLeftAnimation, "idle_left_animation_key");
+
+	/////////////////////////////////////// R U N N I N G /////////////////////////////////////////////
+	m_RunningRightAnimation = setAnimation("Sprites/running_right.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_RunningRightAnimation, "running_right_animation_key");
+
+	m_RunningLeftAnimation = setAnimation("Sprites/running_left.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_RunningLeftAnimation, "running_left_animation_key");
+
+	/////////////////////////////////////// J U M P I N G ////////////////////////////////////////////
+	m_JumpingRightAnimation = setAnimation("Sprites/jump_right.png", 15, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_JumpingRightAnimation, "jumping_right_animation_key");
+
+	m_JumpingLeftAnimation = setAnimation("Sprites/jumping_left.png", 15, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_JumpingLeftAnimation, "jumping_left_animation_key");
+
+	/////////////////////////////////////// A T T A C K I N G /////////////////////////////////////////
+	m_MeleeAttackRightAnimation = setAnimation("Sprites/melee_right.png", 4, 177, 138, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_MeleeAttackRightAnimation, "melee_right_animation_key");
+
+	m_MeleeAttackLeftAnimation = setAnimation("Sprites/melee_left.png", 4, 177, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_MeleeAttackLeftAnimation, "melee_left_animation_key");
+
+
+	m_ProjectileAttackRightAnimation = setAnimation("Sprites/projectile_right.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackRightAnimation, "projectile_right_animation_key");
+
+	m_ProjectileAttackLeftAnimation = setAnimation("Sprites/projectile_left.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackLeftAnimation, "projectile_left_animation_key");
+
+	/////////////////////////////////////// G R A P P L I N G /////////////////////////////////////////
+	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 3, 105, 135, 0.06f);
+	AnimationCache::getInstance()->addAnimation(m_GrapplingRightAnimation, "grapple_right_animation_key");
+
+	m_GrapplingLeftAnimation = setAnimation("Sprites/grapple_left.png", 3, 105, 135, 0.06f);
+	AnimationCache::getInstance()->addAnimation(m_GrapplingLeftAnimation, "grapple_left_animation_key");
+
+
+	m_ShootingGrappleLeftAnimation = setAnimation("Sprites/shooting_grapple_right.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleLeftAnimation, "shooting_grapple_right_animation_key");
+
+	m_ShootingGrappleRightAnimation = setAnimation("Sprites/shooting_grapple_left.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleRightAnimation, "shooting_grapple_left_animation_key");
+
+
+	m_GrappleJumpRightAnimation = setAnimation("Sprites/grapple_jump_right.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_GrappleJumpRightAnimation, "grapple_jump_right_animation_key");
+
+	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
+
 }
 
+//Animation setter, to store the animation frames in the animation cache to be called later
 cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay)
 {
 	cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
