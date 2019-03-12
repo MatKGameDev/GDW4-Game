@@ -1,24 +1,26 @@
+#include "Tutorial.h"
 #include "Gameplay.h"
 #include <iostream>
 #include "HeroStateManager.h"
 
-cocos2d::Scene* Gameplay::createScene()
+cocos2d::Scene* Tutorial::createScene()
 {
-	Scene* scene = Gameplay::create();
+	Scene* scene = Tutorial::create();
 	return scene;
 }
 
-bool Gameplay::init()
+bool Tutorial::init()
 {
 	if (!Scene::init())
 		return false;
 
+	isTransitioning = false;
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
-	director->setAnimationInterval(1.0f/60.0f);
+	director->setAnimationInterval(1.0f / 60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
-	
+
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -29,31 +31,32 @@ bool Gameplay::init()
 }
 
 //initializes the user interface
-void Gameplay::initUI()
+void Tutorial::initUI()
 {
 
 }
 
-void Gameplay::initGameObjects()
+void Tutorial::initGameObjects()
 {
-	Hero::hero->moveState = Hero::MoveDirection::idle;
-
-	GameObject::MAX_X = 1477.0f;
-	GameObject::MAX_Y = 985.0f;
+	//set bounds for the scene
+	GameObject::MAX_X = 1920.0f;
+	GameObject::MAX_Y = 1080.0f;
+	
+	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
 }
 
-void Gameplay::initSprites()
+void Tutorial::initSprites()
 {
 	//add background
-	background = Sprite::create("Backgrounds/background.png");
+	background = Sprite::create("Backgrounds/greyBackground.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
-	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
-	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("Platform");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -99,12 +102,7 @@ void Gameplay::initSprites()
 	}
 
 	//add hero (singleton class)
-	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
-	Hero::hero->sprite->setPosition(Vec2(700, 150));
-	HeroStateManager::idle->onEnter();
-
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 
@@ -115,12 +113,30 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
+
+	Grapple::grapple->textureGrapple = Sprite::create("Sprites/testGrapple.png");
+	Texture2D::TexParams params;
+	params.minFilter = GL_NEAREST;
+	params.magFilter = GL_NEAREST;
+	params.wrapS = GL_REPEAT;
+	params.wrapT = GL_REPEAT;
+	Grapple::grapple->textureGrapple->getTexture()->setTexParameters(params);
+	Grapple::grapple->textureGrapple->setTextureRect(cocos2d::Rect(0, 0, 8, 256));
+
+	//// Set an image to a texture, set the param "repeat"
+	//Texture2D *grappleTexture = Director::getInstance()->getTextureCache()->addImage("Sprites/testGrapple.png");
+
+	//// use the texture as Sprite
+	//Grapple::grapple->textureGrapple = Sprite::createWithTexture(grappleTexture, Rect(0, 0, 5, 10));
+	//Grapple::grapple->textureGrapple->getTexture()->setTexParameters({ GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_REPEAT });
+	//Grapple::grapple->textureGrapple->setPosition(Vec2(0, 0));
+	
 	//add grapple (singleton class)
-	Grapple::create(10.0f);
 	this->addChild(Grapple::grapple, 5);
+	this->addChild(Grapple::grapple->textureGrapple, 6);
 }
 
-void Gameplay::initListeners()
+void Tutorial::initListeners()
 {
 	//Init the mouse listener
 	initMouseListener();
@@ -129,78 +145,91 @@ void Gameplay::initListeners()
 	initKeyboardListener();
 }
 
-void Gameplay::initMouseListener()
+void Tutorial::initMouseListener()
 {
 	//Init the mouse listener
 	mouseListener = EventListenerMouse::create();
 
 	//On Mouse Down
-	mouseListener->onMouseDown = CC_CALLBACK_1(Gameplay::mouseDownCallback, this);
+	mouseListener->onMouseDown = CC_CALLBACK_1(Tutorial::mouseDownCallback, this);
 
 	//On Mouse Up
-	mouseListener->onMouseUp = CC_CALLBACK_1(Gameplay::mouseUpCallback, this);
+	mouseListener->onMouseUp = CC_CALLBACK_1(Tutorial::mouseUpCallback, this);
 
 	//On Mouse Move
-	mouseListener->onMouseMove = CC_CALLBACK_1(Gameplay::mouseMoveCallback, this);
+	mouseListener->onMouseMove = CC_CALLBACK_1(Tutorial::mouseMoveCallback, this);
 
 	//On Mouse Scroll
-	mouseListener->onMouseScroll = CC_CALLBACK_1(Gameplay::mouseScrollCallback, this);
+	mouseListener->onMouseScroll = CC_CALLBACK_1(Tutorial::mouseScrollCallback, this);
 
 	//Add the mouse listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
-void Gameplay::initKeyboardListener()
+void Tutorial::initKeyboardListener()
 {
 	//Create the keyboard listener
 	keyboardListener = EventListenerKeyboard::create();
 
 	//Setting up callbacks
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(Gameplay::keyDownCallback, this);
-	keyboardListener->onKeyReleased = CC_CALLBACK_2(Gameplay::keyUpCallback, this);
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(Tutorial::keyDownCallback, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(Tutorial::keyUpCallback, this);
 
 	//Add the keyboard listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 }
 
 //UPDATE
-void Gameplay::update(float dt)
+void Tutorial::update(float dt)
 {
-	Grapple::grapple->update(dt, this); //update grapple
-	Hero::hero->update(dt); //update our hero
-	//if (hero->invincibilityTimer > 0)
-	//	flickerSprite(); //flicker sprite if it's invincible
-	
-	testHurtbox->clear();
-	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
-	//DRAW MOVEBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, .0f));
+	if (!isTransitioning)
+	{
+		Grapple::grapple->update(dt, this); //update grapple
+		Hero::hero->update(dt); //update our hero
+		//if (hero->invincibilityTimer > 0)
+		//	flickerSprite(); //flicker sprite if it's invincible
 
-	testMeleeAttack->clear();
-	//DRAW MELEE ATTACK HITBOX FOR TESTING
-	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin, 
-		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-		Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+		testHurtbox->clear();
+		//DRAW HURTBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
+				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+			Color4F(1.0f, 0.0f, 0.0f, 0.f));
+		//DRAW MOVEBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+			Color4F(0.0f, 1.0f, 0.0f, .0f));
 
-	spawnEnemies();     //spawn enemies if needed 
-	updateObjects(dt);  //update objects
-	updateEnemies(dt);  //update enemies
+		testMeleeAttack->clear();
+		//DRAW MELEE ATTACK HITBOX FOR TESTING
+		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
+			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
+			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+
+		spawnEnemies();     //spawn enemies if needed 
+		updateObjects(dt);  //update objects
+		updateEnemies(dt);  //update enemies
+
+		//check if we should move to the next scene
+		if (Hero::hero->moveBox.getMaxX() >= 1915)
+		{
+			Grapple::grapple->unLatch();
+			this->removeAllChildrenWithCleanup(true);
+			TileBase::deleteAllTiles();
+			director->replaceScene(TransitionFade::create(1.2f, Gameplay::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+	}
 }
 
-void Gameplay::spawnEnemies()
+void Tutorial::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
 
 }
 
-void Gameplay::updateObjects(float dt)
+void Tutorial::updateObjects(float dt)
 {
 	//update all platforms
 	unsigned int numPlatforms = Platform::platformList.size();
@@ -212,19 +241,19 @@ void Gameplay::updateObjects(float dt)
 		IceProjectile::iceProjectileList[i]->update(dt);
 }
 
-void Gameplay::updateEnemies(float dt)
+void Tutorial::updateEnemies(float dt)
 {
-	
+
 }
 
 //removes all game objects from the world
-void Gameplay::removeAllObjects()
+void Tutorial::removeAllObjects()
 {
-	
+
 }
 
 //flickers sprite every 1/10th of a second (typically to display invincibility)
-void Gameplay::flickerSprite()
+void Tutorial::flickerSprite()
 {
 	//if (((int)(ship->invincibilityTimer * 10)) % 2 == 1)
 	//	ship->sprite->setZOrder(0); //flicker the ship (hide it behind background)
@@ -234,7 +263,7 @@ void Gameplay::flickerSprite()
 
 //--- Callbacks ---//
 
-void Gameplay::mouseDownCallback(Event* event)
+void Tutorial::mouseDownCallback(Event* event)
 {
 	//Cast the event as a mouse event
 	EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);
@@ -260,19 +289,19 @@ void Gameplay::mouseDownCallback(Event* event)
 	}
 }
 
-void Gameplay::mouseUpCallback(Event* event)
+void Tutorial::mouseUpCallback(Event* event)
 {
 }
 
-void Gameplay::mouseMoveCallback(Event* event)
+void Tutorial::mouseMoveCallback(Event* event)
 {
 }
 
-void Gameplay::mouseScrollCallback(Event* event)
+void Tutorial::mouseScrollCallback(Event* event)
 {
 }
 
-void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
+void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	switch (keyCode)
 	{
@@ -301,7 +330,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		HeroStateManager::currentState->handleInput(InputType::p_space);
 		break;
 
-	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
+		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
 	case EventKeyboard::KeyCode::KEY_Q:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
 		break;
@@ -317,7 +346,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	}
 }
 
-void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
+void Tutorial::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	switch (keyCode)
 	{

@@ -5,8 +5,11 @@ class HeroAttackBase
 {
 public:
 	float attackTimer;
+	float attackWindup;
 	float attackDuration;
 	float attackCooldown;
+
+	bool disabled;
 
 	cocos2d::Rect hitbox;
 

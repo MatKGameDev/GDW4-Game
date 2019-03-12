@@ -11,8 +11,8 @@ public:
 	GameObject(Vect2 position, std::string spriteFilePath);
 	virtual ~GameObject();
 
-	static const float MAX_X;
-	static const float MAX_Y;
+	static float MAX_X;
+	static float MAX_Y;
 	float width;
 	float height;
 	float theta;

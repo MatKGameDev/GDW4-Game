@@ -7,7 +7,7 @@ HeroMoveRight::HeroMoveRight()
 
 void HeroMoveRight::init()
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("running_right_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	Hero::hero->sprite->stopAllActions();
 	Hero::hero->sprite->setFlippedX(0);
