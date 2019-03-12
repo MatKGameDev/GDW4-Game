@@ -12,31 +12,33 @@ FirstBossState::~FirstBossState()
 	delete currentState;
 }
 
+//@brief Change to Idle state
 void FirstBossState::changeToIdleState(Boss* boss)
 {
 	boss->setState(new Idling4FirstBoss);
 }
 
+//@brief Change and perform Flame Split ability
 void FirstBossState::changeToFlameSplit(Boss* boss)
 {
 	boss->setState(new FlameSplit4FirstBoss);
 }
 
+//@brief Change to Flame Thrower ability
 void FirstBossState::changeToFlameThrower(Boss* boss)
 {
 	boss->setState(new FlameThrower4FirstBoss);
 }
 
+//@brief Change to 
 void FirstBossState::changeToSuckingBullet(Boss* boss)
 {
 	boss->setState(new SuckingAbility4FirstBoss);
 }
 
 
-Idling4FirstBoss::Idling4FirstBoss() : cooldownBeforeNextAbility{ 3.f }
-{
-
-}
+Idling4FirstBoss::Idling4FirstBoss() : cooldownBeforeNextAbility{ 5.f }
+{/*Empty*/}
 
 void Idling4FirstBoss::update(const float &deltaT, Boss *bossInstance)
 {
@@ -51,8 +53,8 @@ void Idling4FirstBoss::update(const float &deltaT, Boss *bossInstance)
 
 void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 {
-	const int randomNum = cocos2d::RandomHelper::random_int(1, 3);
-	switch (randomNum)
+	//const int randomNum = cocos2d::RandomHelper::random_int(1, 3);
+	switch (cocos2d::RandomHelper::random_int(1, 3))
 	{
 	case 1:
 		changeToFlameThrower(bossInstance);
@@ -67,9 +69,6 @@ void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 		throw;
 	}
 }
-
-
-
 
 
 FlameSplit4FirstBoss::FlameSplit4FirstBoss()
@@ -92,9 +91,6 @@ void FlameSplit4FirstBoss::update(const float &deltaT, Boss *bossInstance)
 		changeToIdleState(bossInstance);
 	}
 }
-
-
-
 
 
 FlameThrower4FirstBoss::FlameThrower4FirstBoss()

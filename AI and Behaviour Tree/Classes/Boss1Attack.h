@@ -9,28 +9,39 @@ class Boss;
 class Boss1LavaAttack
 {
 protected:
+	//Data variables
 	Boss *bossPointer;
+	cocos2d::Rect hitBox;
+	float width, height;
+	cocos2d::Vec2 position, velocity, acceleration;
+	cocos2d::DrawNode *hitBoxShape;
+	cocos2d::Sprite *sprite;
 
-
+	//Protected Variables
 	Boss1LavaAttack(Boss *bossInstance);
+
+	//Utility functions
+	void redrawHitBox();
 public:
+	virtual ~Boss1LavaAttack();
 	virtual void update(const float &deltaT) = 0;
+	virtual cocos2d::Rect getHitBox() const;
+
 };
 
+/*
+ * @brief
+ */
 class LavaBall: public Boss1LavaAttack
 {
 public:
-	LavaBall(const cocos2d::Vec2& heroPosition, Boss *bossInstance);
+	LavaBall(const cocos2d::Vec2& heroPosition,int order, Boss *bossInstance);
 	~LavaBall();
 
 	//Functions
 	void update(const float &deltaT) override;
 private:
-	cocos2d::Sprite *ballSprite;
-	cocos2d::Vec2 gravity, velocity, position;
-
-	//Utility function
-	float calculateAngle(const cocos2d::Vec2& heroPosition, const cocos2d::Vec2& bossMouthPosition, const float &velocity) const;
+	float waitingTime;
 };
 
 class FlameThrower : public Boss1LavaAttack
@@ -41,7 +52,7 @@ public:
 	void update(const float& deltaT) override;
 private:
 	cocos2d::Vec2 startPoint;
-	float onTime;
+	float onTime, waitingTime;
 	cocos2d::DrawNode *drawNode;
 };
 
@@ -55,5 +66,4 @@ public:
 private:
 	cocos2d::Vec2 bulletVelocity, currentPosition, lastPosition, heroLocation;
 	float traveledLength{0}, lengthVector{0};
-	cocos2d::Sprite *bulletSprite;
 };

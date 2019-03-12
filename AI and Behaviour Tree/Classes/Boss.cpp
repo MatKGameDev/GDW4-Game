@@ -50,14 +50,16 @@ void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
 
 void Boss::spewLava()
 {
-	auto tempLavaBall = new LavaBall(cocos2d::Vec2(1000, 0),this);
-	lavaList.push_back(tempLavaBall);
+	for (size_t i = 1; i <= 3; i++) 
+	{
+		auto tempLavaBall = new LavaBall(cocos2d::Vec2(1000, 0),i, this);
+		lavaList.push_back(tempLavaBall);
+	}
 }
 
 void Boss::activateFlameThrower()
 {
-	auto tempFlameThrower = new FlameThrower( this);
-	lavaList.push_back(tempFlameThrower);
+	lavaList.push_back(new FlameThrower(this));
 }
 
 void Boss::shootSucker()
