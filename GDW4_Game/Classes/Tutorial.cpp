@@ -43,7 +43,7 @@ void Tutorial::initGameObjects()
 	GameObject::MAX_X = 15000.0f;
 	GameObject::MAX_Y = 1080.0f;
 	
-	Hero::hero->sprite->setPosition(Vec2(20.0f, 70.0f)); //set initial position
+	Hero::hero->sprite->setPosition(Vec2(20.0f, 200.0f)); //set initial position
 }
 
 void Tutorial::initSprites()

@@ -41,7 +41,7 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-
+	lookState = LookDirection::lookingRight;
 	if (isAirborne)
 		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
 	else
@@ -50,6 +50,7 @@ void Hero::moveRight()
 
 void Hero::moveLeft()
 {
+	lookState = LookDirection::lookingLeft;
 	if (isAirborne)
 		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
 	else
