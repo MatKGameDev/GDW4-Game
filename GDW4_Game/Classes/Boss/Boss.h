@@ -1,10 +1,10 @@
 #pragma once
 #include "FirstBossState.h"
 #include <2d/CCSprite.h>
-#include"HitBox.h"
+#include "Boss1Attack.h"
+#include "HitBox.h"
 
 class Hero;
-class Boss1LavaAttack;
 
 class Boss
 {

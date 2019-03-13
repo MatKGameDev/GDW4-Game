@@ -51,7 +51,7 @@ void Tutorial::initSprites()
 	Size size = Director::sharedDirector()->getVisibleSize();  //screen size
 	Vec2 center = Vec2(size.width / 2 + origin.x, size.height / 2 + origin.y); //center point
 
-	fieldWidth = size.width * 2.0;  //x boundary for camera
+	fieldWidth = size.width * 4;  //x boundary for camera
 	fieldHeight = size.height - 40; //y boundary for camera
 
 	Texture2D::TexParams params;
@@ -129,11 +129,11 @@ void Tutorial::initSprites()
 	this->addChild(backGroundParallax, -5);
 
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Tutorial_1.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
-	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
-	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("Platform");
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -144,7 +144,7 @@ void Tutorial::initSprites()
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 64);
 
 				//set collision flags if there are adjacent ground tiles
 				//we have to do our own x and y validation because cocos sucks and crashes otherwise
@@ -173,7 +173,7 @@ void Tutorial::initSprites()
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
 			}
 		}
 	}
@@ -275,7 +275,7 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 1915)
+		if (Hero::hero->moveBox.getMaxX() >= 4000)
 		{
 			Grapple::grapple->unLatch();
 			this->removeAllChildrenWithCleanup(true);
