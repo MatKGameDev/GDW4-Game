@@ -129,7 +129,7 @@ void Tutorial::initSprites()
 	this->addChild(backGroundParallax, -5);
 
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Tutorial_1.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Tutorial_2.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");

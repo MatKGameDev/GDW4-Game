@@ -49,7 +49,7 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 		break;
 	case 2:
 		waitingTime = 2.0;
-		position = cocos2d::Vec2(250, 250);
+		position = cocos2d::Vec2(250, 200);
 		break;
 	case 3:
 		waitingTime = 2.5;
@@ -177,7 +177,7 @@ SuckerBullet::SuckerBullet(const cocos2d::Vec2& heroLocation, Boss* bossInstance
 	//set up the physics
 	cocos2d::Vec2 tempVector = heroLocation - bossInstance->getMouthPosition();
 	lengthVector = tempVector.getLength();
-	bulletVelocity = tempVector.getNormalized() * 600;
+	bulletVelocity = tempVector.getNormalized() * 1200;
 
 	this->heroLocation = heroLocation;
 }
