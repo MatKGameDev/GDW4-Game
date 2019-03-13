@@ -14,14 +14,14 @@ void Idling4FirstBoss::update(const float &deltaT, Boss *bossInstance)
 
 	if (cooldownBeforeNextAbility <= 0)
 	{
-		//chooseRandomAbility(bossInstance);
-		changeToFlameSplit(bossInstance);
+		bossInstance->getSprite()->stopAllActions();
+		chooseRandomAbility(bossInstance);
+		//changeToFlameThrower(bossInstance);
 	}
 }
 
 void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 {
-	//const int randomNum = cocos2d::RandomHelper::random_int(1, 3);
 	switch (cocos2d::RandomHelper::random_int(1, 3))
 	{
 	case 1:
@@ -31,7 +31,7 @@ void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 		changeToFlameSplit(bossInstance);
 		break;
 	case 3:
-		//changeToSuckingBullet(bossInstance);
+		changeToSuckingBullet(bossInstance);
 		break;
 	default:
 		throw;

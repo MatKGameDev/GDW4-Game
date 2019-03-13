@@ -27,7 +27,7 @@ void FlameThrowerPerforming::ChangeToCooldown()
 	delete this;
 }
 
-FlameThrowerPerforming::FlameThrowerPerforming(Boss* boss) :FirstBossSmallerState(boss), waitingTime(7.f)
+FlameThrowerPerforming::FlameThrowerPerforming(Boss* boss) :FirstBossSmallerState(boss), waitingTime(1.0f)
 {
 	boss->activateFlameThrower();
 }

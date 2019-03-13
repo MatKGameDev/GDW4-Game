@@ -1,13 +1,12 @@
 #include "Boss.h"
-#include "Boss1Attack.h" 
+#include "Hero.h"
 #include "BossIdleState.h"
 
-Boss::Boss(cocos2d::Scene *sceneForBoss, float height, float width)
-	: bossSprite(cocos2d::Sprite::create("Boss1.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
-	hitBox(sceneForBoss, height, width)
+Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
+	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
+	hitBox(sceneForBoss, height, width), heroPointer(heroInstance)
 {
-	bossSprite->setPosition(250, 750);
-	//bossSprite->setAnchorPoint(cocos2d::Vec2(0, 0));
+	bossSprite->setPosition(230, 450);
 	state = new Idling4FirstBoss(this);
 }
 
@@ -74,7 +73,7 @@ void Boss::spewLava()
 {
 	for (size_t i = 1; i <= 3; i++)
 	{
-		auto tempLavaBall = new LavaBall(cocos2d::Vec2(1000, 0), i, this);
+		auto tempLavaBall = new LavaBall(i, this);
 		lavaList.push_back(tempLavaBall);
 	}
 }
@@ -86,7 +85,7 @@ void Boss::activateFlameThrower()
 
 void Boss::shootSucker()
 {
-	auto tempBullet = new SuckerBullet(cocos2d::Vec2(1000, 0), this);
+	auto tempBullet = new SuckerBullet(heroPointer->sprite->getPosition(), this);
 	lavaList.push_back(tempBullet);
 }
 
