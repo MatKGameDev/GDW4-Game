@@ -35,7 +35,11 @@ cocos2d::Rect Boss1LavaAttack::getHitBox() const
 LavaBall::LavaBall(int order, Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance)
 {
-	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
+	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
 
 	switch (order)
 	{
@@ -57,7 +61,7 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 
 	//Set Position for the lava ball
 	sprite->setPosition(position);
-	bossPointer->getBossScene()->addChild(sprite);
+	bossPointer->getBossScene()->addChild(sprite, 18);
 
 	//Set physic variables
 	acceleration.set(1250, 0);
@@ -107,9 +111,13 @@ void LavaBall::update(const float& deltaT)
 FlameThrower::FlameThrower(Boss *bossInstance) : Boss1LavaAttack(bossInstance), onTime(1.0f), drawNode(cocos2d::DrawNode::create())
 {
 	position.set(960, 500);
-	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
 	sprite->setPosition(position);
-	bossPointer->getBossScene()->addChild(sprite);
+	bossPointer->getBossScene()->addChild(sprite, 18);
 
 	//Setup hit box
 	hitBox = new HitBox(bossPointer->getBossScene(), 450, 1920);
@@ -152,10 +160,16 @@ void FlameThrower::update(const float& deltaT)
 SuckerBullet::SuckerBullet(const cocos2d::Vec2& heroLocation, Boss* bossInstance) : Boss1LavaAttack(bossInstance), currentPosition(bossInstance->getMouthPosition())
 {
 	//Set up the sprite
-	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
+	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
+
+	/*auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));*/ //TODO
+
 	position.set(bossInstance->getMouthPosition());
 	sprite->setPosition(position);
-	bossPointer->getBossScene()->addChild(sprite);
+	bossPointer->getBossScene()->addChild(sprite, 18);
 
 	//Set up hit box
 	hitBox = new HitBox(bossPointer->getBossScene(), 50.f, 50);
