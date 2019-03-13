@@ -275,7 +275,7 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 4000)
+		if (Hero::hero->moveBox.getMaxX() >= 1000)
 		{
 			Grapple::grapple->unLatch();
 			this->removeAllChildrenWithCleanup(true);
