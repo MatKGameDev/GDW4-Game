@@ -52,6 +52,7 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
+	//get the tilemap in
 	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
