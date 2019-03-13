@@ -39,7 +39,7 @@ void Tutorial::initUI()
 void Tutorial::initGameObjects()
 {
 	//set bounds for the scene
-	GameObject::MAX_X = 1920.0f;
+	GameObject::MAX_X = 15000.0f;
 	GameObject::MAX_Y = 1080.0f;
 	
 	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
@@ -275,7 +275,7 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 1000)
+		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
 			Grapple::grapple->unLatch();
 			this->removeAllChildrenWithCleanup(true);

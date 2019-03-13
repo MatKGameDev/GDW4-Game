@@ -109,7 +109,7 @@ void Gameplay::initSprites()
 	Hero::hero->sprite->setPosition(Vec2(700, 150));
 	HeroStateManager::idle->onEnter();
 
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 
