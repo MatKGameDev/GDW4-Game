@@ -1,5 +1,6 @@
 #include "Tutorial.h"
 #include "Gameplay.h"
+#include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
 
@@ -42,7 +43,7 @@ void Tutorial::initGameObjects()
 	GameObject::MAX_X = 15000.0f;
 	GameObject::MAX_Y = 1080.0f;
 	
-	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
+	Hero::hero->sprite->setPosition(Vec2(20.0f, 70.0f)); //set initial position
 }
 
 void Tutorial::initSprites()
@@ -129,7 +130,7 @@ void Tutorial::initSprites()
 	this->addChild(backGroundParallax, -5);
 
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Tutorial_1.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Tutorial_2.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
@@ -268,7 +269,7 @@ void Tutorial::update(float dt)
 		//DRAW MELEE ATTACK HITBOX FOR TESTING
 		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
 			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+			Color4F(1.0f, 0.7f, 0.8f, 0.2f));
 
 		spawnEnemies();     //spawn enemies if needed 
 		updateObjects(dt);  //update objects
@@ -280,7 +281,7 @@ void Tutorial::update(float dt)
 			Grapple::grapple->unLatch();
 			this->removeAllChildrenWithCleanup(true);
 			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(1.2f, Gameplay::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 	}
