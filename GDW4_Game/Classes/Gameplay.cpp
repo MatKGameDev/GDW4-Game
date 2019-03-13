@@ -39,8 +39,8 @@ void Gameplay::initGameObjects()
 {
 	Hero::hero->moveState = Hero::MoveDirection::idle;
 
-	GameObject::MAX_X = 1477.0f;
-	GameObject::MAX_Y = 985.0f;
+	GameObject::MAX_X = 1856.0f;
+	GameObject::MAX_Y = 952.0f;
 
 	boss = new Boss(Hero::hero, this);
 }
@@ -53,11 +53,12 @@ void Gameplay::initSprites()
 	this->addChild(background, 1);
 
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/bossMap.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
-	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
-	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("tiles");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platforms");
+	cocos2d::TMXLayer* pillarLayer = testTileMap->getLayer("pillars");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -68,7 +69,7 @@ void Gameplay::initSprites()
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 64);
 
 				//set collision flags if there are adjacent ground tiles
 				//we have to do our own x and y validation because cocos sucks and crashes otherwise
@@ -97,7 +98,7 @@ void Gameplay::initSprites()
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
 			}
 		}
 	}
