@@ -12,6 +12,7 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70),
+	invincibilityTimer(0),
 	isAirborne(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
@@ -60,6 +61,16 @@ void Hero::jump()
 {
 	if (!isAirborne)
 		velocity.y = JUMP_VELOCITY;
+}
+
+//hero takes damage from any source
+void Hero::takeDamage()
+{
+	//make sure hero isn't already invulnerable
+	if (invincibilityTimer <= 0)
+	{
+		invincibilityTimer = 0.99;
+	}
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -158,6 +169,16 @@ void Hero::updateCollisions()
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
+
+	//check for invincibility
+	if (((int)(invincibilityTimer * 10)) % 2 == 1)
+		sprite->setVisible(0); //flicker the sprite
+	else
+		sprite->setVisible(1); //show the sprite again
+
+	//update invincibility timer
+	if (invincibilityTimer > 0)
+		invincibilityTimer -= dt;
 
 	updateHitboxes();
 	updateCollisions();

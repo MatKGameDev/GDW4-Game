@@ -1,5 +1,4 @@
 #include "Boss.h"
-#include "Boss1Attack.h" 
 #include "Hero.h"
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)

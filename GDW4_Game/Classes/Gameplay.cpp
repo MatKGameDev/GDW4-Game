@@ -52,6 +52,7 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
+	//get the tilemap in
 	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
@@ -234,21 +235,26 @@ void Gameplay::updateEnemies(float dt)
 {
 	//update boss
 	boss->update(dt, Hero::hero->sprite->getPosition());
+
+	//check for collision on boss
+	if (Hero::hero->isHitboxCollision(boss->getHitBox()))
+	{
+		Hero::hero->takeDamage();
+	}
+
+	//loop through each attack checking for collisions
+	unsigned int attackListSize = boss->getLavaList().size();
+	for (unsigned int i = 0; i < attackListSize; i++)
+	{
+		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox()))
+			Hero::hero->takeDamage();
+	}
 }
 
 //removes all game objects from the world
 void Gameplay::removeAllObjects()
 {
 	
-}
-
-//flickers sprite every 1/10th of a second (typically to display invincibility)
-void Gameplay::flickerSprite()
-{
-	//if (((int)(ship->invincibilityTimer * 10)) % 2 == 1)
-	//	ship->sprite->setZOrder(0); //flicker the ship (hide it behind background)
-	//else
-	//	ship->sprite->setZOrder(10); //show the ship again
 }
 
 //--- Callbacks ---//
