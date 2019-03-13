@@ -25,7 +25,7 @@ void FirstBossState::changeToIdleState(Boss* boss)
 //@brief Change and perform Flame Split ability
 void FirstBossState::changeToFlameSplit(Boss* boss)
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	boss->getSprite()->stopAllActions();
 	boss->getSprite()->runAction(cocos2d::Repeat::create(action->clone(), 1));
