@@ -1,10 +1,9 @@
 #pragma once
 #include "FirstBossState.h"
 #include <2d/CCSprite.h>
-#include "Boss1Attack.h"
-#include "HitBox.h"
+#include"HitBox.h"
 
-class Hero;
+class Boss1LavaAttack;
 
 class Boss
 {
@@ -15,10 +14,9 @@ private:
 	const cocos2d::Vec2 mouthPosition;
 	cocos2d::Scene *bossScene;
 	HitBox hitBox;
-	Hero* heroPointer;
 
 public:
-	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 315);
+	Boss(cocos2d::Scene *sceneForBoss, float height = 581, float width = 315);
 	~Boss();
 
 	//Setters
@@ -30,6 +28,7 @@ public:
 	cocos2d::Vec2 getMouthPosition()const;
 	cocos2d::Scene* getBossScene() const;
 	cocos2d::Rect getHitBox() const;
+	FirstBossState* getCurrentState() const;
 
 	//State changes and update
 	void update(const float &deltaT, const cocos2d::Vec2 &heroPosition);
