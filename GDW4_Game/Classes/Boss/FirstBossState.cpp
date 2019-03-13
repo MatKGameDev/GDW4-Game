@@ -15,22 +15,30 @@ FirstBossState::~FirstBossState()
 //@brief Change to Idle state
 void FirstBossState::changeToIdleState(Boss* boss)
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_animation_key");
+	/*auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	boss->getSprite()->stopAllActions();
-	boss->getSprite()->runAction(cocos2d::RepeatForever::create(action->clone()));
+	boss->getSprite()->runAction(cocos2d::RepeatForever::create(action->clone()));*/
 	boss->setState(new Idling4FirstBoss);
 }
 
 //@brief Change and perform Flame Split ability
 void FirstBossState::changeToFlameSplit(Boss* boss)
 {
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	boss->getSprite()->stopAllActions();
+	boss->getSprite()->runAction(cocos2d::Repeat::create(action->clone(), 1));
 	boss->setState(new FlameSplit4FirstBoss);
 }
 
 //@brief Change to Flame Thrower ability
 void FirstBossState::changeToFlameThrower(Boss* boss)
 {
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	boss->getSprite()->stopAllActions();
+	boss->getSprite()->runAction(cocos2d::Repeat::create(action->clone(), 1));
 	boss->setState(new FlameThrower4FirstBoss);
 }
 
