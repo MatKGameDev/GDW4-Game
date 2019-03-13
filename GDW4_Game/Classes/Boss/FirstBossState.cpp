@@ -35,7 +35,7 @@ void FirstBossState::changeToFlameSplit(Boss* boss)
 //@brief Change to Flame Thrower ability
 void FirstBossState::changeToFlameThrower(Boss* boss)
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	boss->getSprite()->stopAllActions();
 	boss->getSprite()->runAction(cocos2d::Repeat::create(action->clone(), 1));
@@ -51,7 +51,7 @@ void FirstBossState::changeToSuckingBullet(Boss* boss)
 
 Idling4FirstBoss::Idling4FirstBoss() : cooldownBeforeNextAbility{ 5.f }
 {
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 }
 
