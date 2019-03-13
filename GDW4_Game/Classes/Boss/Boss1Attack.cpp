@@ -35,7 +35,7 @@ cocos2d::Rect Boss1LavaAttack::getHitBox() const
 LavaBall::LavaBall(int order, Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance)
 {
-	sprite = cocos2d::Sprite::create("LavaBall.png");
+	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
 
 	switch (order)
 	{
@@ -107,7 +107,7 @@ void LavaBall::update(const float& deltaT)
 FlameThrower::FlameThrower(Boss *bossInstance) : Boss1LavaAttack(bossInstance), onTime(1.0f), drawNode(cocos2d::DrawNode::create())
 {
 	position.set(960, 500);
-	sprite = cocos2d::Sprite::create("FlameThrower.png");
+	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
 	sprite->setPosition(position);
 	bossPointer->getBossScene()->addChild(sprite);
 
@@ -152,7 +152,7 @@ void FlameThrower::update(const float& deltaT)
 SuckerBullet::SuckerBullet(const cocos2d::Vec2& heroLocation, Boss* bossInstance) : Boss1LavaAttack(bossInstance), currentPosition(bossInstance->getMouthPosition())
 {
 	//Set up the sprite
-	sprite = cocos2d::Sprite::create("LavaBall.png");
+	sprite = cocos2d::Sprite::create("Sprites/fire_ball.png");
 	position.set(bossInstance->getMouthPosition());
 	sprite->setPosition(position);
 	bossPointer->getBossScene()->addChild(sprite);
