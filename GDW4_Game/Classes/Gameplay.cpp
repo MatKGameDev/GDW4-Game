@@ -39,8 +39,8 @@ void Gameplay::initGameObjects()
 {
 	Hero::hero->moveState = Hero::MoveDirection::idle;
 
-	GameObject::MAX_X = 1477.0f;
-	GameObject::MAX_Y = 985.0f;
+	GameObject::MAX_X = 1856.0f;
+	GameObject::MAX_Y = 952.0f;
 
 	boss = new Boss(Hero::hero, this);
 }
@@ -52,11 +52,13 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
+	//get the tilemap in
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/bossMap.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
-	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
-	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("tiles");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platforms");
+	cocos2d::TMXLayer* pillarLayer = testTileMap->getLayer("pillars");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -67,7 +69,7 @@ void Gameplay::initSprites()
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 64);
 
 				//set collision flags if there are adjacent ground tiles
 				//we have to do our own x and y validation because cocos sucks and crashes otherwise
@@ -96,7 +98,7 @@ void Gameplay::initSprites()
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
 			}
 		}
 	}
@@ -107,7 +109,7 @@ void Gameplay::initSprites()
 	Hero::hero->sprite->setPosition(Vec2(700, 150));
 	HeroStateManager::idle->onEnter();
 
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 
@@ -234,21 +236,26 @@ void Gameplay::updateEnemies(float dt)
 {
 	//update boss
 	boss->update(dt, Hero::hero->sprite->getPosition());
+
+	//check for collision on boss
+	if (Hero::hero->isHitboxCollision(boss->getHitBox()))
+	{
+		Hero::hero->takeDamage();
+	}
+
+	//loop through each attack checking for collisions
+	unsigned int attackListSize = boss->getLavaList().size();
+	for (unsigned int i = 0; i < attackListSize; i++)
+	{
+		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox()))
+			Hero::hero->takeDamage();
+	}
 }
 
 //removes all game objects from the world
 void Gameplay::removeAllObjects()
 {
 	
-}
-
-//flickers sprite every 1/10th of a second (typically to display invincibility)
-void Gameplay::flickerSprite()
-{
-	//if (((int)(ship->invincibilityTimer * 10)) % 2 == 1)
-	//	ship->sprite->setZOrder(0); //flicker the ship (hide it behind background)
-	//else
-	//	ship->sprite->setZOrder(10); //show the ship again
 }
 
 //--- Callbacks ---//
@@ -327,11 +334,6 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
-		break;
-
-		//FOR TESTING
-	case EventKeyboard::KeyCode::KEY_I:
-		Grapple::grapple->testCase = !Grapple::grapple->testCase;
 		break;
 	}
 }

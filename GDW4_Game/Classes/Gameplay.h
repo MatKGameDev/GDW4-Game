@@ -36,8 +36,6 @@ public:
 	void updateEnemies(float dt);
 	void removeAllObjects();
 
-	void flickerSprite();
-
 	//Callbacks
 	void mouseDownCallback(Event* event);
 	void mouseUpCallback(Event* event);

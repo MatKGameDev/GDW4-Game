@@ -78,6 +78,23 @@ bool GameObject::isMovementCollision(GameObject* otherObject)
 		return true;
 }
 
+//checks for collision on the gameobject's hitbox
+bool GameObject::isHitboxCollision(cocos2d::Rect otherHitbox)
+{
+	//check x values to see if they arent touching
+	//assuming sprites are named A and B:
+	//A_begin.x > B_end.x OR B_begin.x > A_end.x means there IS a gap on x
+	if (this->hurtBox.getMinX() >= otherHitbox.getMaxX() || otherHitbox.getMinX() >= this->hurtBox.getMaxX())
+		return false;
+	//check y values to see if they arent touching
+	//A_begin.y > B_end.y OR B_begin.y > A_end.y means there IS a gap on y
+	else if (this->hurtBox.getMinY() >= otherHitbox.getMaxY() || otherHitbox.getMinY() >= this->hurtBox.getMaxY())
+		return false;
+	//if neither, there's a collision
+	else
+		return true;
+}
+
 //updates the object's physics properties
 void GameObject::updatePhysics(float dt)
 {
