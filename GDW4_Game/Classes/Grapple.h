@@ -14,10 +14,6 @@ public:
 
 	const float MOVE_SPEED;
 
-
-	bool testCase;
-
-
 	Sprite* sprite;
 	Sprite* tip;
 

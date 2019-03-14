@@ -13,9 +13,6 @@ Grapple::Grapple() :
 	heroMoveScale(0),
 	latchDuration(0)
 {
-
-
-	testCase = false;
 }
 
 //initializes the grapple and creates a single object for the class (if one doesn't already exist)
@@ -220,7 +217,6 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
-		//grapple->clear(); //clear the drawn grapple before each frame
 		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //have grapple start point move with the hero
 
 		if (isLatched)
@@ -250,8 +246,7 @@ void Grapple::update(float dt, Scene* scene)
 		}
 		else
 		{
-			if (!testCase) //FOR TESTING
-				extendGrapple(); //recalculate endpoint, ensuring that the initial mouse clicked position is passed through
+			extendGrapple(); //recalculate endpoint, ensuring that the initial mouse clicked position is passed through
 
 			grappleTip = Vect2::lerp(startPoint, endPoint, lengthScale); //use lerp to increase the length of the grapple each frame until it reaches the end point
 

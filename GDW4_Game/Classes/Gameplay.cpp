@@ -335,11 +335,6 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
-
-		//FOR TESTING
-	case EventKeyboard::KeyCode::KEY_I:
-		Grapple::grapple->testCase = !Grapple::grapple->testCase;
-		break;
 	}
 }
 
