@@ -15,6 +15,8 @@ namespace marcos
 
 		static cocos2d::Animation* setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay);
 
+		static cocos2d::Animation * setAnimation(const std::string a_String, const int a_NumFrames, const int a_rows, const float a_Width, const float a_Height, const float a_Delay);
+
 
 		//idling
 		static cocos2d::Animation* m_IdlingRightAnimation;
@@ -49,6 +51,17 @@ namespace marcos
 
 		static cocos2d::Animation* m_GrappleJumpRightAnimation;
 		static cocos2d::Animation* m_GrappleJumpLeftAnimation;
+
+		//boss
+		static cocos2d::Animation* m_BossFlameAnimation;
+		static cocos2d::Animation* m_BossFlameTellAnimationPRE;
+		static cocos2d::Animation* m_BossFlameTellAnimationPOST;
+
+		static cocos2d::Animation* m_BossSpitAnimation;
+		static cocos2d::Animation* m_BossSpitTellAnimationPRE;
+		static cocos2d::Animation* m_BossSpitTellAnimationPOST;
+
+		static cocos2d::Animation* m_BossIdleAnimation;
 
 
 

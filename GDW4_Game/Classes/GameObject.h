@@ -39,6 +39,7 @@ public:
 
 	void destroySprite();
 	bool isMovementCollision(GameObject* otherObject);
+	bool isHitboxCollision(cocos2d::Rect otherHitbox);
 
 	virtual void updateHitboxes() = 0;
 	virtual void updatePhysics(float dt);

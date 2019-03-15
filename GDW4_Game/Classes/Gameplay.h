@@ -12,11 +12,15 @@
 
 using namespace cocos2d;
 
+class Boss; //forward declare
+
 class Gameplay : public cocos2d::Scene
 {
 public:
 	CREATE_FUNC(Gameplay);
 	static Scene* createScene();
+
+	Boss* boss;
 
 	virtual bool init();
 	void initUI();
@@ -31,8 +35,6 @@ public:
 	void updateObjects(float dt);
 	void updateEnemies(float dt);
 	void removeAllObjects();
-
-	void flickerSprite();
 
 	//Callbacks
 	void mouseDownCallback(Event* event);

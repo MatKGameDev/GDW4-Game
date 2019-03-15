@@ -12,12 +12,13 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70),
+	invincibilityTimer(0),
 	isAirborne(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
 {
 	//initialize arm
-	arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
 
 	mass = 5;					
@@ -40,7 +41,7 @@ void Hero::createHero()
 
 void Hero::moveRight()
 {
-
+	lookState = LookDirection::lookingRight;
 	if (isAirborne)
 		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
 	else
@@ -49,6 +50,7 @@ void Hero::moveRight()
 
 void Hero::moveLeft()
 {
+	lookState = LookDirection::lookingLeft;
 	if (isAirborne)
 		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
 	else
@@ -60,6 +62,16 @@ void Hero::jump()
 {
 	if (!isAirborne)
 		velocity.y = JUMP_VELOCITY;
+}
+
+//hero takes damage from any source
+void Hero::takeDamage()
+{
+	//make sure hero isn't already invulnerable
+	if (invincibilityTimer <= 0)
+	{
+		invincibilityTimer = 0.99;
+	}
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -158,6 +170,16 @@ void Hero::updateCollisions()
 void Hero::update(float dt)
 {
 	this->updatePhysics(dt);
+
+	//check for invincibility
+	if (((int)(invincibilityTimer * 10)) % 2 == 1)
+		sprite->setVisible(0); //flicker the sprite
+	else
+		sprite->setVisible(1); //show the sprite again
+
+	//update invincibility timer
+	if (invincibilityTimer > 0)
+		invincibilityTimer -= dt;
 
 	updateHitboxes();
 	updateCollisions();

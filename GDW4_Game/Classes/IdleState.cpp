@@ -19,7 +19,7 @@ void IdleState::onEnter()
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("idle_left_animation_key");
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(),1));
 
 	}
 	else

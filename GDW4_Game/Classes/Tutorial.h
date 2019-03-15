@@ -51,7 +51,19 @@ private:
 	EventListenerKeyboard* keyboardListener;
 	Vect2 mousePosition;
 
-	Sprite* background;
+	float fieldWidth;
+	float fieldHeight;
+
+	Sprite* backgroundL1;
+	Sprite* backgroundL2;
+	Sprite* backgroundL3;
+	Sprite* backgroundL4;
+	Sprite* backgroundL5;
+	Sprite* backgroundL6;
+	Sprite* backgroundL7;
+	Sprite* backgroundL8;
+	Sprite* backgroundL9;
+	Sprite* backgroundL10;
 
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack
