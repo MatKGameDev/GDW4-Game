@@ -1,129 +1,69 @@
 #pragma once
-#include "cocos2d.h"
+#include "GameObject.h"
+
 namespace marcos
 {
-	class Animation
-	{
-
-	public:
-
-		Animation();
-		Animation(int a_NumFrames, float a_Width, float a_Height, float a_Delay, cocos2d::Sprite *a_Sprite, std::string a_Name);
-		~Animation();
-
-
-		void setAnimation(std::string a_String);
-
-		void runAnimation();
-		void setNumFrames(int a_frames);
-		void setWidth(float a_Width);
-		void setHeight(float a_Height);
-		void setDelay(float a_Delay);
-		void setSprite(cocos2d::Sprite *a_Sprite);
-
-		cocos2d::Sprite *m_Sprite;
-
-		int m_NumFrames;
-		float m_Width;
-		float m_Height;
-		float m_Delay;
-		cocos2d::Animation *m_Animation;
-		cocos2d::Animate *m_Animate;
-		cocos2d::Vector<cocos2d::SpriteFrame*> m_AnimFrames;
-
-	private:
-	};
-
-
-	class BossAnimation
+	class AnimationManager
 	{
 	public:
-	
-	private:
-	};
 
-	class IdlingAnimation 
-	{
-	public:
-		IdlingAnimation(cocos2d::Sprite* a_Sprite);
-		marcos::Animation m_IdleAnimation;
-		cocos2d::Sprite* m_Sprite;
-		void runAnimation();
-	private:
+		AnimationManager();
+		~AnimationManager();
 
-	};
 
-	class LandingAnimation
-	{
-	public:
-		LandingAnimation(cocos2d::Sprite* a_Sprite);
-		marcos::Animation m_LandAnimation;
-	private:
+		static void init();
 
-	};
+		static cocos2d::Animation* setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay);
 
-	class RunningAnimation 
-	{
+		static cocos2d::Animation * setAnimation(const std::string a_String, const int a_NumFrames, const int a_rows, const float a_Width, const float a_Height, const float a_Delay);
 
-	public:
-		RunningAnimation(cocos2d::Sprite* a_Sprite);
-		void runAnimation();
-		marcos::Animation m_MoveAnimation;
-		cocos2d::Sprite* m_Sprite;
 
-	private:
+		//idling
+		static cocos2d::Animation* m_IdlingRightAnimation;
+		static cocos2d::Animation* m_IdlingLeftAnimation;
 
-	};
+		//jumping
+		static cocos2d::Animation* m_JumpingRightAnimation;
+		static cocos2d::Animation* m_JumpingLeftAnimation;
 
-	class GrapplingAnimation 
-	{
-	public:
-		GrapplingAnimation(cocos2d::Sprite* a_Sprite);
-		marcos::Animation m_GrappleAnimation;
-	private:
+		static cocos2d::Animation* m_FallingRightAnimation;
+		static cocos2d::Animation* m_FallingLeftAnimation;
 
-	};
+		//running
+		static cocos2d::Animation* m_RunningRightAnimation;
+		static cocos2d::Animation* m_RunningLeftAnimation;
 
-	class AttackingAnimation 
-	{
+		//attacking
+		static cocos2d::Animation* m_MeleeAttackRightAnimation;
+		static cocos2d::Animation* m_MeleeAttackLeftAnimation;
 
-	public:
-		AttackingAnimation(cocos2d::Sprite* a_Sprite);
-		marcos::Animation m_AttackAnimation;
+		static cocos2d::Animation* m_ProjectileAttackRightAnimation;
+		static cocos2d::Animation* m_ProjectileAttackLeftAnimation;
 
-	private:
-		//placeholder int attackType;
-		//placeholder int direction;
 
-	};
+		//grappling
+		static cocos2d::Animation* m_GrapplingRightAnimation;
+		static cocos2d::Animation* m_GrapplingLeftAnimation;
 
-	class JumpingAnimation 
-	{
+		static cocos2d::Animation* m_ShootingGrappleRightAnimation;
+		static cocos2d::Animation* m_ShootingGrappleLeftAnimation;
+		
 
-	public:
-		JumpingAnimation(cocos2d::Sprite* a_Sprite);
-		marcos::Animation m_JumpAnimation;
-	private:
+		static cocos2d::Animation* m_GrappleJumpRightAnimation;
+		static cocos2d::Animation* m_GrappleJumpLeftAnimation;
 
-	};
+		//boss
+		static cocos2d::Animation* m_BossFlameAnimation;
+		static cocos2d::Animation* m_BossFlameTellAnimationPRE;
+		static cocos2d::Animation* m_BossFlameTellAnimationPOST;
 
-	class HeroAnimation
-	{
+		static cocos2d::Animation* m_BossSpitAnimation;
+		static cocos2d::Animation* m_BossSpitTellAnimationPRE;
+		static cocos2d::Animation* m_BossSpitTellAnimationPOST;
 
-	public:
-		HeroAnimation(cocos2d::Sprite* a_Sprite);
-		cocos2d::Sprite* getSprite();
-		cocos2d::Sprite* m_Sprite;
-		void runAnimation();
+		static cocos2d::Animation* m_BossIdleAnimation;
 
-		marcos::Animation *m_HeroAnimation;
 
-		JumpingAnimation m_JumpingAnimation;
-		LandingAnimation m_LandingAnimation;
-		RunningAnimation m_RunningAnimation;
-		AttackingAnimation m_AttackingAnimation;
-		GrapplingAnimation m_GrapplingAnimation;
-		IdlingAnimation m_IdlingAnimation;
 
 	private:
 

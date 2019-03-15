@@ -5,14 +5,22 @@
 #include "Platform.h"
 #include "Grapple.h"
 #include "HeroAttackManager.h"
+#include "IceProjectile.h"
+#include "HeroMovementBase.h"
+#include "PlatformTile.h"
+#include "GroundTile.h"
 
 using namespace cocos2d;
+
+class Boss; //forward declare
 
 class Gameplay : public cocos2d::Scene
 {
 public:
 	CREATE_FUNC(Gameplay);
 	static Scene* createScene();
+
+	Boss* boss;
 
 	virtual bool init();
 	void initUI();
@@ -27,8 +35,6 @@ public:
 	void updateObjects(float dt);
 	void updateEnemies(float dt);
 	void removeAllObjects();
-
-	void flickerSprite();
 
 	//Callbacks
 	void mouseDownCallback(Event* event);
@@ -46,8 +52,6 @@ private:
 	Vect2 mousePosition;
 
 	Sprite* background;
-
-	Platform* platform;
 
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack

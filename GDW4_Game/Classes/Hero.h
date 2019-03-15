@@ -15,19 +15,20 @@ public:
 	const float DRAG_VELOCITY;
 
 	static Hero* hero; //single hero instance
-	marcos::HeroAnimation* heroAnimation; //TODO: This needs to become a heroAnimation object as the system develops
+	
 	void createHero();
 
-	cocos2d::Rect hurtBox;
+	cocos2d::Sprite* arm;
 
 	float movespeedIncrease;
+	bool isAirborne;
+	float invincibilityTimer;
 
 	enum LookDirection
 	{
 		lookingRight,
 		lookingLeft
 	};
-
 	LookDirection lookState;
 
 	enum MoveDirection
@@ -36,16 +37,18 @@ public:
 		movingRight,
 		movingLeft
 	};
-
 	MoveDirection moveState;
-
-	bool isAirborne;
 
 	void moveRight();
 	void moveLeft();
 	void jump();
 
+	void takeDamage();
+
+	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
+	void updateHitboxes() override;
+	void updateCollisions();
 	void update(float dt);
 
 private:
