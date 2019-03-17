@@ -13,6 +13,7 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70),
 	invincibilityTimer(0),
+	health(3),
 	isAirborne(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
@@ -70,6 +71,7 @@ void Hero::takeDamage()
 	//make sure hero isn't already invulnerable
 	if (invincibilityTimer <= 0)
 	{
+		health--;
 		invincibilityTimer = 0.99;
 	}
 }
