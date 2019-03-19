@@ -1,4 +1,7 @@
 #pragma once
+#ifndef HEROSTATEMANAGER_H
+#define HEROSTATEMANAGER_H
+
 #include "AttackingState.h"
 #include "FallingState.h"
 #include "GrapplingState.h"
@@ -26,3 +29,4 @@ public:
 	static HoldingPlatformState* holdingPlatform;
 	static ShootingGrappleState* shootingGrapple;
 };
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef INPUTTYPE_H
+#define INPUTTYPE_H
 
 /*
 KEYBOARD INPUT FORMAT:
@@ -102,3 +104,4 @@ enum InputType
 	scrollup,
 	scrolldown
 };
+#endif

@@ -137,6 +137,7 @@ void Gameplay::initSprites()
 	this->addChild(Grapple::grapple->sprite, 5);
 
 	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->tip, 6);
 }
 
@@ -188,15 +189,13 @@ void Gameplay::update(float dt)
 {
 	Grapple::grapple->update(dt, this); //update grapple
 	Hero::hero->update(dt); //update our hero
-	//if (hero->invincibilityTimer > 0)
-	//	flickerSprite(); //flicker sprite if it's invincible
 	
 	testHurtbox->clear();
 	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.5f));
 	//DRAW MOVEBOX FOR TESTING
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
@@ -212,6 +211,12 @@ void Gameplay::update(float dt)
 	spawnEnemies();     //spawn enemies if needed 
 	updateObjects(dt);  //update objects
 	updateEnemies(dt);  //update enemies
+
+	//FOR TESTING
+	if (boss->getHealth() == 0)
+	{
+		delete boss;
+	}
 }
 
 void Gameplay::spawnEnemies()
@@ -236,6 +241,14 @@ void Gameplay::updateEnemies(float dt)
 {
 	//update boss
 	boss->update(dt, Hero::hero->sprite->getPosition());
+
+	//check for an attack hitting the boss
+	HeroAttackBase* currentAttack = HeroAttackManager::currentAttack;
+	if (currentAttack == HeroAttackManager::meleeFire && myHelper::isCollision(currentAttack->hitbox, boss->getHitBox()))
+	{
+		currentAttack->disabled = true;
+		boss->takeDamage();
+	}
 
 	//check for collision on boss
 	if (Hero::hero->isHitboxCollision(boss->getHitBox()))

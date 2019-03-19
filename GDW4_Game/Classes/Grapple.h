@@ -1,4 +1,7 @@
 #pragma once
+#ifndef GRAPPLE_H
+#define GRAPPLE_H
+
 #include "cocos2d.h"
 #include "Vect2.h"
 #include "Platform.h"
@@ -51,3 +54,4 @@ public:
 
 	void update(float dt, Scene* scene);
 };
+#endif

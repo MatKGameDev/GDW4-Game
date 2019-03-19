@@ -36,6 +36,7 @@ void Grapple::initGrapple()
 		//set up tip sprite
 		grapple->tip = Sprite::create("Sprites/grappleTip.png");
 		grapple->tip->setVisible(0);
+		grapple->tip->setAnchorPoint(Vec2(0.f, 0.0f));
 	}
 }
 
@@ -58,7 +59,7 @@ void Grapple::shoot(Vect2 destination)
 		else //heroLatchPos.x > latchPoint.x
 		{
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() -/*+*/ 1);
 		}
 
 		extendGrapple();
@@ -125,7 +126,7 @@ void Grapple::unLatch()
 bool Grapple::isMaxLength()
 {
 	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
-	if (grappleLength.getMagnitude() > 1300) //check max length
+	if (grappleLength.getMagnitude() > 1000) //check max length
 		return true;
 	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
 		return true;
@@ -217,7 +218,7 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
-		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //have grapple start point move with the hero
+		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 13); //have grapple start point move with the hero
 
 		if (isLatched)
 		{
@@ -287,11 +288,14 @@ void Grapple::update(float dt, Scene* scene)
 		{
 			float grappleDistance = Vect2::calculateDistance(startPoint, grappleTip);
 
+			//show grapple sprite and rotate properly
 			sprite->setTextureRect(cocos2d::Rect(startPoint.x, startPoint.y, 4, grappleDistance));
 			sprite->setPosition(Vec2(startPoint.x, startPoint.y + 10));
 			sprite->setRotation(theta * 180 / M_PI);
 
-			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 10));
+			//show grapple tip sprite and rotate properly
+			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 13));
+			tip->setRotation(theta * 180 / M_PI);
 		}
 
 		//rotate arm
