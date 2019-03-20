@@ -212,10 +212,10 @@ void Gameplay::update(float dt)
 	updateObjects(dt);  //update objects
 	updateEnemies(dt);  //update enemies
 
-	//FOR TESTING
+	//FOR TESTING BOSS DEATH
 	if (boss->getHealth() == 0)
 	{
-		delete boss;
+		
 	}
 }
 

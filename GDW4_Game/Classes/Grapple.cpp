@@ -48,6 +48,7 @@ void Grapple::shoot(Vect2 destination)
 		//set all initial variables upon grapple being shot out
 		isActive = true;
 		initialPosClicked = destination;
+		initialPosClicked.y -= 13;
 		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
 		//determine look position after latching
@@ -294,7 +295,7 @@ void Grapple::update(float dt, Scene* scene)
 			sprite->setRotation(theta * 180 / M_PI);
 
 			//show grapple tip sprite and rotate properly
-			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 13));
+			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 16));
 			tip->setRotation(theta * 180 / M_PI);
 		}
 
