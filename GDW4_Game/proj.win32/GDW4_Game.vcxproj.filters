@@ -153,6 +153,12 @@
     <ClCompile Include="..\Classes\PrettyPictureScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\XinputManager.cpp">
+      <Filter>src\Helper Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenu.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -267,6 +273,12 @@
       <Filter>Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\PrettyPictureScene.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\XinputManager.h">
+      <Filter>src\Helper Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenu.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>

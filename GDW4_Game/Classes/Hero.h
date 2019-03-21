@@ -41,6 +41,8 @@ public:
 	};
 	MoveDirection moveState;
 
+	int health;
+
 	void moveRight();
 	void moveLeft();
 	void jump();

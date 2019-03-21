@@ -1,4 +1,7 @@
 #pragma once
+#ifndef TUTORIAL_H
+#define TUTORIAL_H
+
 #include "cocos2d.h"
 #include "Vect2.h"
 #include "Hero.h"
@@ -9,6 +12,7 @@
 #include "HeroMovementBase.h"
 #include "PlatformTile.h"
 #include "GroundTile.h"
+#include "XinputManager.h"
 
 using namespace cocos2d;
 
@@ -68,4 +72,4 @@ private:
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack
 };
-
+#endif

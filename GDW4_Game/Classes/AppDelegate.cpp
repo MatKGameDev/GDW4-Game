@@ -49,15 +49,18 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	if (!glview)
 	{
-		glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
-		//glview = GLViewImpl::createWithFullScreen("GDW4 Game");
+		//glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
+		glview = GLViewImpl::createWithFullScreen("GDW4 Game");
 		director->setOpenGLView(glview);
 	}
 
 	Hero::hero->createHero(); //create hero (calls private constructor)
 	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
 	HeroStateManager::idle->onEnter();
+
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
+
+	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
 
 	auto scene = Tutorial::createScene();
 	director->runWithScene(scene);

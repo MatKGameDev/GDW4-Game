@@ -183,7 +183,7 @@ void Tutorial::initSprites()
 	this->addChild(Hero::hero->sprite, 20);
 
 	//use a follow camera with strict dimensions for horizontal scrolling
-	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 0, fieldWidth, fieldHeight)));
+	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
 
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
@@ -275,6 +275,9 @@ void Tutorial::update(float dt)
 		updateObjects(dt);  //update objects
 		updateEnemies(dt);  //update enemies
 
+
+		Hero::hero->arm->setPosition(Vec2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 25)); //update arm position each frame
+
 		//check if we should move to the next scene
 		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
@@ -344,7 +347,7 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
-		mouseGameViewPosition.y -= 50;
+		mouseGameViewPosition.y += 25;
 
 		//calculate proper x position for grapple
 		if (Hero::hero->getPosition().x > 1920/2)

@@ -7,7 +7,7 @@
 Hero* Hero::hero = 0;
 
 Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
-	JUMP_VELOCITY(575),
+	JUMP_VELOCITY(610),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
@@ -20,7 +20,6 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 {
 	//initialize arm
 	arm = cocos2d::Sprite::create("Sprites/arm_right.png");
-	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
 
 	mass = 5;					
 
@@ -163,9 +162,12 @@ void Hero::updateHitboxes()
 //updates any collisions dealing with the hero and other objects
 void Hero::updateCollisions()
 {
-	unsigned int tileListSize = TileBase::tileList.size();
-	for (unsigned int i = 0; i < tileListSize; i++)
-		TileBase::tileList[i]->checkAndResolveCollision(this);
+	if (HeroStateManager::currentState != HeroStateManager::grappling)
+	{
+		unsigned int tileListSize = TileBase::tileList.size();
+		for (unsigned int i = 0; i < tileListSize; i++)
+			TileBase::tileList[i]->checkAndResolveCollision(this);
+	}
 }
 
 //updates all the things
@@ -187,5 +189,5 @@ void Hero::update(float dt)
 	updateCollisions();
 	HeroAttackManager::update(dt);
 
-	arm->setPosition(Vec2(getPosition().x, getPosition().y + 12)); //update arm position each frame
+	arm->setPosition(Vec2(getPosition().x, getPosition().y + 25)); //update arm position each frame
 }

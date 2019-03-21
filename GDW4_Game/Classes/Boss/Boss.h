@@ -1,4 +1,7 @@
 #pragma once
+#ifndef BOSS_H
+#define BOSS_H
+
 #include "FirstBossState.h"
 #include <2d/CCSprite.h>
 #include "Boss1Attack.h"
@@ -9,6 +12,7 @@ class Hero;
 class Boss
 {
 private:
+	int health;
 	FirstBossState *state{ nullptr };
 	cocos2d::Sprite *bossSprite{ nullptr };
 	std::vector<Boss1LavaAttack*> lavaList;
@@ -18,20 +22,22 @@ private:
 	Hero* heroPointer;
 
 public:
-	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 315);
+	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 345);
 	~Boss();
 
 	//Setters
 	void setState(FirstBossState *newState);
 
 	//Getters
-	cocos2d::Sprite* getSprite()const;
+	int getHealth() const;
+	cocos2d::Sprite* getSprite() const;
 	std::vector<Boss1LavaAttack*> getLavaList() const;
-	cocos2d::Vec2 getMouthPosition()const;
+	cocos2d::Vec2 getMouthPosition() const;
 	cocos2d::Scene* getBossScene() const;
 	cocos2d::Rect getHitBox() const;
 
 	//State changes and update
+	void takeDamage();
 	void update(const float &deltaT, const cocos2d::Vec2 &heroPosition);
 
 	//Attack functions
@@ -42,4 +48,4 @@ public:
 	//Utility functions
 	void removeFromLavaList(Boss1LavaAttack *elementToRemove);
 };
-
+#endif

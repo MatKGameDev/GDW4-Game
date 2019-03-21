@@ -1,4 +1,7 @@
 #pragma once
+#ifndef BOSS1ATTACK
+#define BOSS1ATTACK
+
 #include <math/Vec2.h>
 #include <2d/CCSprite.h>
 #include "HitBox.h"
@@ -63,3 +66,4 @@ private:
 	cocos2d::Vec2 bulletVelocity, currentPosition, lastPosition, heroLocation;
 	float traveledLength{0}, lengthVector{0};
 };
+#endif

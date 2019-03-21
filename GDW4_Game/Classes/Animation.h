@@ -1,4 +1,7 @@
 #pragma once
+#ifndef ANIMATION_H
+#define ANIMATION_H
+
 #include "GameObject.h"
 
 namespace marcos
@@ -70,3 +73,4 @@ namespace marcos
 
 	};
 }
+#endif
