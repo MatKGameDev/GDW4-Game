@@ -153,6 +153,10 @@
     <ClCompile Include="..\Classes\PrettyPictureScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\XinputManager.cpp">
+      <Filter>src\Helper Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -269,6 +273,10 @@
     <ClInclude Include="..\Classes\PrettyPictureScene.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\XinputManager.h">
+      <Filter>src\Helper Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

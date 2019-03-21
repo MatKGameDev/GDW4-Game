@@ -12,6 +12,7 @@
 #include "HeroMovementBase.h"
 #include "PlatformTile.h"
 #include "GroundTile.h"
+#include "XinputManager.h"
 
 using namespace cocos2d;
 

@@ -4,7 +4,7 @@
 HitBox::HitBox(cocos2d::Scene* aScene, float aHeight, float aWidth)
 	: hitBoxShape(cocos2d::DrawNode::create()),height(aHeight), width(aWidth), scene(aScene)
 {
-	scene->addChild(hitBoxShape,1);
+	scene->addChild(hitBoxShape, 1);
 }
 
 HitBox::~HitBox()

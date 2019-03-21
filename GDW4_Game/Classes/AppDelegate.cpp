@@ -57,7 +57,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 	Hero::hero->createHero(); //create hero (calls private constructor)
 	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
 	HeroStateManager::idle->onEnter();
+
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
+
+	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
 
 	auto scene = Tutorial::createScene();
 	director->runWithScene(scene);

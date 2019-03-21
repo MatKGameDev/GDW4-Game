@@ -185,7 +185,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TileBase.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
     <ClCompile Include="..\Classes\Vect2.cpp" />
+    <ClCompile Include="..\Classes\XinputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\Animation.h" />
@@ -225,7 +227,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TileBase.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
     <ClInclude Include="..\Classes\Vect2.h" />
+    <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />

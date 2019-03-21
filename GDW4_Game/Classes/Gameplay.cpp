@@ -2,6 +2,7 @@
 #include <iostream>
 #include "HeroStateManager.h"
 #include "Boss/Boss.h"
+#include "XinputManager.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -201,6 +202,8 @@ void Gameplay::update(float dt)
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
 		Color4F(0.0f, 1.0f, 0.0f, .0f));
+	//DRAW BOSS HITBOX FOR TESTING
+
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
