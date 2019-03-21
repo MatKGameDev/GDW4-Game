@@ -13,10 +13,14 @@ public:
 	static Scene* createScene();
 
 	bool init();
+	void initUI();
+	void initAnimations();
 	void update(float dt);
 
 private:
 	Director* director;
+
+	Sprite* background;
 
 	bool isDone;
 };

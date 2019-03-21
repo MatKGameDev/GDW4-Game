@@ -24,8 +24,6 @@ public:
 	bool isAirborne;
 	float invincibilityTimer;
 
-	int health;
-
 	enum LookDirection
 	{
 		lookingRight,
