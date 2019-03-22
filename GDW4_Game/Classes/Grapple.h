@@ -1,9 +1,12 @@
 #pragma once
+#ifndef GRAPPLE_H
+#define GRAPPLE_H
+
 #include "cocos2d.h"
 #include "Vect2.h"
 #include "Platform.h"
 
-class Grapple : public cocos2d::DrawNode
+class Grapple
 {
 private:
 	Grapple();
@@ -14,9 +17,8 @@ public:
 
 	const float MOVE_SPEED;
 
-
-	bool testCase;
-
+	Sprite* sprite;
+	Sprite* tip;
 
 	Vect2 initialPosClicked;
 	Vect2 startPoint;
@@ -52,3 +54,4 @@ public:
 
 	void update(float dt, Scene* scene);
 };
+#endif

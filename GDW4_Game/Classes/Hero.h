@@ -21,6 +21,8 @@ public:
 	cocos2d::Sprite* arm;
 
 	float movespeedIncrease;
+	bool isAirborne;
+	float invincibilityTimer;
 
 	enum LookDirection
 	{
@@ -37,11 +39,13 @@ public:
 	};
 	MoveDirection moveState;
 
-	bool isAirborne;
+	int health;
 
 	void moveRight();
 	void moveLeft();
 	void jump();
+
+	void takeDamage();
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;

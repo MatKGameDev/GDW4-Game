@@ -32,9 +32,9 @@ void MeleeFireAttack::attackDown()
 void MeleeFireAttack::attackLeft()
 {
 	hitbox.setRect(
-		Hero::hero->hurtBox.getMaxX(),
+		Hero::hero->hurtBox.getMaxX() - 130,
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		-130,
+		130,
 		50);
 }
 void MeleeFireAttack::attackRight()

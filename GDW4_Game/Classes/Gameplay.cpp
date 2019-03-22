@@ -1,6 +1,8 @@
 #include "Gameplay.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "Boss/Boss.h"
+#include "XinputManager.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -36,8 +38,12 @@ void Gameplay::initUI()
 
 void Gameplay::initGameObjects()
 {
-	GameObject::MAX_X = 1477.0f;
-	GameObject::MAX_Y = 985.0f;
+	Hero::hero->moveState = Hero::MoveDirection::idle;
+
+	GameObject::MAX_X = 1856.0f;
+	GameObject::MAX_Y = 952.0f;
+
+	boss = new Boss(Hero::hero, this);
 }
 
 void Gameplay::initSprites()
@@ -47,11 +53,13 @@ void Gameplay::initSprites()
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/untitled.tmx"); //ayy it works
+	//get the tilemap in
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/bossMap.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
-	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("ground");
-	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platform");
+	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("tiles");
+	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platforms");
+	cocos2d::TMXLayer* pillarLayer = testTileMap->getLayer("pillars");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -62,7 +70,7 @@ void Gameplay::initSprites()
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 128);
+				GroundTile* newGroundTile = new GroundTile(currentTile->getPosition(), 64);
 
 				//set collision flags if there are adjacent ground tiles
 				//we have to do our own x and y validation because cocos sucks and crashes otherwise
@@ -91,23 +99,23 @@ void Gameplay::initSprites()
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
-				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 128);
+				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
 			}
 		}
 	}
-
-	/*Hero::hero->sprite->removeFromParent();
-	Hero::hero->arm->removeFromParent();
-	Grapple::grapple->removeFromParent();*/
 
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(700, 150));
+	HeroStateManager::idle->onEnter();
 
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/testArm.png");
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+
+	//add boss
+	this->addChild(boss->getSprite(), 17);
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -116,9 +124,22 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
-	//add grapple (singleton class)
-	Grapple::create(10.0f);
-	this->addChild(Grapple::grapple, 5);
+	//add grapple sprite and tip
+	//add repeating pattern to grapple sprite
+	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+	Texture2D::TexParams params;
+	params.minFilter = GL_NEAREST;
+	params.magFilter = GL_NEAREST;
+	params.wrapS = GL_REPEAT;
+	params.wrapT = GL_REPEAT;
+	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
+	Grapple::grapple->sprite->setVisible(0);
+	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->sprite, 5);
+
+	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->tip, 6);
 }
 
 void Gameplay::initListeners()
@@ -169,20 +190,20 @@ void Gameplay::update(float dt)
 {
 	Grapple::grapple->update(dt, this); //update grapple
 	Hero::hero->update(dt); //update our hero
-	//if (hero->invincibilityTimer > 0)
-	//	flickerSprite(); //flicker sprite if it's invincible
 	
 	testHurtbox->clear();
 	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
+	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
 		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
+		Color4F(1.0f, 0.0f, 0.0f, 0.5f));
 	//DRAW MOVEBOX FOR TESTING
 	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
 		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
 		Color4F(0.0f, 1.0f, 0.0f, .0f));
+	//DRAW BOSS HITBOX FOR TESTING
+
 
 	testMeleeAttack->clear();
 	//DRAW MELEE ATTACK HITBOX FOR TESTING
@@ -193,12 +214,18 @@ void Gameplay::update(float dt)
 	spawnEnemies();     //spawn enemies if needed 
 	updateObjects(dt);  //update objects
 	updateEnemies(dt);  //update enemies
+
+	//FOR TESTING BOSS DEATH
+	if (boss->getHealth() == 0)
+	{
+		
+	}
 }
 
 void Gameplay::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
-
+	
 }
 
 void Gameplay::updateObjects(float dt)
@@ -215,22 +242,36 @@ void Gameplay::updateObjects(float dt)
 
 void Gameplay::updateEnemies(float dt)
 {
-	
+	//update boss
+	boss->update(dt, Hero::hero->sprite->getPosition());
+
+	//check for an attack hitting the boss
+	HeroAttackBase* currentAttack = HeroAttackManager::currentAttack;
+	if (currentAttack == HeroAttackManager::meleeFire && myHelper::isCollision(currentAttack->hitbox, boss->getHitBox()))
+	{
+		currentAttack->disabled = true;
+		boss->takeDamage();
+	}
+
+	//check for collision on boss
+	if (Hero::hero->isHitboxCollision(boss->getHitBox()))
+	{
+		Hero::hero->takeDamage();
+	}
+
+	//loop through each attack checking for collisions
+	unsigned int attackListSize = boss->getLavaList().size();
+	for (unsigned int i = 0; i < attackListSize; i++)
+	{
+		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox()))
+			Hero::hero->takeDamage();
+	}
 }
 
 //removes all game objects from the world
 void Gameplay::removeAllObjects()
 {
 	
-}
-
-//flickers sprite every 1/10th of a second (typically to display invincibility)
-void Gameplay::flickerSprite()
-{
-	//if (((int)(ship->invincibilityTimer * 10)) % 2 == 1)
-	//	ship->sprite->setZOrder(0); //flicker the ship (hide it behind background)
-	//else
-	//	ship->sprite->setZOrder(10); //show the ship again
 }
 
 //--- Callbacks ---//
@@ -309,11 +350,6 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
-		break;
-
-		//FOR TESTING
-	case EventKeyboard::KeyCode::KEY_I:
-		Grapple::grapple->testCase = !Grapple::grapple->testCase;
 		break;
 	}
 }

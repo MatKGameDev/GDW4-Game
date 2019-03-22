@@ -1,4 +1,7 @@
 #pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
 #include "cocos2d.h"
 #include "Vect2.h"
 #include "myHelper.h"
@@ -39,7 +42,9 @@ public:
 
 	void destroySprite();
 	bool isMovementCollision(GameObject* otherObject);
+	bool isHitboxCollision(cocos2d::Rect otherHitbox);
 
 	virtual void updateHitboxes() = 0;
 	virtual void updatePhysics(float dt);
 };
+#endif

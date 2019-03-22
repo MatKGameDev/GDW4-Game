@@ -1,4 +1,7 @@
 #pragma once
+#ifndef PLATFORMTILE_H
+#define PLATFORMTILE_H
+
 #include "TileBase.h"
 
 class PlatformTile : public TileBase
@@ -10,3 +13,4 @@ public:
 
 	bool checkAndResolveCollision(GameObject* otherObject) override;
 };
+#endif

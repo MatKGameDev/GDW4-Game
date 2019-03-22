@@ -1,12 +1,11 @@
 #include "Boss.h"
-#include "Boss1Attack.h" 
 #include "Hero.h"
 
-Boss::Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height, float width)
-	: bossSprite(cocos2d::Sprite::create("Boss1.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
-	hitBox(sceneForBoss, height, width), heroPointer(heroInstance)
+Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
+	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
+	hitBox(sceneForBoss, height, width), heroPointer(heroInstance), health(10)
 {
-	bossSprite->setPosition(250, 750);
+	bossSprite->setPosition(230, 450);
 	state = new Idling4FirstBoss;
 }
 
@@ -20,6 +19,11 @@ void Boss::setState(FirstBossState* newState)
 	if (state != nullptr)
 		delete state;
 	state = newState;
+}
+
+int Boss::getHealth() const
+{
+	return health;
 }
 
 cocos2d::Sprite* Boss::getSprite() const
@@ -47,6 +51,12 @@ cocos2d::Rect Boss::getHitBox() const
 	return hitBox.hitBox;
 }
 
+void Boss::takeDamage()
+{
+	bossSprite->setVisible(0); //flicker sprite upon taking damage
+	health--;
+}
+
 void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
 {
 	state->update(deltaT, this);
@@ -62,6 +72,9 @@ void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
 			lavaList.erase(lavaList.begin() + i);
 		}
 	}
+
+	//make sure sprite is visible
+	bossSprite->setVisible(1);
 }
 
 void Boss::spewLava()

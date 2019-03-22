@@ -1,4 +1,7 @@
 #pragma once
+#ifndef VECT2_H
+#define VECT2_H
+
 #include "cocos2d.h"
 
 class Vect2
@@ -56,3 +59,4 @@ public:
 	static float calculateDistanceSquared(const Vect2 vectA, const Vect2 vectB);
 	static Vect2 lerp(Vect2 vectA, Vect2 vectB, float scaleFactor);
 };
+#endif

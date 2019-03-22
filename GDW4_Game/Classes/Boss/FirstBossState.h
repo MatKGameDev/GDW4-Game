@@ -1,4 +1,6 @@
 #pragma once
+#ifndef FIRSTBOSSSTATE_H
+#define FIRSTBOSSSTATE_H
 
 //Foward declare
 class Boss;
@@ -77,3 +79,4 @@ public:
 
 	void update(const float& deltaT, Boss* bossInstance) override;
 };
+#endif

@@ -4,7 +4,7 @@
 
 Grapple* Grapple::grapple = 0;
 
-Grapple::Grapple() : DrawNode(),
+Grapple::Grapple() :
 	MOVE_SPEED(800),
 	isActive(false),
 	isLatched(false),
@@ -13,11 +13,6 @@ Grapple::Grapple() : DrawNode(),
 	heroMoveScale(0),
 	latchDuration(0)
 {
-	Grapple::create(10.0f);
-	grappleColour = Color4F(255, 255, 255, 1.0f); //set grapple colour
-
-
-	testCase = false;
 }
 
 //initializes the grapple and creates a single object for the class (if one doesn't already exist)
@@ -26,7 +21,22 @@ void Grapple::initGrapple()
 	if (!grapple)
 	{
 		grapple = new Grapple;
-		grapple->DrawNode::init();
+
+		//set up repeating pattern sprite
+		grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+		Texture2D::TexParams params;
+		params.minFilter = GL_NEAREST;
+		params.magFilter = GL_NEAREST;
+		params.wrapS = GL_REPEAT;
+		params.wrapT = GL_REPEAT;
+		grapple->sprite->getTexture()->setTexParameters(params);
+		grapple->sprite->setVisible(0);
+		grapple->sprite->setAnchorPoint(Vec2(0.5f, 0.0f));
+
+		//set up tip sprite
+		grapple->tip = Sprite::create("Sprites/grappleTip.png");
+		grapple->tip->setVisible(0);
+		grapple->tip->setAnchorPoint(Vec2(0.f, 0.0f));
 	}
 }
 
@@ -38,7 +48,8 @@ void Grapple::shoot(Vect2 destination)
 		//set all initial variables upon grapple being shot out
 		isActive = true;
 		initialPosClicked = destination;
-		lastFrameGrappleTip = Hero::hero->getPosition();
+		initialPosClicked.y -= 13;
+		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
 		//determine look position after latching
 		if (Hero::hero->getPosition().x <= initialPosClicked.x)
@@ -49,7 +60,7 @@ void Grapple::shoot(Vect2 destination)
 		else //heroLatchPos.x > latchPoint.x
 		{
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() -/*+*/ 1);
 		}
 
 		extendGrapple();
@@ -57,6 +68,10 @@ void Grapple::shoot(Vect2 destination)
 		//make arm visible and rotate it
 		Hero::hero->arm->setVisible(1);
 		Hero::hero->arm->setRotation(theta * 180 / M_PI);
+
+		//make grapple sprite visible
+		sprite->setVisible(1);
+		grapple->tip->setVisible(1);
 	}
 }
 
@@ -64,7 +79,7 @@ void Grapple::shoot(Vect2 destination)
 void Grapple::extendGrapple()
 {
 	//find the angle at which the grapple is being shot at
-	Vect2 distance = initialPosClicked - Hero::hero->getPosition(); //calculate distance vector between the grapple and the hero
+	Vect2 distance = initialPosClicked - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //calculate distance vector between the grapple and the hero
 	theta = atan2(distance.x, distance.y); //perform atan2 (returns the angle in radians between the positive x axis (1, 0) and the point provided) on the distance
 
 	//get normalized new endpoint
@@ -77,7 +92,7 @@ void Grapple::extendGrapple()
 void Grapple::latch()
 {
 	isLatched = true;
-	heroLatchPosition = Hero::hero->getPosition();
+	heroLatchPosition = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 	heroToLatchPointDistance = Vect2::calculateDistance(heroLatchPosition, latchPoint);
 
 	//determine look position after latching
@@ -97,20 +112,24 @@ void Grapple::latch()
 void Grapple::unLatch()
 {
 	Hero::hero->arm->setVisible(0); //make arm invisible
+	sprite->setVisible(0);
+	grapple->tip->setVisible(0);
 	isActive = false;
 	isLatched = false;
 	isHeroAtEndPoint = false;
-	grapple->clear();
+	//grapple->clear();
 	lengthScale = 0;
 	heroMoveScale = 0;
 	latchDuration = 0;
 }
 
-//check for grapple hook max length
+//check for grapple hook max length or out of bounds
 bool Grapple::isMaxLength()
 {
-	Vect2 grappleLength = grappleTip - Hero::hero->getPosition();
-	if (grappleLength.getMagnitude() > 1300)
+	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+	if (grappleLength.getMagnitude() > 1000) //check max length
+		return true;
+	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
 		return true;
 
 	return false;
@@ -200,8 +219,7 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
-		grapple->clear(); //clear the drawn grapple before each frame
-		startPoint = Hero::hero->getPosition(); //have grapple start point move with the hero
+		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 13); //have grapple start point move with the hero
 
 		if (isLatched)
 		{
@@ -211,6 +229,8 @@ void Grapple::update(float dt, Scene* scene)
 			if (heroMoveScale >= 1.0f)
 			{
 				Hero::hero->arm->setVisible(0); //make arm invisible
+				sprite->setVisible(0);
+				grapple->tip->setVisible(0);
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
 
@@ -228,8 +248,7 @@ void Grapple::update(float dt, Scene* scene)
 		}
 		else
 		{
-			if (!testCase) //FOR TESTING
-				extendGrapple(); //recalculate endpoint, ensuring that the initial mouse clicked position is passed through
+			extendGrapple(); //recalculate endpoint, ensuring that the initial mouse clicked position is passed through
 
 			grappleTip = Vect2::lerp(startPoint, endPoint, lengthScale); //use lerp to increase the length of the grapple each frame until it reaches the end point
 
@@ -268,10 +287,16 @@ void Grapple::update(float dt, Scene* scene)
 
 		if (isActive)
 		{
-			//draw grapple (start point, end point, colour)
-			grapple->drawLine(Vec2(grapple->startPoint.x, grapple->startPoint.y),
-				Vec2(grapple->grappleTip.x, grapple->grappleTip.y),
-				grapple->grappleColour);
+			float grappleDistance = Vect2::calculateDistance(startPoint, grappleTip);
+
+			//show grapple sprite and rotate properly
+			sprite->setTextureRect(cocos2d::Rect(startPoint.x, startPoint.y, 4, grappleDistance));
+			sprite->setPosition(Vec2(startPoint.x, startPoint.y + 10));
+			sprite->setRotation(theta * 180 / M_PI);
+
+			//show grapple tip sprite and rotate properly
+			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 16));
+			tip->setRotation(theta * 180 / M_PI);
 		}
 
 		//rotate arm

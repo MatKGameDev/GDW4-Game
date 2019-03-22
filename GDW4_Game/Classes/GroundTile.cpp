@@ -51,20 +51,22 @@ bool GroundTile::checkAndResolveCollision(GameObject * otherObject)
 		if (overlap.y < overlap.x && !ignoreY) //overlap on y is more shallow, so we want to push the y back or if the object is at the top of the tile
 		{
 			if (bottomOverlap < topOverlap) //bottom is the shallow collision side
+			{
 				otherObject->sprite->setPositionY(otherObject->getPosition().y - overlap.y);
-			else //top side is the shallow collision side
+				otherObject->velocity.y = 0; //reset velocity after collision
+			}
+			else if (otherObject->velocity.y <= 0) //top side is the shallow collision side
+			{
 				otherObject->sprite->setPositionY(this->hitBox.getMaxY() + (otherObject->moveBox.size.height / 2));
-
-			//otherObject->sprite->setPositionY(otherObject->lastFramePosition.y); //push the object back to its y position last frame
-
-			otherObject->velocity.y = 0; //reset velocity after collision
+				otherObject->velocity.y = 0; //reset velocity after collision
+			}
 		}
 		else if (!ignoreX) //overlap on x is more shallow, so we want to push the x back
 		{
 			if (leftSideOverlap < rightSideOverlap) //left is the shallow collision side
-				otherObject->sprite->setPositionX(otherObject->getPosition().x - overlap.x);
+				otherObject->sprite->setPositionX(this->hitBox.getMinX() - (otherObject->moveBox.size.width / 2) - 1);
 			else //right side is the shallow collision side
-				otherObject->sprite->setPositionX(otherObject->getPosition().x + overlap.x);
+				otherObject->sprite->setPositionX(this->hitBox.getMaxX() + (otherObject->moveBox.size.width / 2));
 
 			//otherObject->sprite->setPositionX(otherObject->lastFramePosition.x); //push the object back to its x position last frame
 
