@@ -35,6 +35,7 @@ public:
 	cocos2d::Vec2 getMouthPosition() const;
 	cocos2d::Scene* getBossScene() const;
 	cocos2d::Rect getHitBox() const;
+	FirstBossState* getCurrentState() const;
 
 	//State changes and update
 	void takeDamage();
