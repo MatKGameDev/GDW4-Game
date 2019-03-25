@@ -3,6 +3,7 @@
 #include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "HelpBubble.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -22,6 +23,7 @@ bool Tutorial::init()
 	director->setAnimationInterval(1.0f / 60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
 
+	initUI();
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -34,7 +36,12 @@ bool Tutorial::init()
 //initializes the user interface
 void Tutorial::initUI()
 {
+	//initialize help bubbles
+	HelpBubble* jumpHint = new HelpBubble("Sprites/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	this->addChild(jumpHint->sprite, 18);
 
+	HelpBubble* holdJumpHint = new HelpBubble("Sprites/holdJumpHintTest.png", cocos2d::Vec2(960, 400), 800, 1200);
+	this->addChild(holdJumpHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
@@ -275,9 +282,6 @@ void Tutorial::update(float dt)
 		updateObjects(dt);  //update objects
 		updateEnemies(dt);  //update enemies
 
-
-		Hero::hero->arm->setPosition(Vec2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 25)); //update arm position each frame
-
 		//check if we should move to the next scene
 		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
@@ -306,6 +310,11 @@ void Tutorial::updateObjects(float dt)
 	//update all ice projectiles
 	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
+
+	//update all help bubbles
+	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
+	for (unsigned int i = 0; i < numHelpBubbles; i++)
+		HelpBubble::helpBubbleList[i]->update(dt);
 }
 
 void Tutorial::updateEnemies(float dt)

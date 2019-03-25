@@ -161,13 +161,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GrappleJumpState.cpp" />
     <ClCompile Include="..\Classes\GrapplingState.cpp" />
     <ClCompile Include="..\Classes\GroundTile.cpp" />
+    <ClCompile Include="..\Classes\HelpBubble.cpp" />
     <ClCompile Include="..\Classes\HeroStateBase.cpp" />
     <ClCompile Include="..\Classes\HeroStateManager.cpp" />
     <ClCompile Include="..\Classes\HoldingPlatformState.cpp" />
     <ClCompile Include="..\Classes\IceProjectile.cpp" />
     <ClCompile Include="..\Classes\IdleState.cpp" />
     <ClCompile Include="..\Classes\JumpingState.cpp" />
-    <ClCompile Include="..\Classes\MainMenu.cpp" />
     <ClCompile Include="..\Classes\PlatformTile.cpp" />
     <ClCompile Include="..\Classes\PrettyPictureScene.cpp" />
     <ClCompile Include="..\Classes\ProjectileIceAttack.cpp" />
@@ -202,6 +202,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GrappleJumpState.h" />
     <ClInclude Include="..\Classes\GrapplingState.h" />
     <ClInclude Include="..\Classes\GroundTile.h" />
+    <ClInclude Include="..\Classes\HelpBubble.h" />
     <ClInclude Include="..\Classes\HeroStateBase.h" />
     <ClInclude Include="..\Classes\HeroStateManager.h" />
     <ClInclude Include="..\Classes\HoldingPlatformState.h" />
@@ -209,7 +210,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\IdleState.h" />
     <ClInclude Include="..\Classes\InputType.h" />
     <ClInclude Include="..\Classes\JumpingState.h" />
-    <ClInclude Include="..\Classes\MainMenu.h" />
     <ClInclude Include="..\Classes\PlatformTile.h" />
     <ClInclude Include="..\Classes\PrettyPictureScene.h" />
     <ClInclude Include="..\Classes\ProjectileIceAttack.h" />
