@@ -1,4 +1,5 @@
 #include "Gameplay.h"
+#include "PauseMenu.h"
 #include <iostream>
 #include "HeroStateManager.h"
 #include "Boss/Boss.h"
@@ -351,6 +352,9 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
+
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		director->pushScene(PauseMenu::createScene());
 	}
 }
 

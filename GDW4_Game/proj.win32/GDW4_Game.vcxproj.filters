@@ -159,6 +159,12 @@
     <ClCompile Include="..\Classes\MainMenu.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\PauseMenu.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ControlsMenu.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -279,6 +285,12 @@
       <Filter>src\Helper Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MainMenu.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PauseMenu.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ControlsMenu.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
