@@ -1,4 +1,7 @@
 #pragma once
+#ifndef HEROSTATEBASE_H
+#define HEROSTATEBASE_H
+
 #include "InputType.h"
 #include "cocos2d.h"
 
@@ -13,3 +16,4 @@ public:
 	virtual void handleInput(InputType input) = 0;
 	virtual void update(float dt) = 0;
 };
+#endif

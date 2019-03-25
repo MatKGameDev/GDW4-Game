@@ -1,4 +1,7 @@
 #pragma once
+#ifndef GROUNDTILE_H
+#define GROUNDTILE_H
+
 #include "TileBase.h"
 
 class GroundTile : public TileBase
@@ -15,3 +18,4 @@ public:
 
 	bool checkAndResolveCollision(GameObject* otherObject) override;
 };
+#endif

@@ -3,6 +3,7 @@
 #include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "HelpBubble.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -22,6 +23,7 @@ bool Tutorial::init()
 	director->setAnimationInterval(1.0f / 60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
 
+	initUI();
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -34,7 +36,13 @@ bool Tutorial::init()
 //initializes the user interface
 void Tutorial::initUI()
 {
+	//initialize help bubbles
+	HelpBubble* jumpHint = new HelpBubble("Sprites/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	this->addChild(jumpHint->sprite, 18);
 
+	HelpBubble* holdJumpHint = new HelpBubble("Sprites/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
+	holdJumpHint->sprite->setScale(3.0);
+	this->addChild(holdJumpHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
@@ -183,7 +191,7 @@ void Tutorial::initSprites()
 	this->addChild(Hero::hero->sprite, 20);
 
 	//use a follow camera with strict dimensions for horizontal scrolling
-	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 0, fieldWidth, fieldHeight)));
+	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
 
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
@@ -303,6 +311,11 @@ void Tutorial::updateObjects(float dt)
 	//update all ice projectiles
 	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
+
+	//update all help bubbles
+	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
+	for (unsigned int i = 0; i < numHelpBubbles; i++)
+		HelpBubble::helpBubbleList[i]->update(dt);
 }
 
 void Tutorial::updateEnemies(float dt)
@@ -344,7 +357,7 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
-		mouseGameViewPosition.y -= 50;
+		mouseGameViewPosition.y += 25;
 
 		//calculate proper x position for grapple
 		if (Hero::hero->getPosition().x > 1920/2)

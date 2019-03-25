@@ -161,6 +161,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GrappleJumpState.cpp" />
     <ClCompile Include="..\Classes\GrapplingState.cpp" />
     <ClCompile Include="..\Classes\GroundTile.cpp" />
+    <ClCompile Include="..\Classes\HelpBubble.cpp" />
     <ClCompile Include="..\Classes\HeroStateBase.cpp" />
     <ClCompile Include="..\Classes\HeroStateManager.cpp" />
     <ClCompile Include="..\Classes\HoldingPlatformState.cpp" />
@@ -185,6 +186,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TileBase.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
     <ClCompile Include="..\Classes\Vect2.cpp" />
+    <ClCompile Include="..\Classes\XinputManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +202,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GrappleJumpState.h" />
     <ClInclude Include="..\Classes\GrapplingState.h" />
     <ClInclude Include="..\Classes\GroundTile.h" />
+    <ClInclude Include="..\Classes\HelpBubble.h" />
     <ClInclude Include="..\Classes\HeroStateBase.h" />
     <ClInclude Include="..\Classes\HeroStateManager.h" />
     <ClInclude Include="..\Classes\HoldingPlatformState.h" />
@@ -225,6 +228,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TileBase.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
     <ClInclude Include="..\Classes\Vect2.h" />
+    <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

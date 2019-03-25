@@ -1,4 +1,7 @@
 #pragma once
+#ifndef TILEBASE_H
+#define TILEBASE_H
+
 #include "cocos2d.h"
 
 class GameObject; //forward declare
@@ -24,3 +27,4 @@ public:
 	bool checkGeneralCollision(GameObject* otherObject);
 	virtual bool checkAndResolveCollision(GameObject* otherObject) = 0;
 };
+#endif

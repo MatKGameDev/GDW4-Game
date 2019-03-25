@@ -22,9 +22,6 @@
     <Filter Include="src\Hero Stuff\Attack Stuff">
       <UniqueIdentifier>{94e98c08-61a3-4eea-b8a1-43652b76aed6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Hero Stuff\General Stuff">
-      <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Animation Stuff">
       <UniqueIdentifier>{b1be3e2c-5a57-4734-8a9f-de0eea9598c4}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Boss">
       <UniqueIdentifier>{4607cd7f-6dad-43aa-9b42-a1b64cc466de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Hero Stuff\General Gameplay Stuff">
+      <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -82,10 +82,10 @@
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src\Hero Stuff\General Stuff</Filter>
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Grapple.cpp">
-      <Filter>src\Hero Stuff\General Stuff</Filter>
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Animation.cpp">
       <Filter>src\Animation Stuff</Filter>
@@ -153,6 +153,12 @@
     <ClCompile Include="..\Classes\PrettyPictureScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\XinputManager.cpp">
+      <Filter>src\Helper Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelpBubble.cpp">
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -195,10 +201,10 @@
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src\Hero Stuff\General Stuff</Filter>
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Grapple.h">
-      <Filter>src\Hero Stuff\General Stuff</Filter>
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Animation.h">
       <Filter>src\Animation Stuff</Filter>
@@ -268,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\PrettyPictureScene.h">
       <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\XinputManager.h">
+      <Filter>src\Helper Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelpBubble.h">
+      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,7 @@
 #pragma once
+#ifndef HITBOX_H
+#define HITBOX_H
+
 #include "cocos2d.h"
 
 
@@ -15,4 +18,4 @@ public:
 	~HitBox();
 	void updateHitBox(const cocos2d::Vec2 &newPosition);
 };
-
+#endif
