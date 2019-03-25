@@ -1,6 +1,4 @@
 #pragma once
-#ifndef FIRSTBOSSSTATE_H
-#define FIRSTBOSSSTATE_H
 
 //Foward declare
 class Boss;
@@ -40,10 +38,4 @@ protected:
 	virtual void changeToFlameSplit(Boss *boss);
 	virtual void changeToFlameThrower(Boss *boss);
 	//virtual void changeToSuckingBullet(Boss *boss);
-};
-
-
-
-
-	void update(const float& deltaT, Boss* bossInstance) override;
 };

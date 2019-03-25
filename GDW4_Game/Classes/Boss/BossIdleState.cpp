@@ -31,7 +31,7 @@ void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 		changeToFlameSplit(bossInstance);
 		break;
 	case 3:
-		changeToSuckingBullet(bossInstance);
+		//changeToSuckingBullet(bossInstance);
 		break;
 	default:
 		throw;
