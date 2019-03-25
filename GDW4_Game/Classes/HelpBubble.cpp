@@ -27,13 +27,13 @@ void HelpBubble::update(float dt)
 	//check if hero is in threshold range
 	if (heroPosX > startThreshold && heroPosX < endThreshold && !isFading)
 	{
-		sprite->runAction(cocos2d::FadeTo::create(1, 100));
+		sprite->runAction(cocos2d::FadeIn::create(1));
 		isFading = true;
 	}
 	//check if hero is out of threshold range and sprite is still visible
 	else if ((heroPosX < startThreshold && sprite->getOpacity()) || (heroPosX > endThreshold && sprite->getOpacity()))
 	{
-		sprite->runAction(cocos2d::FadeOut::create(0.3));
+		sprite->runAction(cocos2d::FadeOut::create(1));
 		isFading = false;
 	}
 }

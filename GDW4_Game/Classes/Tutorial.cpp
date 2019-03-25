@@ -40,7 +40,8 @@ void Tutorial::initUI()
 	HelpBubble* jumpHint = new HelpBubble("Sprites/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
 	this->addChild(jumpHint->sprite, 18);
 
-	HelpBubble* holdJumpHint = new HelpBubble("Sprites/holdJumpHintTest.png", cocos2d::Vec2(960, 400), 800, 1200);
+	HelpBubble* holdJumpHint = new HelpBubble("Sprites/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
+	holdJumpHint->sprite->setScale(3.0);
 	this->addChild(holdJumpHint->sprite, 18);
 }
 
