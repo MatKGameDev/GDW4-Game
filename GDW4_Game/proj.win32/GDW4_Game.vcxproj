@@ -154,7 +154,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AttackingState.cpp" />
     <ClCompile Include="..\Classes\Boss\Boss.cpp" />
     <ClCompile Include="..\Classes\Boss\Boss1Attack.cpp" />
+    <ClCompile Include="..\Classes\Boss\BossIdleState.cpp" />
     <ClCompile Include="..\Classes\Boss\FirstBossState.cpp" />
+    <ClCompile Include="..\Classes\Boss\FlameSplit.cpp" />
+    <ClCompile Include="..\Classes\Boss\FlameThrower.cpp" />
     <ClCompile Include="..\Classes\Boss\HitBox.cpp" />
     <ClCompile Include="..\Classes\EmptyAttack.cpp" />
     <ClCompile Include="..\Classes\FallingState.cpp" />
@@ -195,7 +198,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AttackingState.h" />
     <ClInclude Include="..\Classes\Boss\Boss.h" />
     <ClInclude Include="..\Classes\Boss\Boss1Attack.h" />
+    <ClInclude Include="..\Classes\Boss\BossIdleState.h" />
     <ClInclude Include="..\Classes\Boss\FirstBossState.h" />
+    <ClInclude Include="..\Classes\Boss\FlameSplit.h" />
+    <ClInclude Include="..\Classes\Boss\FlameThrower.h" />
     <ClInclude Include="..\Classes\Boss\HitBox.h" />
     <ClInclude Include="..\Classes\EmptyAttack.h" />
     <ClInclude Include="..\Classes\FallingState.h" />

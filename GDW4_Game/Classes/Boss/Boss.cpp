@@ -1,12 +1,13 @@
 #include "Boss.h"
 #include "Hero.h"
+#include "BossIdleState.h"
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
 	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
 	hitBox(sceneForBoss, height, width), heroPointer(heroInstance), health(10)
 {
 	bossSprite->setPosition(230, 450);
-	state = new Idling4FirstBoss;
+	state = new Idling4FirstBoss(this);
 }
 
 Boss::~Boss()
@@ -55,6 +56,11 @@ void Boss::takeDamage()
 {
 	bossSprite->setVisible(0); //flicker sprite upon taking damage
 	health--;
+}
+
+FirstBossState* Boss::getCurrentState() const
+{
+	return state;
 }
 
 void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
