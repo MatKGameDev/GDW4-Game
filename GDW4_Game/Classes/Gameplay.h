@@ -26,6 +26,8 @@ public:
 
 	Boss* boss;
 
+	bool isTransitioning;
+
 	virtual bool init();
 	void initUI();
 	void initGameObjects();

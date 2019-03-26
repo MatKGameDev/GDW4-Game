@@ -165,6 +165,12 @@
     <ClCompile Include="..\Classes\ControlsMenu.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\DeathScreen.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\VictoryScreen.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -291,6 +297,12 @@
       <Filter>src\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ControlsMenu.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DeathScreen.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\VictoryScreen.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>

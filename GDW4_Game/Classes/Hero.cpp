@@ -2,7 +2,7 @@
 #include "HeroAttackManager.h"
 #include "HeroStateManager.h"
 #include "TileBase.h"
-#include <iostream>
+#include "Grapple.h"
 
 Hero* Hero::hero = 0;
 
@@ -73,6 +73,18 @@ void Hero::takeDamage()
 		health--;
 		invincibilityTimer = 0.99;
 	}
+}
+
+//resets hero after a death or victory
+void Hero::reset()
+{
+	invincibilityTimer = 0.0f;
+	velocity = Vect2(0, 0);
+	lookState = LookDirection::lookingRight;
+	moveState = MoveDirection::idle;
+	HeroStateManager::idle->onEnter();
+	Grapple::grapple->unLatch();
+	health = 3;
 }
 
 //checks if the character is out of bounds and performs appropriate actions

@@ -157,6 +157,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Boss\FirstBossState.cpp" />
     <ClCompile Include="..\Classes\Boss\HitBox.cpp" />
     <ClCompile Include="..\Classes\ControlsMenu.cpp" />
+    <ClCompile Include="..\Classes\DeathScreen.cpp" />
     <ClCompile Include="..\Classes\EmptyAttack.cpp" />
     <ClCompile Include="..\Classes\FallingState.cpp" />
     <ClCompile Include="..\Classes\GrappleJumpState.cpp" />
@@ -188,6 +189,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TileBase.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
     <ClCompile Include="..\Classes\Vect2.cpp" />
+    <ClCompile Include="..\Classes\VictoryScreen.cpp" />
     <ClCompile Include="..\Classes\XinputManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -200,6 +202,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Boss\FirstBossState.h" />
     <ClInclude Include="..\Classes\Boss\HitBox.h" />
     <ClInclude Include="..\Classes\ControlsMenu.h" />
+    <ClInclude Include="..\Classes\DeathScreen.h" />
     <ClInclude Include="..\Classes\EmptyAttack.h" />
     <ClInclude Include="..\Classes\FallingState.h" />
     <ClInclude Include="..\Classes\GrappleJumpState.h" />
@@ -232,6 +235,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TileBase.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
     <ClInclude Include="..\Classes\Vect2.h" />
+    <ClInclude Include="..\Classes\VictoryScreen.h" />
     <ClInclude Include="..\Classes\XinputManager.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

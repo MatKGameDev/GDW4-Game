@@ -131,7 +131,7 @@ void MainMenu::mouseDownCallback(Event* event)
 		//exit game
 		else if (exitRect.containsPoint(cursorPos))
 		{
-
+			director->end();
 		}
 	}
 	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
