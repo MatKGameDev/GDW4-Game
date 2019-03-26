@@ -3,6 +3,7 @@
 #include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "PauseMenu.h"
 #include "HelpBubble.h"
 
 cocos2d::Scene* Tutorial::createScene()
@@ -50,8 +51,6 @@ void Tutorial::initGameObjects()
 	//set bounds for the scene
 	GameObject::MAX_X = 15000.0f;
 	GameObject::MAX_Y = 1080.0f;
-	
-	Hero::hero->sprite->setPosition(Vec2(20.0f, 200.0f)); //set initial position
 }
 
 void Tutorial::initSprites()
@@ -188,11 +187,15 @@ void Tutorial::initSprites()
 	}
 
 	//add hero (singleton class)
+	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
+	Hero::hero->sprite->setPosition(Vec2(20, 200));
+	HeroStateManager::idle->onEnter();
 
 	//use a follow camera with strict dimensions for horizontal scrolling
 	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
 
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 
@@ -202,9 +205,18 @@ void Tutorial::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
-	
+
 	//add grapple sprite and tip
+	//add repeating pattern to grapple sprite
+	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+
+	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
+	Grapple::grapple->sprite->setVisible(0);
+	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->sprite, 5);
+
+	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->tip, 6);
 }
 
@@ -419,8 +431,11 @@ void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		break;
 
 	case EventKeyboard::KeyCode::KEY_E:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
+		//HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
+
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		director->pushScene(PauseMenu::createScene());
 	}
 }
 

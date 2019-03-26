@@ -1,8 +1,11 @@
 #include "Gameplay.h"
+#include "PauseMenu.h"
 #include <iostream>
 #include "HeroStateManager.h"
 #include "Boss/Boss.h"
 #include "XinputManager.h"
+#include "DeathScreen.h"
+#include "VictoryScreen.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {
@@ -14,6 +17,8 @@ bool Gameplay::init()
 {
 	if (!Scene::init())
 		return false;
+
+	isTransitioning = false;
 
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
@@ -188,37 +193,52 @@ void Gameplay::initKeyboardListener()
 //UPDATE
 void Gameplay::update(float dt)
 {
-	Grapple::grapple->update(dt, this); //update grapple
-	Hero::hero->update(dt); //update our hero
-	
-	testHurtbox->clear();
-	//DRAW HURTBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
-		Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-		Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-		Color4F(1.0f, 0.0f, 0.0f, 0.f));
-	//DRAW MOVEBOX FOR TESTING
-	testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-		Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-		Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-		Color4F(0.0f, 1.0f, 0.0f, .0f));
-	//DRAW BOSS HITBOX FOR TESTING
-
-
-	testMeleeAttack->clear();
-	//DRAW MELEE ATTACK HITBOX FOR TESTING
-	testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin, 
-		Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-		Color4F(1.0f, 0.7f, 0.8f, 0.3f));
-
-	spawnEnemies();     //spawn enemies if needed 
-	updateObjects(dt);  //update objects
-	updateEnemies(dt);  //update enemies
-
-	//FOR TESTING BOSS DEATH
-	if (boss->getHealth() == 0)
+	if (!isTransitioning)
 	{
-		
+		Grapple::grapple->update(dt, this); //update grapple
+		Hero::hero->update(dt); //update our hero
+
+		testHurtbox->clear();
+		//DRAW HURTBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
+			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
+				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
+			Color4F(1.0f, 0.0f, 0.0f, 0.5f));
+		//DRAW MOVEBOX FOR TESTING
+		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
+			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
+				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
+			Color4F(0.0f, 1.0f, 0.0f, .0f));
+		//DRAW BOSS HITBOX FOR TESTING
+
+
+		testMeleeAttack->clear();
+		//DRAW MELEE ATTACK HITBOX FOR TESTING
+		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
+			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
+			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+
+		spawnEnemies();     //spawn enemies if needed 
+		updateObjects(dt);  //update objects
+		updateEnemies(dt);  //update enemies
+
+		//FOR TESTING BOSS DEATH
+		if (boss->getHealth() == 0)
+		{
+			Hero::hero->reset(); //reset hero attributes
+			this->removeAllChildrenWithCleanup(true);
+			TileBase::deleteAllTiles();
+			director->replaceScene(TransitionFade::create(1.5f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+		else if (Hero::hero->health == 0)
+		{
+			Hero::hero->reset(); //reset hero attributes
+			this->removeAllChildrenWithCleanup(true);
+			TileBase::deleteAllTiles();
+			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
 	}
 }
 
@@ -351,6 +371,9 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	case EventKeyboard::KeyCode::KEY_E:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
+
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		director->pushScene(PauseMenu::createScene());
 	}
 }
 
