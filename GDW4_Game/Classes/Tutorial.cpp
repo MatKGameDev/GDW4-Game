@@ -301,6 +301,7 @@ void Tutorial::update(float dt)
 			Grapple::grapple->unLatch();
 			this->removeAllChildrenWithCleanup(true);
 			TileBase::deleteAllTiles();
+			HelpBubble::deleteAllInstances();
 			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
