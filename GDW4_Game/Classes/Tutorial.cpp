@@ -150,6 +150,7 @@ void Tutorial::initSprites()
 	{
 		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map grid
 		{
+			//check for ground tile
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
@@ -179,6 +180,7 @@ void Tutorial::initSprites()
 				}
 			}
 
+			//check for platform tile
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{

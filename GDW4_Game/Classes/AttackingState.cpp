@@ -27,6 +27,9 @@ void AttackingState::onExit()
 	if (Grapple::grapple->isActive)
 		HeroStateManager::grappling->onEnter();
 
+	else if (Hero::hero->velocity > 0)
+		HeroStateManager::jumping->onEnter();
+
 	else if (Hero::hero->velocity < 0)
 		HeroStateManager::falling->onEnter();
 
