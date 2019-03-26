@@ -19,6 +19,7 @@ bool PrettyPictureScene::init()
 
 	image = Sprite::create("Backgrounds/cutscene.png");
 	image->setAnchorPoint(Vec2(0.0f, 0.0f));
+	image -> setPosition(Vec2(0.0f, 0.0f));
 	this->addChild(image);
 
 	timer = 0.0f;
