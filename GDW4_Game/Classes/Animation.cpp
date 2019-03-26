@@ -87,6 +87,14 @@ void marcos::AnimationManager::init()
 	m_JumpingLeftAnimation = setAnimation("Sprites/jump_left.png", 15, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_JumpingLeftAnimation, "jumping_left_animation_key");
 
+
+	m_FallingRightAnimation = setAnimation("Sprites/falling_right.png", 14, 105, 135, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_FallingRightAnimation, "falling_right_animation_key");
+
+	m_FallingLeftAnimation = setAnimation("Sprites/falling_left.png", 14, 105, 135,  0.1f);
+	AnimationCache::getInstance()->addAnimation(m_FallingLeftAnimation, "falling_left_animation_key");
+
+
 	/////////////////////////////////////// A T T A C K I N G /////////////////////////////////////////
 	m_MeleeAttackRightAnimation = setAnimation("Sprites/melee_right.png", 4, 177, 138, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_MeleeAttackRightAnimation, "melee_right_animation_key");
@@ -102,10 +110,10 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackLeftAnimation, "projectile_left_animation_key");
 
 	/////////////////////////////////////// G R A P P L I N G /////////////////////////////////////////
-	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 3, 105, 135, 0.06f);
+	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrapplingRightAnimation, "grapple_right_animation_key");
 
-	m_GrapplingLeftAnimation = setAnimation("Sprites/grapple_left.png", 3, 105, 135, 0.06f);
+	m_GrapplingLeftAnimation = setAnimation("Sprites/grapple_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrapplingLeftAnimation, "grapple_left_animation_key");
 
 
@@ -121,6 +129,8 @@ void marcos::AnimationManager::init()
 
 	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
+
+
 
 	
 	//////////////////////////////////////////// B O S S ///////////////////////////////////////////
