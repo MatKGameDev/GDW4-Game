@@ -40,6 +40,10 @@ void FirstBossState::setSmallerState(FirstBossSmallerState* newState)
 	currentState = newState;
 }
 
+void FirstBossState::update(const float& deltaT, Boss* bossInstance)
+{
+}
+
 
 //@brief Change to Idle state
 void FirstBossState::changeToIdleState(Boss* boss)

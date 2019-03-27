@@ -29,7 +29,7 @@ public:
 	void setSmallerState(FirstBossSmallerState *newState);
 
 	//Functions
-	virtual void update(const float &deltaT, Boss *bossInstance) = 0;
+	virtual void update(const float &deltaT, Boss *bossInstance);
 	virtual void changeToIdleState(Boss *boss); //Only Idle state is allow to change publicly
 protected:
 	FirstBossSmallerState *currentState{ nullptr };

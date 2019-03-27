@@ -1,76 +1,37 @@
 #include "FlameSplit.h"
 #include "Boss/General/Boss.h"
 
-void FlameSplitCooldown::ChangeToIdle()
+void FlameSplit4FirstBoss::performAction()
 {
-	bossPointer->getCurrentState()->changeToIdleState(bossPointer);
+	something->spewLava();
 }
 
-FlameSplitCooldown::FlameSplitCooldown(Boss* boss) : FirstBossSmallerState(boss)
+void FlameSplit4FirstBoss::changeBackToIdling()
 {
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key"));
-
-	boss->getSprite()->runAction
-	(
-		cocos2d::Sequence::create
-		(
-			cocos2d::Repeat::create(action, 1),
-			cocos2d::CallFunc::create([&] {this->ChangeToIdle(); }),
-			nullptr
-		)
-	);
-}
-
-void FlameSplitPerforming::ChangeToCooldown()
-{
-	bossPointer->getCurrentState()->setSmallerState(new FlameSplitCooldown(bossPointer));
-	delete this;
-}
-
-
-FlameSplitPerforming::FlameSplitPerforming(Boss* boss) : FirstBossSmallerState(boss), waitingTime(3)
-{
-	bossPointer->spewLava();
-}
-
-void FlameSplitPerforming::update(float deltaT)
-{
-	waitingTime -= deltaT;
-	if (waitingTime <= 0)
-		ChangeToCooldown();
-}
-
-
-void FlameSplitCharging::changeToPerforming()
-{
-	//Change to performing state
-	bossPointer->getCurrentState()->setSmallerState(new FlameSplitPerforming(bossPointer));
-	delete this;
-}
-
-FlameSplitCharging::FlameSplitCharging(Boss* boss) : FirstBossSmallerState(boss)
-{
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key"));
-
-	boss->getSprite()->runAction
-	(
-		cocos2d::Sequence::create
-		(
-			cocos2d::Repeat::create(action, 1),
-			cocos2d::CallFunc::create([&] {this->changeToPerforming(); }),
-			nullptr
-		)
-	);
+	changeToIdleState(something);
 }
 
 
 FlameSplit4FirstBoss::FlameSplit4FirstBoss(Boss *boss)
 {
+	something = boss;
+	//Prepare the animation
+	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key"));
+	auto action2 = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key"));
+
+	//Set up the action for the boss
 	boss->getSprite()->stopAllActions();
-	currentState = new FlameSplitCharging(boss);
+	boss->getSprite()->runAction
+	(
+		cocos2d::Sequence::create
+		(
+			cocos2d::Repeat::create(action, 1),
+			cocos2d::CallFunc::create([&] {this->performAction(); }),
+			cocos2d::DelayTime::create(3),
+			cocos2d::Repeat::create(action2, 1),
+			cocos2d::CallFunc::create([&] {this->changeBackToIdling(); }),
+			nullptr
+		)
+	);
 }
 
-void FlameSplit4FirstBoss::update(const float &deltaT, Boss *bossInstance)
-{
-	currentState->update(deltaT);
-}
