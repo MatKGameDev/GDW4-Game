@@ -299,7 +299,6 @@ void Tutorial::update(float dt)
 		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
 			Grapple::grapple->unLatch();
-			this->removeAllChildrenWithCleanup(true);
 			TileBase::deleteAllTiles();
 			HelpBubble::deleteAllInstances();
 			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));

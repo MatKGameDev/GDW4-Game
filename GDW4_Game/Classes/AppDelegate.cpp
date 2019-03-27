@@ -51,8 +51,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	if (!glview)
 	{
-		glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
-		//glview = GLViewImpl::createWithFullScreen("GDW4 Game");
+		glview = GLViewImpl::createWithRect("Echoes of Arem", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
+		//glview = GLViewImpl::createWithFullScreen("Echoes of Arem");
 		director->setOpenGLView(glview);
 	}
 

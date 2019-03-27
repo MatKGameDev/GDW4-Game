@@ -225,16 +225,12 @@ void Gameplay::update(float dt)
 		//FOR TESTING BOSS DEATH
 		if (boss->getHealth() == 0)
 		{
-			Hero::hero->reset(); //reset hero attributes
-			this->removeAllChildrenWithCleanup(true);
 			TileBase::deleteAllTiles();
 			director->replaceScene(TransitionFade::create(1.5f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		else if (Hero::hero->health == 0)
 		{
-			Hero::hero->reset(); //reset hero attributes
-			this->removeAllChildrenWithCleanup(true);
 			TileBase::deleteAllTiles();
 			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;

@@ -95,7 +95,6 @@ void PrettyPictureScene::update(float dt)
 	if (timer > 12.0f && !isDone)
 	{
 		isDone = true;
-		this->removeAllChildren();
 		director->replaceScene(TransitionFade::create(1.5f, Gameplay::createScene(), Color3B(0, 0, 0)));
 	}
 }

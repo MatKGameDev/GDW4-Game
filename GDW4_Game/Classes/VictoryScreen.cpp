@@ -105,7 +105,6 @@ void VictoryScreen::mouseDownCallback(Event* event)
 		//open controls menu
 		if (mainMenuRect.containsPoint(cursorPos))
 		{
-			this->removeAllChildrenWithCleanup(true);
 			director->replaceScene(TransitionFade::create(1.f, MainMenu::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
