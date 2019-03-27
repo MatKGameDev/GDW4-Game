@@ -62,7 +62,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
 
-	auto scene = Tutorial::createScene();
+	auto scene = Gameplay::createScene();
 	director->runWithScene(scene);
 
 	return true;

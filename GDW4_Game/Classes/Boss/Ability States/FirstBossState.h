@@ -37,5 +37,5 @@ protected:
 	//Utility Functions
 	virtual void changeToFlameSplit(Boss *boss);
 	virtual void changeToFlameThrower(Boss *boss);
-	//virtual void changeToSuckingBullet(Boss *boss);
+	virtual void changeToExplosiveBullet(Boss *boss);
 };

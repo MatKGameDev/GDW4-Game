@@ -1,7 +1,7 @@
 #include "Gameplay.h"
 #include <iostream>
 #include "HeroStateManager.h"
-#include "Boss/Boss.h"
+#include "Boss/General/Boss.h"
 #include "XinputManager.h"
 
 cocos2d::Scene* Gameplay::createScene()

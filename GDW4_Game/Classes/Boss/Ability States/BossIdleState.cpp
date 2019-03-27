@@ -1,10 +1,10 @@
 #include "BossIdleState.h"
-#include "Boss.h"
+#include "Boss/General/Boss.h"
 
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss) : cooldownBeforeNextAbility{ 5.f }
 {
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key"));
-	boss->getSprite()->runAction(cocos2d::RepeatForever::create(action));
+	auto animationForIdling = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key"));
+	boss->getSprite()->runAction(cocos2d::RepeatForever::create(animationForIdling));
 }
 
 void Idling4FirstBoss::update(const float &deltaT, Boss *bossInstance)
@@ -31,7 +31,7 @@ void Idling4FirstBoss::chooseRandomAbility(Boss *bossInstance)
 		changeToFlameSplit(bossInstance);
 		break;
 	case 3:
-		//changeToSuckingBullet(bossInstance);
+		//changeToExplosiveBullet(bossInstance);
 		break;
 	default:
 		throw;

@@ -1,5 +1,5 @@
 #include "FlameSplit.h"
-#include "Boss.h"
+#include "Boss/General/Boss.h"
 
 void FlameSplitCooldown::ChangeToIdle()
 {

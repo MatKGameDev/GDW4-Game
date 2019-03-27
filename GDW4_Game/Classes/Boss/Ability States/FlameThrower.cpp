@@ -1,5 +1,5 @@
 #include "FlameThrower.h"
-#include "Boss.h"
+#include "Boss/General/Boss.h"
 
 void FlameThrowerCooldown::changeToIdle()
 {

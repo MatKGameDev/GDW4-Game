@@ -1,11 +1,9 @@
 #pragma once
-#ifndef BOSS_H
-#define BOSS_H
 
-#include "FirstBossState.h"
 #include <2d/CCSprite.h>
-#include "Boss1Attack.h"
 #include "HitBox.h"
+#include "Boss/Ability States/FirstBossState.h"
+#include "Boss/Attacks/Boss1Attack.h"
 
 class Hero;
 
@@ -49,4 +47,3 @@ public:
 	//Utility functions
 	void removeFromLavaList(Boss1LavaAttack *elementToRemove);
 };
-#endif

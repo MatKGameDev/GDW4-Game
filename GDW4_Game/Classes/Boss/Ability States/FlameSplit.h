@@ -37,5 +37,4 @@ class FlameSplit4FirstBoss : public FirstBossState
 public:
 	FlameSplit4FirstBoss(Boss *boss);
 	void update(const float &deltaT, Boss *bossInstance) override;
-
 };
