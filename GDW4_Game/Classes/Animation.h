@@ -40,8 +40,8 @@ namespace marcos
 		static cocos2d::Animation* m_MeleeAttackRightAnimation;
 		static cocos2d::Animation* m_MeleeAttackLeftAnimation;
 
-		static cocos2d::Animation* m_ProjectileAttackRightAnimation;
-		static cocos2d::Animation* m_ProjectileAttackLeftAnimation;
+		static cocos2d::Animation* m_MeleeAttackUpRightAnimation;
+		static cocos2d::Animation* m_MeleeAttackUpLeftAnimation;
 
 
 		//grappling
