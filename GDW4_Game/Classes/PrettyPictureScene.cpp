@@ -25,6 +25,8 @@ bool PrettyPictureScene::init()
 	timer = 0.0f;
 	isDone = false;
 
+	preloadAnimations();
+
 	scheduleUpdate();
 
 	return true;

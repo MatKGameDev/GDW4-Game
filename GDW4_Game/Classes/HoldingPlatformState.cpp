@@ -28,7 +28,6 @@ void HoldingPlatformState::onEnter()
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
-		Hero::hero->sprite->stopAllActions();
 	}
 }
 
