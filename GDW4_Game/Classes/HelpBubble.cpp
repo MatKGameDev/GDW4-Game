@@ -19,6 +19,12 @@ HelpBubble::HelpBubble(std::string filePath, cocos2d::Vec2 position, float a_sta
 	helpBubbleList.push_back(this); //add to list
 }
 
+//clears all help bubbles from the list
+void HelpBubble::deleteAllInstances()
+{
+	helpBubbleList.clear();
+}
+
 //check hero's position to determine if we should doing any fading in/out
 void HelpBubble::update(float dt)
 {

@@ -17,6 +17,7 @@ public:
 	bool isFading;
 
 	static std::vector<HelpBubble*> helpBubbleList;
+	static void deleteAllInstances();
 
 	void update(float dt);
 };

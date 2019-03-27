@@ -203,7 +203,7 @@ void Gameplay::update(float dt)
 		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
 			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
 				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-			Color4F(1.0f, 0.0f, 0.0f, 0.5f));
+			Color4F(1.0f, 0.0f, 0.0f, 0.f));
 		//DRAW MOVEBOX FOR TESTING
 		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
 			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
