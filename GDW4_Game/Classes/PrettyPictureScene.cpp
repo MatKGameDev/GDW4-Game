@@ -25,8 +25,8 @@ bool PrettyPictureScene::init()
 	timer = 0.0f;
 	isDone = false;
 
-	preloadAnimations();
 
+	preloadAnimations();
 	scheduleUpdate();
 
 	return true;
@@ -52,6 +52,41 @@ void PrettyPictureScene::preloadAnimations()
 	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
 	sprite->setPosition(500, 500);
 	this->addChild(sprite, 18);
+
+	//boss
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
+
+
 }
 
 void PrettyPictureScene::update(float dt)
