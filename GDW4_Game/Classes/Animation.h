@@ -55,6 +55,10 @@ namespace marcos
 		static cocos2d::Animation* m_GrappleJumpRightAnimation;
 		static cocos2d::Animation* m_GrappleJumpLeftAnimation;
 
+
+		static cocos2d::Animation* m_GrappleHoldRightAnimation;
+		static cocos2d::Animation* m_GrappleHoldLeftAnimation;
+
 		//boss
 		static cocos2d::Animation* m_BossFlameAnimation;
 		static cocos2d::Animation* m_BossFlameTellAnimationPRE;

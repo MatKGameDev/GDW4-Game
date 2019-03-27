@@ -34,6 +34,9 @@ cocos2d::Animation* marcos::AnimationManager::m_ShootingGrappleRightAnimation = 
 cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpRightAnimation = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_GrappleJumpLeftAnimation = new cocos2d::Animation();
 
+cocos2d::Animation* marcos::AnimationManager::m_GrappleHoldRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_GrappleHoldLeftAnimation = new cocos2d::Animation();
+
 
 //boss
 
@@ -129,7 +132,13 @@ void marcos::AnimationManager::init()
 
 	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
+	
+	///////////////////////////acwwc//////////////wcwc/////////////
+	m_GrappleHoldRightAnimation = setAnimation("Sprites/grapple_hold_right.png", 1, 105, 175, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_GrappleHoldRightAnimation, "grapple_hold_right_animation_key");
 
+	m_GrappleHoldLeftAnimation = setAnimation("Sprites/grapple_hold_left.png", 1, 105, 175, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_GrappleHoldLeftAnimation, "grapple_hold_left_animation_key");
 
 
 	
