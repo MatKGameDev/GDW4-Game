@@ -13,6 +13,7 @@ public:
 	static Scene* createScene();
 
 	bool init();
+	void preloadAnimations();
 	void update(float dt);
 
 private:

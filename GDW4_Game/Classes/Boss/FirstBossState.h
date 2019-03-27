@@ -1,82 +1,41 @@
 #pragma once
-#ifndef FIRSTBOSSSTATE_H
-#define FIRSTBOSSSTATE_H
 
 //Foward declare
 class Boss;
 
-
 /*
  *
  */
+class FirstBossSmallerState
+{
+protected:
+	Boss* bossPointer;
+
+	FirstBossSmallerState(Boss *aBossInstance);
+public:
+	virtual ~FirstBossSmallerState();
+
+	virtual void update(float deltaT);
+	
+};
+
 class FirstBossState
 {
 public:
-	FirstBossState();
+	//Destructor
 	virtual ~FirstBossState();
+
+	//Setter
+	void setSmallerState(FirstBossSmallerState *newState);
+
+	//Functions
 	virtual void update(const float &deltaT, Boss *bossInstance) = 0;
-
-	//Only Idle state is allow to change publicly
-	virtual void changeToIdleState(Boss *boss);
+	virtual void changeToIdleState(Boss *boss); //Only Idle state is allow to change publicly
 protected:
-	enum State
-	{
-		charging, performingAbility
-	};
-
-	State *currentState{nullptr};
+	FirstBossSmallerState *currentState{ nullptr };
 
 	//Utility Functions
 	virtual void changeToFlameSplit(Boss *boss);
 	virtual void changeToFlameThrower(Boss *boss);
-	virtual void changeToSuckingBullet(Boss *boss);
+	//virtual void changeToSuckingBullet(Boss *boss);
 };
-
-/*
- *
- */
-class Idling4FirstBoss: public FirstBossState
-{
-public:
-	Idling4FirstBoss();
-	void update(const float &deltaT, Boss *bossInstance) override;
-
-private:
-	float cooldownBeforeNextAbility;
-
-	//Utility functions
-	/*
-	 * List	of utility functions
-	 * 1. Choose a random ability
-	 */
-	void chooseRandomAbility(Boss *bossInstance);
-};
-
-/*
- *This class  
- */
-class FlameSplit4FirstBoss: public FirstBossState
-{
-public:
-	FlameSplit4FirstBoss();
-	void update(const float &deltaT, Boss *bossInstance) override;
-private:
-};
-
-class FlameThrower4FirstBoss : public FirstBossState
-{
-public:
-	FlameThrower4FirstBoss();
-
-	void update(const float& deltaT, Boss* bossInstance) override;
-private:
-};
-
-class SuckingAbility4FirstBoss: public FirstBossState
-{
-public:
-	SuckingAbility4FirstBoss();
-
-	void update(const float& deltaT, Boss* bossInstance) override;
-};
-#endif

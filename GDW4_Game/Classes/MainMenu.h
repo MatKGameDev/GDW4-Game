@@ -15,13 +15,30 @@ public:
 	bool init();
 	void initUI();
 	void initAnimations();
+	void initMouseListener();
+
 	void update(float dt);
+	void transitionScene();
+
+	//Callbacks
+	void mouseDownCallback(Event* event);
+	void mouseUpCallback(Event* event);
+	void mouseMoveCallback(Event* event);
+	void mouseScrollCallback(Event* event);
 
 private:
 	Director* director;
+	EventListenerMouse* mouseListener;
+	Vec2 cursorPos;
 
-	Sprite* background;
+	Sprite* startText;
+	Sprite* controlsText;
+	Sprite* exitText;
 
-	bool isDone;
+	Rect startRect;
+	Rect controlsRect;
+	Rect exitRect;
+
+	bool isTransitioning;
 };
 #endif

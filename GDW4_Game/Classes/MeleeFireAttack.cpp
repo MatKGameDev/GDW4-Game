@@ -7,7 +7,7 @@ MeleeFireAttack::MeleeFireAttack()
 {
 	attackTimer = 0.0f;
 	attackWindup = 0.2f;
-	attackDuration = 0.35f;
+	attackDuration = 0.2f;
 	attackCooldown = 0.9f;
 	disabled = false;
 }
@@ -32,9 +32,9 @@ void MeleeFireAttack::attackDown()
 void MeleeFireAttack::attackLeft()
 {
 	hitbox.setRect(
-		Hero::hero->hurtBox.getMaxX() - 130,
+		Hero::hero->hurtBox.getMaxX() - 110,
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		130,
+		110,
 		50);
 }
 void MeleeFireAttack::attackRight()
@@ -42,7 +42,7 @@ void MeleeFireAttack::attackRight()
 	hitbox.setRect(
 		Hero::hero->hurtBox.getMinX(),
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		130,
+		110,
 		50);
 }
 
@@ -51,7 +51,24 @@ void MeleeFireAttack::initAttack()
 {
 	//aim upwards
 	if (HeroAttackBase::isWKeyHeld)
+	{
 		performAttack = &MeleeFireAttack::attackUp; //setting member function pointer
+
+		if (Hero::hero->lookState == Hero::LookDirection::lookingRight)
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("melee_up_right_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::CCRepeat::create(action->clone(), 1));
+		}
+		else
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("melee_up_left_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::CCRepeat::create(action->clone(), 1));
+		}
+	}
 
 	//aim downwards
 	else if (HeroAttackBase::isSKeyHeld)

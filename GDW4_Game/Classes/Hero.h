@@ -46,6 +46,7 @@ public:
 	void jump();
 
 	void takeDamage();
+	void reset();
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;

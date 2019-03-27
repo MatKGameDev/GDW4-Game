@@ -26,6 +26,8 @@ public:
 
 	Boss* boss;
 
+	bool isTransitioning;
+
 	virtual bool init();
 	void initUI();
 	void initGameObjects();
@@ -33,6 +35,7 @@ public:
 	void initListeners();
 	void initMouseListener();
 	void initKeyboardListener();
+	void initControllerListener();
 
 	void update(float dt);
 	void spawnEnemies();
