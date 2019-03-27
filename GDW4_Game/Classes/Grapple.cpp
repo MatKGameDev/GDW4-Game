@@ -127,7 +127,7 @@ void Grapple::unLatch()
 bool Grapple::isMaxLength()
 {
 	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
-	if (grappleLength.getMagnitude() > 1000) //check max length
+	if (grappleLength.getMagnitude() > 500) //check max length
 		return true;
 	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
 		return true;

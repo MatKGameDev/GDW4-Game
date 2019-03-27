@@ -1,15 +1,15 @@
 #pragma once
-#ifndef MAINMENU_H
-#define MAINMENU_H
+#ifndef DEATHSCREEN_H
+#define DEATHSCREEN_H
 
-#include "cocos2d.h";
+#include "cocos2d.h"
 
 using namespace cocos2d;
 
-class MainMenu : public cocos2d::Scene
+class DeathScreen : public cocos2d::Scene
 {
 public:
-	CREATE_FUNC(MainMenu);
+	CREATE_FUNC(DeathScreen);
 	static Scene* createScene();
 
 	bool init();
@@ -18,7 +18,6 @@ public:
 	void initMouseListener();
 
 	void update(float dt);
-	void transitionScene();
 
 	//Callbacks
 	void mouseDownCallback(Event* event);
@@ -31,12 +30,14 @@ private:
 	EventListenerMouse* mouseListener;
 	Vec2 cursorPos;
 
-	Sprite* startText;
-	Sprite* controlsText;
+	Sprite* background;
+
+	Sprite* tryAgainText;
+	Sprite* mainMenuText;
 	Sprite* exitText;
 
-	Rect startRect;
-	Rect controlsRect;
+	Rect tryAgainRect;
+	Rect mainMenuRect;
 	Rect exitRect;
 
 	bool isTransitioning;

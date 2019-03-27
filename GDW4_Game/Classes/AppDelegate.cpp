@@ -28,6 +28,8 @@
 #include "Gameplay.h"
 #include "Tutorial.h"
 #include "HeroStateManager.h"
+#include "MainMenu.h"
+#include "PauseMenu.h"
 
 USING_NS_CC;
 
@@ -49,8 +51,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	if (!glview)
 	{
-		//glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
-		glview = GLViewImpl::createWithFullScreen("GDW4 Game");
+		glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
+		//glview = GLViewImpl::createWithFullScreen("GDW4 Game");
 		director->setOpenGLView(glview);
 	}
 

@@ -1,15 +1,14 @@
 #pragma once
-#ifndef MAINMENU_H
-#define MAINMENU_H
+#ifndef PAUSEMENU_H
+#define PAUSEMENU_H
 
-#include "cocos2d.h";
-
+#include "cocos2d.h"
 using namespace cocos2d;
 
-class MainMenu : public cocos2d::Scene
+class PauseMenu : public cocos2d::Scene
 {
 public:
-	CREATE_FUNC(MainMenu);
+	CREATE_FUNC(PauseMenu);
 	static Scene* createScene();
 
 	bool init();
@@ -18,7 +17,6 @@ public:
 	void initMouseListener();
 
 	void update(float dt);
-	void transitionScene();
 
 	//Callbacks
 	void mouseDownCallback(Event* event);
@@ -31,14 +29,12 @@ private:
 	EventListenerMouse* mouseListener;
 	Vec2 cursorPos;
 
-	Sprite* startText;
+	Sprite* resumeText;
 	Sprite* controlsText;
 	Sprite* exitText;
 
-	Rect startRect;
+	Rect resumeRect;
 	Rect controlsRect;
 	Rect exitRect;
-
-	bool isTransitioning;
 };
 #endif
