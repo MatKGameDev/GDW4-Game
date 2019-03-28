@@ -43,19 +43,28 @@ public:
 	void updateEnemies(float dt);
 	void removeAllObjects();
 
-	//Callbacks
+	//mouse callbacks
 	void mouseDownCallback(Event* event);
 	void mouseUpCallback(Event* event);
 	void mouseMoveCallback(Event* event);
 	void mouseScrollCallback(Event* event);
+
+	//keyboard callbacks
 	void keyDownCallback(EventKeyboard::KeyCode keycode, Event* event);
 	void keyUpCallback(EventKeyboard::KeyCode keycode, Event* event);
+
+	//controller callbacks
+	void buttonPressCallback(Controller* controller, int keyCode, Event* event);
+	void buttonReleaseCallback(Controller* controller, int keyCode, Event* event);
+	void axisEventCallback(Controller* controller, int keyCode, Event* event);
 
 private:
 	Director* director;
 
 	EventListenerMouse* mouseListener;
 	EventListenerKeyboard* keyboardListener;
+	EventListenerController* controllerListener;
+
 	Vect2 mousePosition;
 
 	Sprite* background;

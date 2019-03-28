@@ -112,8 +112,8 @@ void Gameplay::initSprites()
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
-	Hero::hero->sprite->setPosition(Vec2(700, 150));
-	HeroStateManager::idle->onEnter();
+	Hero::hero->sprite->setPosition(Vec2(700, 200));
+	Hero::hero->reset();
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
@@ -151,9 +151,10 @@ void Gameplay::initListeners()
 {
 	//Init the mouse listener
 	initMouseListener();
-
 	//Init the keyboard listener
 	initKeyboardListener();
+	//init controller listener
+	initControllerListener();
 }
 
 void Gameplay::initMouseListener()
@@ -188,6 +189,21 @@ void Gameplay::initKeyboardListener()
 
 	//Add the keyboard listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+}
+
+void Gameplay::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(Gameplay::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(Gameplay::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(Gameplay::axisEventCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
 }
 
 //UPDATE
@@ -226,7 +242,7 @@ void Gameplay::update(float dt)
 		if (boss->getHealth() == 0)
 		{
 			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(1.5f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		else if (Hero::hero->health == 0)
@@ -314,7 +330,6 @@ void Gameplay::mouseDownCallback(Event* event)
 		//mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
-		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
 	}
 }
 
@@ -399,6 +414,84 @@ void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
+	}
+}
+
+void Gameplay::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+		HeroStateManager::currentState->handleInput(InputType::p_space);
+		break;
+
+	case ControllerInput::Start:
+		director->pushScene(PauseMenu::createScene());
+		break;
+	}
+}
+
+void Gameplay::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
+	}
+}
+
+void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+		//x axis of the left stick
+	case ControllerInput::leftStickX:
+		//moving to the left
+		if (controller->getKeyStatus(keyCode).value <= -1)
+		{
+			HeroStateManager::currentState->handleInput(InputType::p_a);
+			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+		}
+		//moving to the right
+		else if (controller->getKeyStatus(keyCode).value >= 1)
+		{
+			HeroStateManager::currentState->handleInput(InputType::p_d);
+			Hero::hero->lookState = Hero::LookDirection::lookingRight;
+			Hero::hero->moveState = Hero::MoveDirection::movingRight;
+		}
+		else //not moving
+		{
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+		}
+		break;
+
+		//y axis of the left stick
+	case ControllerInput::leftStickY:
+		if (controller->getKeyStatus(keyCode).value >= 1)
+			HeroAttackBase::isWKeyHeld = true;
+		else
+		{
+			HeroAttackBase::isWKeyHeld = false;
+			if (controller->getKeyStatus(keyCode).value <= -1)
+				HeroStateManager::currentState->handleInput(InputType::p_s);
+		}
+		break;
+
+	case ControllerInput::leftTrigger:
+		//check for attack
+		if (controller->getKeyStatus(keyCode).value >= 1)
+			HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
+		break;
+
+	case ControllerInput::rightTrigger:
+		if (controller->getKeyStatus(keyCode).value >= 1)
+		{
+			//calculate angle (in radians) using atan2 with the right stick's y and x values
+			Grapple::grapple->shoot(atan2(controller->getKeyStatus(ControllerInput::rightStickX).value, controller->getKeyStatus(ControllerInput::rightStickY).value));
+		}
 		break;
 	}
 }

@@ -21,7 +21,6 @@ void ShootingGrappleState::onEnter()
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-
 	}
 	else
 	{
@@ -29,7 +28,6 @@ void ShootingGrappleState::onEnter()
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-
 	}
 }
 
