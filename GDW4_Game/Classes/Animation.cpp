@@ -52,6 +52,9 @@ cocos2d::Animation* marcos::AnimationManager::m_BossSpitTellAnimationPOST = new 
 cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPRE = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPOST = new cocos2d::Animation();
 
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPRE = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPOST = new cocos2d::Animation();
+
 cocos2d::Animation* marcos::AnimationManager::m_BossIdleAnimation = new cocos2d::Animation();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
