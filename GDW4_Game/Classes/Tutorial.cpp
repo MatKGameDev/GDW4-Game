@@ -287,8 +287,6 @@ void Tutorial::update(float dt)
 	{
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
-		//if (hero->invincibilityTimer > 0)
-		//	flickerSprite(); //flicker sprite if it's invincible
 
 		testHurtbox->clear();
 		//DRAW HURTBOX FOR TESTING
@@ -316,10 +314,22 @@ void Tutorial::update(float dt)
 		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
 			Hero::hero->reset();
-			TileBase::deleteAllTiles();
 			HelpBubble::deleteAllInstances();
 			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
+		}
+	}
+	else //we are transitioning
+	{
+		//move hero down to the nearest block so they arent floating
+		Hero::hero->velocity.y = -400;
+		Hero::hero->updatePhysics(dt);
+
+		unsigned int tileListSize = TileBase::tileList.size();
+		for (unsigned int i = 0; i < tileListSize; i++)
+		{
+			if (TileBase::tileList[i]->checkAndResolveCollision(Hero::hero))
+				HeroStateManager::idle->onEnter();
 		}
 	}
 }
@@ -552,7 +562,7 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 		{
 			ControllerInput::isRightTriggerReset = false;
 
-			//use xinput stuff to get a more accurate reading on the analog input than cocos' controller support
+			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
 			XinputManager::instance->update();
 			XinputController* controller1 = XinputManager::instance->getController(0); 
 			Stick sticks[2];

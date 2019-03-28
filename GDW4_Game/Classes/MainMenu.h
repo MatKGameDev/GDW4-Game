@@ -16,6 +16,7 @@ public:
 	void initUI();
 	void initAnimations();
 	void initMouseListener();
+	void preloadAnimations();
 
 	void update(float dt);
 	void transitionScene();

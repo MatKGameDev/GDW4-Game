@@ -30,71 +30,12 @@ bool PrettyPictureScene::init()
 	return true;
 }
 
-//preloads boss animations to reduce lag on the boss scene
-void PrettyPictureScene::preloadAnimations()
-{
-	//flamethrower attack
-	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
-	auto action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	//3 lava ball attack
-	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	//boss
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-
-}
-
 void PrettyPictureScene::update(float dt)
 {
-	if (timer == 0)
-		preloadAnimations();
-
 	timer += dt;
 	if (timer > 12.0f && !isDone)
 	{
+		TileBase::deleteAllTiles(); //delete any leftover tiles
 		isDone = true;
 		director->replaceScene(TransitionFade::create(1.5f, Gameplay::createScene(), Color3B(0, 0, 0)));
 	}

@@ -501,7 +501,7 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 		{
 			ControllerInput::isRightTriggerReset = false;
 
-			//use xinput stuff to get a more accurate reading on the analog input than cocos' controller support
+			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
 			XinputManager::instance->update();
 			XinputController* controller1 = XinputManager::instance->getController(0);
 			Stick sticks[2];

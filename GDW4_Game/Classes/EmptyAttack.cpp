@@ -10,7 +10,7 @@ EmptyAttack::EmptyAttack() :
 
 void EmptyAttack::update(float dt)
 {
-	/*attackTimer += dt;
+	attackTimer += dt;
 	if (attackTimer < attackCooldown)
 		onCooldown = true;
 	else
@@ -18,5 +18,5 @@ void EmptyAttack::update(float dt)
 		onCooldown = false;
 		attackTimer = 0.0f;
 		attackCooldown = 0.0f;
-	}*/
+	}
 }
