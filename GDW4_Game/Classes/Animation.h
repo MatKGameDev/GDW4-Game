@@ -71,6 +71,8 @@ namespace marcos
 		static cocos2d::Animation* m_BossExplosiveTellAnimationPRE;
 		static cocos2d::Animation* m_BossExplosiveTellAnimationPOST;
 
+		static cocos2d::Animation* m_BossExplosionAnimationPRE;
+		static cocos2d::Animation* m_BossExplosionAnimationPOST;
 
 
 		static cocos2d::Animation* m_BossIdleAnimation;
