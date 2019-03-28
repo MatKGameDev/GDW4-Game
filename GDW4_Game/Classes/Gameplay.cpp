@@ -500,9 +500,23 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isRightTriggerReset)
 		{
 			ControllerInput::isRightTriggerReset = false;
+
+			//use xinput stuff to get a more accurate reading on the analog input than cocos' controller support
+			XinputManager::instance->update();
+			XinputController* controller1 = XinputManager::instance->getController(0);
+			Stick sticks[2];
+			controller1->getSticks(sticks);
+
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
-			float grappleAngle = atan2(controller->getKeyStatus(ControllerInput::rightStickX).value, controller->getKeyStatus(ControllerInput::rightStickY).value);
-			Grapple::grapple->shoot(grappleAngle);
+			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
+
+			//check if right stick is at rest (reading is slightly off so we compensate manually :/, it's resting state is around (-0.039, 0.000))
+			if (sticks[RS].x < -0.03 && sticks[RS].x > -0.04 && sticks[RS].y == 0.0f)
+			{
+				//calculate angle (in radians) using atan2 with the right stick's y and x values
+				grappleAngle = atan2(0, 0);
+			}
+			Grapple::grapple->shoot(grappleAngle); //shoot grapple
 		}
 		else if (controller->getKeyStatus(keyCode).value <= -1)
 			ControllerInput::isRightTriggerReset = true;
