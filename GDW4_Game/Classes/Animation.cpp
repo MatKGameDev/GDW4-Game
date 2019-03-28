@@ -166,7 +166,7 @@ void marcos::AnimationManager::init()
 	m_BossSpitTellAnimationPOST = setAnimation("Sprites/Spit_attack_part2.png", 9, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossSpitTellAnimationPOST, "boss_spit_tell_POST_animation_key");
 
-
+	//// @mike its these ones 
 	m_BossExplosionAnimationPRE = setAnimation("Sprites/exploding_fireball.png", 6, 60, 60, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_PRE_animation_key");
 
