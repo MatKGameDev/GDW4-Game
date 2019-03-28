@@ -47,5 +47,10 @@ public:
 		leftTrigger,
 		rightTrigger
 	};
+
+	static bool isLeftTriggerReset;
+	static bool isRightTriggerReset;
+
+	static bool isLeftStickIdle;
 };
 #endif

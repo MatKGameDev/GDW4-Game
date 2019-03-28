@@ -35,7 +35,10 @@ void FallingState::onEnter()
 
 void FallingState::onExit()
 {
-	HeroStateManager::idle->onEnter();
+	if (Hero::hero->moveState == Hero::MoveDirection::idle)
+		HeroStateManager::idle->onEnter();
+	else //moving
+		HeroStateManager::running->onEnter();
 }
 
 void FallingState::handleInput(InputType input)

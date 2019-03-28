@@ -191,7 +191,7 @@ void Tutorial::initSprites()
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(20, 200));
-	Hero::hero->reset();
+	HeroStateManager::idle->onEnter();
 
 	//use a follow camera with strict dimensions for horizontal scrolling
 	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
@@ -504,6 +504,7 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 		//moving to the left
 		if (controller->getKeyStatus(keyCode).value <= -1)
 		{
+			ControllerInput::isLeftStickIdle = false;
 			HeroStateManager::currentState->handleInput(InputType::p_a);
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
@@ -511,13 +512,15 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 		//moving to the right
 		else if (controller->getKeyStatus(keyCode).value >= 1)
 		{
+			ControllerInput::isLeftStickIdle = false;
 			HeroStateManager::currentState->handleInput(InputType::p_d);
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		}
-		else //not moving
+		else if (!ControllerInput::isLeftStickIdle) //not moving AND left stick isn't at rest
 		{
 			Hero::hero->moveState = Hero::MoveDirection::idle;
+			ControllerInput::isLeftStickIdle = true;
 		}
 		break;
 
@@ -535,16 +538,39 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 
 	case ControllerInput::leftTrigger:
 		//check for attack
-		if (controller->getKeyStatus(keyCode).value >= 1)
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftTriggerReset)
+		{
+			ControllerInput::isLeftTriggerReset = false;
 			HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isLeftTriggerReset = true;
 		break;
 
 	case ControllerInput::rightTrigger:
-		if (controller->getKeyStatus(keyCode).value >= 1)
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isRightTriggerReset)
 		{
+			ControllerInput::isRightTriggerReset = false;
+
+			//use xinput stuff to get a more accurate reading on the analog input than cocos' controller support
+			XinputManager::instance->update();
+			XinputController* controller1 = XinputManager::instance->getController(0); 
+			Stick sticks[2];
+			controller1->getSticks(sticks);
+
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
-			Grapple::grapple->shoot(atan2(controller->getKeyStatus(ControllerInput::rightStickX).value, controller->getKeyStatus(ControllerInput::rightStickY).value));
+			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
+
+			//check if right stick is at rest (reading is slightly off so we compensate manually :/, it's resting state is around (-0.039, 0.000))
+			if (sticks[RS].x < -0.03 && sticks[RS].x > -0.04 && sticks[RS].y == 0.0f)
+			{
+				//calculate angle (in radians) using atan2 with the right stick's y and x values
+				grappleAngle = atan2(0, 0);
+			}
+			Grapple::grapple->shoot(grappleAngle); //shoot grapple
 		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isRightTriggerReset = true;
 		break;
 	}
 }

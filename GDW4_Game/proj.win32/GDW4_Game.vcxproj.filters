@@ -70,6 +70,7 @@
     <ClCompile Include="..\Classes\ShootingGrappleState.cpp">
       <Filter>states</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ControllerInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\Animation.h" />

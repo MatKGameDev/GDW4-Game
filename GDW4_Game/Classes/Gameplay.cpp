@@ -113,7 +113,7 @@ void Gameplay::initSprites()
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(700, 200));
-	Hero::hero->reset();
+	HeroStateManager::idle->onEnter();
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
 	this->addChild(Hero::hero->arm, 21); //add hero arm
@@ -241,12 +241,14 @@ void Gameplay::update(float dt)
 		//FOR TESTING BOSS DEATH
 		if (boss->getHealth() == 0)
 		{
+			Hero::hero->reset(); //reset hero
 			TileBase::deleteAllTiles();
 			director->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		else if (Hero::hero->health == 0)
 		{
+			Hero::hero->reset(); //reset hero
 			TileBase::deleteAllTiles();
 			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
@@ -380,7 +382,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		break;
 
 	case EventKeyboard::KeyCode::KEY_E:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
+		//HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
 
 	case EventKeyboard::KeyCode::KEY_ESCAPE:
@@ -446,11 +448,12 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 {
 	switch (keyCode)
 	{
-		//x axis of the left stick
+	//x axis of the left stick
 	case ControllerInput::leftStickX:
 		//moving to the left
 		if (controller->getKeyStatus(keyCode).value <= -1)
 		{
+			ControllerInput::isLeftStickIdle = false;
 			HeroStateManager::currentState->handleInput(InputType::p_a);
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
@@ -458,17 +461,19 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 		//moving to the right
 		else if (controller->getKeyStatus(keyCode).value >= 1)
 		{
+			ControllerInput::isLeftStickIdle = false;
 			HeroStateManager::currentState->handleInput(InputType::p_d);
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		}
-		else //not moving
+		else if (!ControllerInput::isLeftStickIdle) //not moving AND left stick isn't at rest
 		{
 			Hero::hero->moveState = Hero::MoveDirection::idle;
+			ControllerInput::isLeftStickIdle = true;
 		}
 		break;
 
-		//y axis of the left stick
+	//y axis of the left stick
 	case ControllerInput::leftStickY:
 		if (controller->getKeyStatus(keyCode).value >= 1)
 			HeroAttackBase::isWKeyHeld = true;
@@ -482,16 +487,25 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 
 	case ControllerInput::leftTrigger:
 		//check for attack
-		if (controller->getKeyStatus(keyCode).value >= 1)
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftTriggerReset)
+		{
+			ControllerInput::isLeftTriggerReset = false;
 			HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isLeftTriggerReset = true;
 		break;
 
 	case ControllerInput::rightTrigger:
-		if (controller->getKeyStatus(keyCode).value >= 1)
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isRightTriggerReset)
 		{
+			ControllerInput::isRightTriggerReset = false;
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
-			Grapple::grapple->shoot(atan2(controller->getKeyStatus(ControllerInput::rightStickX).value, controller->getKeyStatus(ControllerInput::rightStickY).value));
+			float grappleAngle = atan2(controller->getKeyStatus(ControllerInput::rightStickX).value, controller->getKeyStatus(ControllerInput::rightStickY).value);
+			Grapple::grapple->shoot(grappleAngle);
 		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isRightTriggerReset = true;
 		break;
 	}
 }
