@@ -43,6 +43,7 @@ public:
 	bool isHeroAtEndPoint;
 
 	void shoot(Vect2 destination);
+	void shoot(float a_theta);
 	void extendGrapple();
 	void latch();
 	void unLatch();

@@ -35,7 +35,10 @@ void FallingState::onEnter()
 
 void FallingState::onExit()
 {
-	HeroStateManager::idle->onEnter();
+	if (Hero::hero->moveState == Hero::MoveDirection::idle)
+		HeroStateManager::idle->onEnter();
+	else //moving
+		HeroStateManager::running->onEnter();
 }
 
 void FallingState::handleInput(InputType input)
@@ -58,6 +61,11 @@ void FallingState::handleInput(InputType input)
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			onEnter();
 		}
+		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
 		break;
 	}
 }

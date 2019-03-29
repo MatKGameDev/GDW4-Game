@@ -13,6 +13,8 @@ bool MainMenu::init()
 	if (!Scene::init())
 		return false;
 
+	currentSelection = MenuOptions::nothing;
+
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
@@ -20,7 +22,12 @@ bool MainMenu::init()
 
 	initUI();
 	initAnimations();
+
+	//init listeners
 	initMouseListener();
+	initControllerListener();
+
+	preloadAnimations();
 
 	scheduleUpdate();
 
@@ -74,25 +81,141 @@ void MainMenu::initMouseListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
+void MainMenu::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(MainMenu::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(MainMenu::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(MainMenu::axisEventCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
+//preloads boss animations to reduce lag on the boss scene
+void MainMenu::preloadAnimations()
+{
+	//flamethrower attack
+	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	//3 lava ball attack
+	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	//boss
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/boss.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+}
+
+//move to the next selection on the menu
+void MainMenu::moveToNextMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::start;
+		break;
+
+	case MenuOptions::start:
+		currentSelection = MenuOptions::controls;
+		break;
+
+	case MenuOptions::controls:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::start;
+		break;
+	}
+}
+
+//move back one selection on the menu
+void MainMenu::moveToPreviousMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::start;
+		break;
+
+	case MenuOptions::start:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::controls:
+		currentSelection = MenuOptions::start;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::controls;
+		break;
+	}
+}
+
 void MainMenu::update(float dt)
 {
 	if (!isTransitioning)
 	{
 		//check for mouse hover over menu items
-		if (startRect.containsPoint(cursorPos))
+		if (startRect.containsPoint(cursorPos) || currentSelection == MenuOptions::start)
+			startText->setScale(1.2f);
+		else
 			startText->setScale(1.0f);
-		else
-			startText->setScale(0.8f);
 
-		if (controlsRect.containsPoint(cursorPos))
+		if (controlsRect.containsPoint(cursorPos) || currentSelection == MenuOptions::controls)
+			controlsText->setScale(1.2f);
+		else
 			controlsText->setScale(1.0f);
-		else
-			controlsText->setScale(0.8f);
 
-		if (exitRect.containsPoint(cursorPos))
-			exitText->setScale(1.0f);
+		if (exitRect.containsPoint(cursorPos) || currentSelection == MenuOptions::exit)
+			exitText->setScale(1.2f);
 		else
-			exitText->setScale(0.8f);
+			exitText->setScale(1.0f);
 	}
 }
 
@@ -153,4 +276,58 @@ void MainMenu::mouseMoveCallback(Event* event)
 
 void MainMenu::mouseScrollCallback(Event* event)
 {
+}
+
+void MainMenu::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+		//start game
+		if (currentSelection == MenuOptions::start)
+		{
+			transitionScene();
+		}
+		//open controls menu
+		else if (currentSelection == MenuOptions::controls)
+		{
+			director->pushScene(ControlsMenu::createScene());
+		}
+		//exit game
+		else if (currentSelection == MenuOptions::exit)
+		{
+			director->end();
+		}
+		break;
+
+	case ControllerInput::Start:
+		transitionScene();
+		break;
+	}
+}
+
+void MainMenu::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+{
+}
+
+void MainMenu::axisEventCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	//y axis of the left stick
+	case ControllerInput::leftStickY:
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftStickReset)
+		{
+			moveToPreviousMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1 && ControllerInput::isLeftStickReset)
+		{
+			moveToNextMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value > -0.9 && controller->getKeyStatus(keyCode).value < 0.9)
+			ControllerInput::isLeftStickReset = true;
+		break;
+	}
 }

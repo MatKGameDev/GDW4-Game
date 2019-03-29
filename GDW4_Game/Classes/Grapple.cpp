@@ -1,6 +1,8 @@
 #include "Grapple.h"
 #include "PlatformTile.h"
 #include "GroundTile.h"
+#include <iostream>
+#include "HeroStateManager.h"
 
 Grapple* Grapple::grapple = 0;
 
@@ -40,7 +42,7 @@ void Grapple::initGrapple()
 	}
 }
 
-//performs initial grapple shoot actions
+//performs initial grapple shoot actions from a destination (mouse position)
 void Grapple::shoot(Vect2 destination)
 {
 	if (!isActive)
@@ -60,7 +62,7 @@ void Grapple::shoot(Vect2 destination)
 		else //heroLatchPos.x > latchPoint.x
 		{
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() -/*+*/ 1);
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
 		}
 
 		extendGrapple();
@@ -72,6 +74,51 @@ void Grapple::shoot(Vect2 destination)
 		//make grapple sprite visible
 		sprite->setVisible(1);
 		grapple->tip->setVisible(1);
+
+		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
+	}
+}
+
+//performs initial grapple shoot actions from an angle (controller stick)
+void Grapple::shoot(float a_theta)
+{
+	if (!isActive)
+	{
+		//set all initial variables upon grapple being shot out
+		theta = a_theta;
+		isActive = true;
+		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+
+		//determine look position after latching
+		if (theta > 0)
+		{
+			Hero::hero->lookState = Hero::LookDirection::lookingRight;
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
+		}
+		else if (theta < 0)
+		{
+			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+		}
+		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingRight)
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
+		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+
+		Vect2 normalizedEndPoint(sin(theta), cos(theta));
+		endPoint = normalizedEndPoint * 99999; //calculate new endpoint by extending the normalized version
+
+		initialPosClicked = endPoint;
+
+		//make arm visible and rotate it
+		Hero::hero->arm->setVisible(1);
+		Hero::hero->arm->setRotation(theta * 180 / M_PI);
+
+		//make grapple sprite visible
+		sprite->setVisible(1);
+		grapple->tip->setVisible(1);
+
+		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
 	}
 }
 

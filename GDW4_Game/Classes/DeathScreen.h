@@ -9,13 +9,26 @@ using namespace cocos2d;
 class DeathScreen : public cocos2d::Scene
 {
 public:
+	enum MenuOptions
+	{
+		nothing,
+		tryAgain,
+		mainMenu,
+		exit
+	};
+
 	CREATE_FUNC(DeathScreen);
 	static Scene* createScene();
 
 	bool init();
 	void initUI();
 	void initAnimations();
+
 	void initMouseListener();
+	void initControllerListener();
+
+	void moveToNextMenuItem();
+	void moveToPreviousMenuItem();
 
 	void update(float dt);
 
@@ -25,9 +38,18 @@ public:
 	void mouseMoveCallback(Event* event);
 	void mouseScrollCallback(Event* event);
 
+	//controller callbacks
+	void buttonPressCallback(Controller* controller, int keyCode, Event* event);
+	void buttonReleaseCallback(Controller* controller, int keyCode, Event* event);
+	void axisEventCallback(Controller* controller, int keyCode, Event* event);
+
 private:
+	MenuOptions currentSelection;
+
 	Director* director;
 	EventListenerMouse* mouseListener;
+	EventListenerController* controllerListener;
+
 	Vec2 cursorPos;
 
 	Sprite* background;

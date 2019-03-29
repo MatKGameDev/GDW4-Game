@@ -34,7 +34,10 @@ void IdleState::onEnter()
 
 void IdleState::onExit()
 {
-	HeroStateManager::running->onEnter();
+	if (Hero::hero->velocity.y < 0) //falling
+		HeroStateManager::falling->onEnter();
+	else //started moving
+		HeroStateManager::running->onEnter();
 }
 
 void IdleState::handleInput(InputType input)
@@ -49,6 +52,6 @@ void IdleState::handleInput(InputType input)
 
 void IdleState::update(float dt)
 {
-	if (Hero::hero->moveState != Hero::MoveDirection::idle)
+	if (Hero::hero->moveState != Hero::MoveDirection::idle || Hero::hero->velocity.y < 0)
 		onExit();
 }

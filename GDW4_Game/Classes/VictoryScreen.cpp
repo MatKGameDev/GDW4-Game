@@ -12,6 +12,8 @@ bool VictoryScreen::init()
 	if (!Scene::init())
 		return false;
 
+	currentSelection = MenuOptions::nothing;
+
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
@@ -19,7 +21,10 @@ bool VictoryScreen::init()
 
 	initUI();
 	initAnimations();
+
+	//init listeners
 	initMouseListener();
+	initControllerListener();
 
 	scheduleUpdate();
 
@@ -72,20 +77,73 @@ void VictoryScreen::initMouseListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
+void VictoryScreen::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(VictoryScreen::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(VictoryScreen::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(VictoryScreen::axisEventCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
+//move to the next selection on the menu
+void VictoryScreen::moveToNextMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+
+	case MenuOptions::mainMenu:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+	}
+}
+
+//move back one selection on the menu
+void VictoryScreen::moveToPreviousMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+
+	case MenuOptions::mainMenu:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+	}
+}
+
 void VictoryScreen::update(float dt)
 {
 	if (!isTransitioning)
 	{
 		//check for mouse hover over menu items
-		if (mainMenuRect.containsPoint(cursorPos))
+		if (mainMenuRect.containsPoint(cursorPos) || currentSelection == MenuOptions::mainMenu)
+			mainMenuText->setScale(1.2f);
+		else
 			mainMenuText->setScale(1.0f);
-		else
-			mainMenuText->setScale(0.8f);
 
-		if (exitRect.containsPoint(cursorPos))
-			exitText->setScale(1.0f);
+		if (exitRect.containsPoint(cursorPos) || currentSelection == MenuOptions::exit)
+			exitText->setScale(1.2f);
 		else
-			exitText->setScale(0.8f);
+			exitText->setScale(1.0f);
 	}
 }
 
@@ -133,4 +191,51 @@ void VictoryScreen::mouseMoveCallback(Event* event)
 
 void VictoryScreen::mouseScrollCallback(Event* event)
 {
+}
+
+void VictoryScreen::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+	case ControllerInput::Start:
+		//start game
+		if (currentSelection == MenuOptions::mainMenu)
+		{
+			director->replaceScene(TransitionFade::create(1.f, MainMenu::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+		//exit game
+		else if (currentSelection == MenuOptions::exit)
+		{
+			director->end();
+		}
+		break;
+	}
+}
+
+void VictoryScreen::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+{
+}
+
+void VictoryScreen::axisEventCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+		//y axis of the left stick
+	case ControllerInput::leftStickY:
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftStickReset)
+		{
+			moveToPreviousMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1 && ControllerInput::isLeftStickReset)
+		{
+			moveToNextMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value > -0.9 && controller->getKeyStatus(keyCode).value < 0.9)
+			ControllerInput::isLeftStickReset = true;
+		break;
+	}
 }

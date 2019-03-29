@@ -3,6 +3,7 @@
 #define CONTROLSMENU_H
 
 #include "cocos2d.h"
+#include "ControllerInput.h"
 
 using namespace cocos2d;
 
@@ -15,7 +16,9 @@ public:
 	bool init();
 	void initUI();
 	void initAnimations();
+
 	void initMouseListener();
+	void initControllerListener();
 
 	void update(float dt);
 
@@ -25,9 +28,14 @@ public:
 	void mouseMoveCallback(Event* event);
 	void mouseScrollCallback(Event* event);
 
+	//controller callbacks
+	void buttonPressCallback(Controller* controller, int keyCode, Event* event);
+
 private:
 	Director* director;
 	EventListenerMouse* mouseListener;
+	EventListenerController* controllerListener;
+
 	Vec2 cursorPos;
 
 	Sprite* controlsList;

@@ -56,6 +56,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 		director->setOpenGLView(glview);
 	}
 
+	Controller::startDiscoveryController();
+
 	Hero::hero->createHero(); //create hero (calls private constructor)
 	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
 	HeroStateManager::idle->onEnter();

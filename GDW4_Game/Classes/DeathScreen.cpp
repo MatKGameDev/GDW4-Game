@@ -14,6 +14,8 @@ bool DeathScreen::init()
 	if (!Scene::init())
 		return false;
 
+	currentSelection = MenuOptions::nothing;
+
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
@@ -21,7 +23,10 @@ bool DeathScreen::init()
 
 	initUI();
 	initAnimations();
+	
+	//init listeners
 	initMouseListener();
+	initControllerListener();
 
 	scheduleUpdate();
 
@@ -80,25 +85,86 @@ void DeathScreen::initMouseListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
+void DeathScreen::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(DeathScreen::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(DeathScreen::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(DeathScreen::axisEventCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
+//move to the next selection on the menu
+void DeathScreen::moveToNextMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::tryAgain;
+		break;
+
+	case MenuOptions::tryAgain:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+
+	case MenuOptions::mainMenu:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::tryAgain;
+		break;
+	}
+}
+
+//move back one selection on the menu
+void DeathScreen::moveToPreviousMenuItem()
+{
+	switch (currentSelection)
+	{
+	case MenuOptions::nothing:
+		currentSelection = MenuOptions::tryAgain;
+		break;
+
+	case MenuOptions::tryAgain:
+		currentSelection = MenuOptions::exit;
+		break;
+
+	case MenuOptions::mainMenu:
+		currentSelection = MenuOptions::tryAgain;
+		break;
+
+	case MenuOptions::exit:
+		currentSelection = MenuOptions::mainMenu;
+		break;
+	}
+}
+
 void DeathScreen::update(float dt)
 {
 	if (!isTransitioning)
 	{
 		//check for mouse hover over menu items
-		if (tryAgainRect.containsPoint(cursorPos))
+		if (tryAgainRect.containsPoint(cursorPos) || currentSelection == MenuOptions::tryAgain)
+			tryAgainText->setScale(1.2f);
+		else
 			tryAgainText->setScale(1.0f);
-		else
-			tryAgainText->setScale(0.8f);
 
-		if (mainMenuRect.containsPoint(cursorPos))
+		if (mainMenuRect.containsPoint(cursorPos) || currentSelection == MenuOptions::mainMenu)
+			mainMenuText->setScale(1.2f);
+		else
 			mainMenuText->setScale(1.0f);
-		else
-			mainMenuText->setScale(0.8f);
 
-		if (exitRect.containsPoint(cursorPos))
-			exitText->setScale(1.0f);
+		if (exitRect.containsPoint(cursorPos) || currentSelection == MenuOptions::exit)
+			exitText->setScale(1.2f);
 		else
-			exitText->setScale(0.8f);
+			exitText->setScale(1.0f);
 	}
 }
 
@@ -152,4 +218,57 @@ void DeathScreen::mouseMoveCallback(Event* event)
 
 void DeathScreen::mouseScrollCallback(Event* event)
 {
+}
+
+void DeathScreen::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+	case ControllerInput::Start:
+		//start game
+		if (currentSelection == MenuOptions::tryAgain)
+		{
+			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+		//open controls menu
+		else if (currentSelection == MenuOptions::mainMenu)
+		{
+			director->replaceScene(TransitionFade::create(1.f, MainMenu::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+		//exit game
+		else if (currentSelection == MenuOptions::exit)
+		{
+			director->end();
+		}
+		break;
+	}
+}
+
+void DeathScreen::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+{
+}
+
+void DeathScreen::axisEventCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+		//y axis of the left stick
+	case ControllerInput::leftStickY:
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftStickReset)
+		{
+			moveToPreviousMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1 && ControllerInput::isLeftStickReset)
+		{
+			moveToNextMenuItem();
+			ControllerInput::isLeftStickReset = false;
+		}
+		else if (controller->getKeyStatus(keyCode).value > -0.9 && controller->getKeyStatus(keyCode).value < 0.9)
+			ControllerInput::isLeftStickReset = true;
+		break;
+	}
 }
