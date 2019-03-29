@@ -118,14 +118,12 @@ void DeathScreen::mouseDownCallback(Event* event)
 		//start game
 		if (tryAgainRect.containsPoint(cursorPos))
 		{
-			this->removeAllChildrenWithCleanup(true);
 			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		//open controls menu
 		else if (mainMenuRect.containsPoint(cursorPos))
 		{
-			this->removeAllChildrenWithCleanup(true);
 			director->replaceScene(TransitionFade::create(1.f, MainMenu::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}

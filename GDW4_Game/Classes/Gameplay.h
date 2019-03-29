@@ -35,6 +35,7 @@ public:
 	void initListeners();
 	void initMouseListener();
 	void initKeyboardListener();
+	void initControllerListener();
 
 	void update(float dt);
 	void spawnEnemies();

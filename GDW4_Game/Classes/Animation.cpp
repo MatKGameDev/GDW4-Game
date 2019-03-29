@@ -21,8 +21,8 @@ cocos2d::Animation* marcos::AnimationManager::m_FallingLeftAnimation = new cocos
 cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackRightAnimation = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackLeftAnimation = new cocos2d::Animation();
 
-cocos2d::Animation* marcos::AnimationManager::m_ProjectileAttackRightAnimation = new cocos2d::Animation();
-cocos2d::Animation* marcos::AnimationManager::m_ProjectileAttackLeftAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackUpRightAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_MeleeAttackUpLeftAnimation = new cocos2d::Animation();
 
 //Grappling
 cocos2d::Animation* marcos::AnimationManager::m_GrapplingRightAnimation = new cocos2d::Animation();
@@ -48,6 +48,12 @@ cocos2d::Animation* marcos::AnimationManager::m_BossSpitAnimation = new cocos2d:
 
 cocos2d::Animation* marcos::AnimationManager::m_BossSpitTellAnimationPRE = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_BossSpitTellAnimationPOST = new cocos2d::Animation();
+
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPRE = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPOST = new cocos2d::Animation();
+
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPRE = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPOST = new cocos2d::Animation();
 
 cocos2d::Animation* marcos::AnimationManager::m_BossIdleAnimation = new cocos2d::Animation();
 
@@ -106,11 +112,12 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_MeleeAttackLeftAnimation, "melee_left_animation_key");
 
 
-	m_ProjectileAttackRightAnimation = setAnimation("Sprites/projectile_right.png", 6, 105, 135, 0.1f);
-	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackRightAnimation, "projectile_right_animation_key");
+	m_MeleeAttackUpRightAnimation = setAnimation("Sprites/melee_up_right.png", 4, 135, 260, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_MeleeAttackUpRightAnimation, "melee_up_right_animation_key");
 
-	m_ProjectileAttackLeftAnimation = setAnimation("Sprites/projectile_left.png", 6, 105, 135, 0.1f);
-	AnimationCache::getInstance()->addAnimation(m_ProjectileAttackLeftAnimation, "projectile_left_animation_key");
+	m_MeleeAttackUpLeftAnimation = setAnimation("Sprites/melee_up_left.png", 4, 135, 260, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_MeleeAttackUpLeftAnimation, "melee_up_left_animation_key");
+
 
 	/////////////////////////////////////// G R A P P L I N G /////////////////////////////////////////
 	m_GrapplingRightAnimation = setAnimation("Sprites/grapple_right.png", 6, 105, 135, 0.1f);
@@ -133,11 +140,11 @@ void marcos::AnimationManager::init()
 	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
 	
-	///////////////////////////acwwc//////////////wcwc/////////////
-	m_GrappleHoldRightAnimation = setAnimation("Sprites/grapple_hold_right.png", 1, 105, 175, 0.1f);
+
+	m_GrappleHoldRightAnimation = setAnimation("Sprites/grapple_hold_right.png", 1, 105, 195, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleHoldRightAnimation, "grapple_hold_right_animation_key");
 
-	m_GrappleHoldLeftAnimation = setAnimation("Sprites/grapple_hold_left.png", 1, 105, 175, 0.1f);
+	m_GrappleHoldLeftAnimation = setAnimation("Sprites/grapple_hold_left.png", 1, 105, 195, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleHoldLeftAnimation, "grapple_hold_left_animation_key");
 
 
@@ -161,6 +168,22 @@ void marcos::AnimationManager::init()
 
 	m_BossSpitTellAnimationPOST = setAnimation("Sprites/Spit_attack_part2.png", 9, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossSpitTellAnimationPOST, "boss_spit_tell_POST_animation_key");
+
+	//// @mike its these ones 
+	m_BossExplosionAnimationPRE = setAnimation("Sprites/exploding_fireball.png", 6, 60, 60, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_PRE_animation_key");
+
+	m_BossExplosionAnimationPOST = setAnimation("Sprites/exploding_fireball_part2.png", 22, 120, 120, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_POST_animation_key");
+
+	m_BossExplosiveTellAnimationPRE = setAnimation("Sprites/boss_explosive_attack_part1.png", 9, 500, 1300, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_tell_PRE_animation_key");
+
+	m_BossExplosiveTellAnimationPOST = setAnimation("Sprites/boss_explosive_attack_part2.png", 4, 500, 1300, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPOST, "boss_explosive_tell_POST_animation_key");
+
+
+
 
 	m_BossIdleAnimation = setAnimation("Sprites/boss_idle.png", 8 ,5, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossIdleAnimation, "boss_idle_animation_key");
