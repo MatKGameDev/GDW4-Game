@@ -1,20 +1,21 @@
 #pragma once
-#ifndef BOSS_H
-#define BOSS_H
 
-#include "FirstBossState.h"
+//Header Files
 #include <2d/CCSprite.h>
-#include "Boss1Attack.h"
 #include "HitBox.h"
+#include "Boss/Ability States/FirstBossState.h"
 
+//Foward Declare Classes
 class Hero;
+class Boss1LavaAttack;
+
 
 class Boss
 {
 private:
 	int health;
-	FirstBossState *state{ nullptr };
-	cocos2d::Sprite *bossSprite{ nullptr };
+	FirstBossState *state;
+	cocos2d::Sprite *bossSprite;
 	std::vector<Boss1LavaAttack*> lavaList;
 	const cocos2d::Vec2 mouthPosition;
 	cocos2d::Scene *bossScene;
@@ -32,21 +33,20 @@ public:
 	int getHealth() const;
 	cocos2d::Sprite* getSprite() const;
 	std::vector<Boss1LavaAttack*> getLavaList() const;
-	cocos2d::Vec2 getMouthPosition() const;
 	cocos2d::Scene* getBossScene() const;
 	cocos2d::Rect getHitBox() const;
 	FirstBossState* getCurrentState() const;
 
-	//State changes and update
+	//Member functions
 	void takeDamage();
 	void update(const float &deltaT, const cocos2d::Vec2 &heroPosition);
+	void addAttack(Boss1LavaAttack* attackToAdd);
 
 	//Attack functions
 	void spewLava();
 	void activateFlameThrower();
-	void shootSucker();
+	void shootExplosiveBullet();
 
 	//Utility functions
 	void removeFromLavaList(Boss1LavaAttack *elementToRemove);
 };
-#endif

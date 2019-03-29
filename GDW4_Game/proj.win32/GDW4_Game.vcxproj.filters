@@ -22,6 +22,9 @@
     <Filter Include="src\Hero Stuff\Attack Stuff">
       <UniqueIdentifier>{94e98c08-61a3-4eea-b8a1-43652b76aed6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hero Stuff\General Stuff">
+      <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Animation Stuff">
       <UniqueIdentifier>{b1be3e2c-5a57-4734-8a9f-de0eea9598c4}</UniqueIdentifier>
     </Filter>
@@ -37,16 +40,14 @@
     <Filter Include="Boss">
       <UniqueIdentifier>{4607cd7f-6dad-43aa-9b42-a1b64cc466de}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-    <Filter Include="src\Hero Stuff\General Gameplay Stuff">
-      <UniqueIdentifier>{397428e9-6d37-4d4c-bf22-ccb924cb52d3}</UniqueIdentifier>
-=======
     <Filter Include="Boss\Ability States">
       <UniqueIdentifier>{f8db3307-2dd2-4d51-b803-7c981f779e9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Boss\Particles">
       <UniqueIdentifier>{d55d583f-605f-4472-a618-c14285f0c9cf}</UniqueIdentifier>
->>>>>>> BasicAI
+    </Filter>
+    <Filter Include="Boss\General">
+      <UniqueIdentifier>{0ae7bdf6-5b1b-4b29-a72a-c8b5247a308e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,10 +91,10 @@
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Hero.cpp">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+      <Filter>src\Hero Stuff\General Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Grapple.cpp">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+      <Filter>src\Hero Stuff\General Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Animation.cpp">
       <Filter>src\Animation Stuff</Filter>
@@ -146,47 +147,52 @@
     <ClCompile Include="..\Classes\Tutorial.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Boss\HitBox.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Boss\Boss.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Boss\Boss1Attack.cpp">
-      <Filter>Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Boss\BossIdleState.cpp">
-      <Filter>Boss\Ability States</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\PrettyPictureScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\XinputManager.cpp">
       <Filter>src\Helper Stuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelpBubble.cpp">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+    <ClCompile Include="..\Classes\MainMenu.cpp">
+      <Filter>src\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Boss\FirstBossState.cpp">
+    <ClCompile Include="..\Classes\Boss\Ability States\FirstBossState.cpp">
       <Filter>Boss\Ability States</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Boss\FlameSplit.cpp">
+    <ClCompile Include="..\Classes\Boss\Ability States\FlameSplit.cpp">
       <Filter>Boss\Ability States</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Boss\FlameThrower.cpp">
+    <ClCompile Include="..\Classes\Boss\Ability States\FlameThrower.cpp">
       <Filter>Boss\Ability States</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\PauseMenu.cpp">
-      <Filter>src\Scenes</Filter>
+    <ClCompile Include="..\Classes\Boss\Ability States\BossIdleState.cpp">
+      <Filter>Boss\Ability States</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ControlsMenu.cpp">
-      <Filter>src\Scenes</Filter>
+    <ClCompile Include="..\Classes\Boss\General\HitBox.cpp">
+      <Filter>Boss\General</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\DeathScreen.cpp">
-      <Filter>src\Scenes</Filter>
+    <ClCompile Include="..\Classes\Boss\General\Boss.cpp">
+      <Filter>Boss\General</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\VictoryScreen.cpp">
-      <Filter>src\Scenes</Filter>
+    <ClCompile Include="..\Classes\Boss\Attacks\Boss1Attack.cpp">
+      <Filter>Boss\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Ability States\ExplosiveBullet.cpp">
+      <Filter>Boss\Ability States</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ControlsMenu.cpp" />
+    <ClCompile Include="..\Classes\DeathScreen.cpp" />
+    <ClCompile Include="..\Classes\HelpBubble.cpp" />
+    <ClCompile Include="..\Classes\PauseMenu.cpp" />
+    <ClCompile Include="..\Classes\VictoryScreen.cpp" />
+    <ClCompile Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.cpp">
+      <Filter>Boss\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Attacks\FlameThrowerProjectile.cpp">
+      <Filter>Boss\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Attacks\LavaBallProjectile.cpp">
+      <Filter>Boss\Particles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,10 +236,10 @@
       <Filter>src\Hero Stuff\Attack Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Hero.h">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+      <Filter>src\Hero Stuff\General Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Grapple.h">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
+      <Filter>src\Hero Stuff\General Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Animation.h">
       <Filter>src\Animation Stuff</Filter>
@@ -289,47 +295,55 @@
     <ClInclude Include="..\Classes\Tutorial.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Boss\HitBox.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\Boss.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\Boss1Attack.h">
-      <Filter>Boss</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\PrettyPictureScene.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\XinputManager.h">
       <Filter>src\Helper Stuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelpBubble.h">
-      <Filter>src\Hero Stuff\General Gameplay Stuff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\BossIdleState.h">
-      <Filter>Boss\Ability States</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\FirstBossState.h">
-      <Filter>Boss\Ability States</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\FlameSplit.h">
-      <Filter>Boss\Ability States</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Boss\FlameThrower.h">
-      <Filter>Boss\Ability States</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\PauseMenu.h">
+    <ClInclude Include="..\Classes\MainMenu.h">
       <Filter>src\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ControlsMenu.h">
-      <Filter>src\Scenes</Filter>
+    <ClInclude Include="..\Classes\Boss\Ability States\FirstBossState.h">
+      <Filter>Boss\Ability States</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\DeathScreen.h">
-      <Filter>src\Scenes</Filter>
+    <ClInclude Include="..\Classes\Boss\Ability States\FlameSplit.h">
+      <Filter>Boss\Ability States</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\VictoryScreen.h">
-      <Filter>src\Scenes</Filter>
+    <ClInclude Include="..\Classes\Boss\Ability States\FlameThrower.h">
+      <Filter>Boss\Ability States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Ability States\BossIdleState.h">
+      <Filter>Boss\Ability States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\General\Boss.h">
+      <Filter>Boss\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\General\HitBox.h">
+      <Filter>Boss\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Attacks\Boss1Attack.h">
+      <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Ability States\ExplosiveBullet.h">
+      <Filter>Boss\Ability States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ControlsMenu.h" />
+    <ClInclude Include="..\Classes\DeathScreen.h" />
+    <ClInclude Include="..\Classes\HelpBubble.h" />
+    <ClInclude Include="..\Classes\PauseMenu.h" />
+    <ClInclude Include="..\Classes\VictoryScreen.h" />
+    <ClInclude Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.h">
+      <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Attacks\FlameThrowerProjectile.h">
+      <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Attacks\LavaBallProjectile.h">
+      <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Attacks\Projectiles.h">
+      <Filter>Boss\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

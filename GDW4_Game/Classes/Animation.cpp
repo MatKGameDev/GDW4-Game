@@ -160,13 +160,13 @@ void marcos::AnimationManager::init()
 	m_BossFlameTellAnimationPOST = setAnimation("Sprites/boss_flamethrow_part2.png", 5, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameTellAnimationPOST, "boss_flame_tell_POST_animation_key");
 
-	m_BossFlameAnimationPRE = setAnimation("Sprites/Flame1.png", 2, 2, 1920, 500, 0.1f);
+	m_BossFlameAnimationPRE = setAnimation("Sprites/flame_1.png", 2, 2, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationPRE, "boss_flame_PRE_animation_key");
 
-	m_BossFlameAnimationMID = setAnimation("Sprites/Flame2.png", 4, 2, 1920, 500, 0.1f);
+	m_BossFlameAnimationMID = setAnimation("Sprites/flame_2.png", 4, 2, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationMID, "boss_flame_MID_animation_key");
 
-	m_BossFlameAnimationPOST = setAnimation("Sprites/Flame3.png", 4, 2, 1920, 500, 0.1f);
+	m_BossFlameAnimationPOST = setAnimation("Sprites/flame_3.png", 4, 2, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationPOST, "boss_flame_POST_animation_key");
 
 	m_BossSpitAnimation = setAnimation("Sprites/fire_ball.png", 12, 70, 70, 0.1f);
