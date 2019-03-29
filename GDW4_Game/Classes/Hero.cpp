@@ -80,7 +80,6 @@ void Hero::reset()
 {
 	invincibilityTimer = 0.0f;
 	velocity = Vect2(0, 0);
-	lookState = LookDirection::lookingRight;
 	moveState = MoveDirection::idle;
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();

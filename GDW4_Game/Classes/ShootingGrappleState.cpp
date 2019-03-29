@@ -37,10 +37,10 @@ void ShootingGrappleState::onExit()
 	if (Grapple::grapple->isActive)
 		HeroStateManager::grappling->onEnter();
 	
-	else if (Hero::hero->velocity < 0)
+	else if (Hero::hero->velocity.y < 0)
 		HeroStateManager::falling->onEnter();
 
-	else if (Hero::hero->velocity > 0)
+	else if (Hero::hero->velocity.y > 0)
 		HeroStateManager::jumping->onEnter();
 
 	else if (Hero::hero->moveState != Hero::MoveDirection::idle)
@@ -56,6 +56,11 @@ void ShootingGrappleState::handleInput(InputType input)
 	{
 	case InputType::p_space:
 		Hero::hero->jump();
+		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
 		break;
 	}
 }

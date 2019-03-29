@@ -8,7 +8,7 @@ MeleeFireAttack::MeleeFireAttack()
 	attackTimer = 0.0f;
 	attackWindup = 0.2f;
 	attackDuration = 0.2f;
-	attackCooldown = 0.2f;
+	attackCooldown = 0.12f;
 	disabled = false;
 }
 

@@ -19,6 +19,7 @@ bool ControlsMenu::init()
 	initUI();
 	initAnimations();
 	initMouseListener();
+	initControllerListener();
 
 	scheduleUpdate();
 
@@ -66,12 +67,25 @@ void ControlsMenu::initMouseListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
+void ControlsMenu::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(ControlsMenu::buttonPressCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
 void ControlsMenu::update(float dt)
 {
 	if (backRect.containsPoint(cursorPos))
-		backText->setScale(1.0f);
+		backText->setScale(1.2f);
 	else
-		backText->setScale(0.8f);
+		backText->setScale(1.0f);
 }
 
 
@@ -113,4 +127,10 @@ void ControlsMenu::mouseMoveCallback(Event* event)
 
 void ControlsMenu::mouseScrollCallback(Event* event)
 {
+}
+
+void ControlsMenu::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	if (keyCode == ControllerInput::A || keyCode == ControllerInput::B || keyCode == ControllerInput::Back)
+		director->popScene();
 }

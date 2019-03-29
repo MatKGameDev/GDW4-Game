@@ -50,6 +50,7 @@ public:
 
 	static bool isLeftTriggerReset;
 	static bool isRightTriggerReset;
+	static bool isLeftStickReset;
 
 	static bool isLeftStickIdle;
 };

@@ -90,16 +90,20 @@ void Grapple::shoot(float a_theta)
 		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
 		//determine look position after latching
-		if (theta >= 0)
+		if (theta > 0)
 		{
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
 		}
-		else //theta < 0
+		else if (theta < 0)
 		{
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
 		}
+		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingRight)
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
+		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
 
 		Vect2 normalizedEndPoint(sin(theta), cos(theta));
 		endPoint = normalizedEndPoint * 99999; //calculate new endpoint by extending the normalized version

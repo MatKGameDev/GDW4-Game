@@ -327,9 +327,6 @@ void Gameplay::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
-		//do some simple math to convert mouse click position on screen to in-game world position
-		//mouseGameViewPosition -= Vec2(1920 / 2, 1080 / 2); //update if screen size changes
-		//mouseGameViewPosition += Hero::hero->sprite->getPosition();
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
 	}
@@ -510,11 +507,11 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-			//check if right stick is at rest (reading is slightly off so we compensate manually :/, it's resting state is around (-0.039, 0.000))
-			if (sticks[RS].x < -0.03 && sticks[RS].x > -0.04 && sticks[RS].y == 0.0f)
+			//check if right stick is at rest (reading is slightly off so we compensate manually :/)
+			if (sticks[RS].x < 0.05 && sticks[RS].x > -0.05 && sticks[RS].y <= 0.05f && sticks[RS].y > -0.05f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
-				grappleAngle = atan2(0, 0);
+				grappleAngle = atan2(0.0f, 0.0f);
 			}
 			Grapple::grapple->shoot(grappleAngle); //shoot grapple
 		}

@@ -62,6 +62,11 @@ void FallingState::handleInput(InputType input)
 			onEnter();
 		}
 		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
+		break;
 	}
 }
 

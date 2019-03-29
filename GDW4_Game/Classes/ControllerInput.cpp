@@ -2,5 +2,6 @@
 
 bool ControllerInput::isLeftTriggerReset = true;
 bool ControllerInput::isRightTriggerReset = true;
+bool ControllerInput::isLeftStickReset = true;
 
 bool ControllerInput::isLeftStickIdle = true;
