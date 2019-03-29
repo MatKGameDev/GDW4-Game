@@ -129,7 +129,7 @@ void Gameplay::initSprites()
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
 
-	//add grapple sprite and tip
+	//add grapple sprite
 	//add repeating pattern to grapple sprite
 	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
 	Texture2D::TexParams params;
@@ -142,9 +142,15 @@ void Gameplay::initSprites()
 	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->sprite, 5);
 
+	//grapple tip
 	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
 	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->tip, 6);
+
+	//grapple destination indicator
+	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
+	Grapple::grapple->indicator->setVisible(0);
+	this->addChild(Grapple::grapple->indicator, 7);
 }
 
 void Gameplay::initListeners()
@@ -507,8 +513,8 @@ void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * e
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-			//check if right stick is at rest (reading is slightly off so we compensate manually :/)
-			if (sticks[RS].x < 0.05 && sticks[RS].x > -0.05 && sticks[RS].y <= 0.05f && sticks[RS].y > -0.05f)
+			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
+			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
 				grappleAngle = atan2(0.0f, 0.0f);

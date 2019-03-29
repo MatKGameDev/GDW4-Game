@@ -182,6 +182,12 @@ bool Grapple::isMaxLength()
 	return false;
 }
 
+//displays an indicator to the player if there is any point of collision with a platform along the direction currently aimed
+void Grapple::performGrapplePrediction()
+{
+
+}
+
 /*//checks collision between the grapple and a game object
 bool Grapple::isCollidingWith(GameObject* otherObject)
 {

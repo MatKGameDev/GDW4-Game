@@ -19,6 +19,7 @@ public:
 
 	Sprite* sprite;
 	Sprite* tip;
+	Sprite* indicator;
 
 	Vect2 initialPosClicked;
 	Vect2 startPoint;
@@ -49,6 +50,7 @@ public:
 	void unLatch();
 
 	bool isMaxLength();
+	void performGrapplePrediction();
 	bool isCollidingWith(cocos2d::Rect otherObject);
 	bool checkPointCollision(Vect2 pointToCheck, cocos2d::Rect otherObject);
 	bool checkTunnelingCollision(cocos2d::Rect otherObject);

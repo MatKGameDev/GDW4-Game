@@ -25,6 +25,11 @@ bool myHelper::isCollision(cocos2d::Rect rect1, cocos2d::Rect rect2)
 		return true;
 }
 
+cocos2d::Vec2 myHelper::getLineLineIntersect(cocos2d::Vec2 lineOneStart, cocos2d::Vec2 lineOneEnd, cocos2d::Vec2 lineTwoStart, cocos2d::Vec2 lineTwoEnd)
+{
+	return cocos2d::Vec2();
+}
+
 //gets a random number
 int myHelper::getRandNum(int maxNum, int scaleNum, bool canBeNegative)
 {
