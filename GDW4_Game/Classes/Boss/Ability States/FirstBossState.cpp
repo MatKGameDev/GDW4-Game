@@ -3,72 +3,39 @@
 #include "FlameSplit.h"
 #include "BossIdleState.h"
 #include "FlameThrower.h"
-#include "Boss/Attacks/Boss1Attack.h"
-#include "Hero.h"
 #include "ExplosiveBullet.h"
 
-FirstBossSmallerState::FirstBossSmallerState(Boss* aBossInstance): bossPointer(aBossInstance)
+
+FirstBossState::FirstBossState(Boss *bossInstance)
+	:bossPointer(bossInstance)
 {
 }
 
-FirstBossSmallerState::~FirstBossSmallerState()
-{
-}
-
-/**
- * @brief This function updates the current state of the boss
- * Unless the function is overwritten, the smaller state will
- * do nothing
- */
-void FirstBossSmallerState::update(float deltaT)
-{/*Empty*/}
-
-/**********************************************************************
- *
- *
- *                    Default Boss Attack State
- *
- *
- **********************************************************************/
-FirstBossState::~FirstBossState()
-{
-	delete currentState;
-}
-
-void FirstBossState::setSmallerState(FirstBossSmallerState* newState)
-{
-	currentState = newState;
-}
-
-void FirstBossState::update(const float& deltaT, Boss* bossInstance)
+void FirstBossState::update(const float& deltaTime)
 {
 }
 
 
 //@brief Change to Idle state
-void FirstBossState::changeToIdleState(Boss* boss)
+void FirstBossState::changeToIdleState()
 {
-	boss->setState(new Idling4FirstBoss(boss));
+	bossPointer->setState(new Idling4FirstBoss(bossPointer));
 }
+
+
 
 //@brief Change and perform Flame Split ability
-void FirstBossState::changeToFlameSplit(Boss* boss)
+void FirstBossState::changeToFlameSplit()
 {
-	boss->setState(new FlameSplit4FirstBoss(boss));
+	bossPointer->setState(new FlameSplit4FirstBoss(bossPointer));
 }
 
-void FirstBossState::changeToFlameThrower(Boss* boss)
+void FirstBossState::changeToFlameThrower()
 {
-	boss->setState(new FlameThrower4FirstBoss(boss));
+	bossPointer->setState(new FlameThrower4FirstBoss(bossPointer));
 }
 
-void FirstBossState::changeToExplosiveBullet(Boss* boss)
+void FirstBossState::changeToExplosiveBullet()
 {
-	boss->setState(new ExplosiveBullet4FirstBoss(boss));
+	bossPointer->setState(new ExplosiveBullet4FirstBoss(bossPointer));
 }
-
-
-
-
-
-

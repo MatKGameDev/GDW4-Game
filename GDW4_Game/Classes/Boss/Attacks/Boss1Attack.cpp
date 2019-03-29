@@ -112,7 +112,7 @@ void LavaBall::update(const float& deltaT)
 FlameThrower::FlameThrower(Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/flame_sprite.png"), onTime(1.0f), drawNode(cocos2d::DrawNode::create())
 {
-	position.set(960, 500);
+	position.set(1000, 350);
 
 	//Play animation
 	sprite->stopAllActions();
@@ -121,9 +121,13 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 
 	//
 	sprite->setPosition(position);
+	bossPointer->getBossScene()->removeChild(sprite, false);
+	bossPointer->getBossScene()->addChild(sprite, 16);
 
 	//Setup hit box
-	hitBox = new HitBox(bossPointer->getBossScene(), 450, 1920);
+	hitBox = new HitBox(bossPointer->getBossScene(), 200, 1920);
+
+
 }
 
 FlameThrower::~FlameThrower()

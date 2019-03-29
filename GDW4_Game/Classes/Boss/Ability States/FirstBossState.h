@@ -3,39 +3,22 @@
 //Foward declare
 class Boss;
 
-/*
- *
- */
-class FirstBossSmallerState
-{
-protected:
-	Boss* bossPointer;
-
-	FirstBossSmallerState(Boss *aBossInstance);
-public:
-	virtual ~FirstBossSmallerState();
-
-	virtual void update(float deltaT);
-	
-};
-
 class FirstBossState
 {
 public:
-	//Destructor
-	virtual ~FirstBossState();
+	//Constructors and Destructor
+	FirstBossState(Boss *bossInstance);
+	virtual ~FirstBossState() = default;
 
-	//Setter
-	void setSmallerState(FirstBossSmallerState *newState);
+	//Member functions
+	virtual void update(const float& deltaTime);
+	virtual void changeToIdleState(); //Only Idle state is allow to change publicly
 
-	//Functions
-	virtual void update(const float &deltaT, Boss *bossInstance);
-	virtual void changeToIdleState(Boss *boss); //Only Idle state is allow to change publicly
 protected:
-	FirstBossSmallerState *currentState{ nullptr };
+	Boss *bossPointer;
 
 	//Utility Functions
-	virtual void changeToFlameSplit(Boss *boss);
-	virtual void changeToFlameThrower(Boss *boss);
-	virtual void changeToExplosiveBullet(Boss *boss);
+	virtual void changeToFlameSplit();
+	virtual void changeToFlameThrower();
+	virtual void changeToExplosiveBullet();
 };

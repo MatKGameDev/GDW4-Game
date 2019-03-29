@@ -1,70 +1,29 @@
 #include "FlameThrower.h"
 #include "Boss/General/Boss.h"
 
-void FlameThrowerCooldown::changeToIdle()
-{
-	bossPointer->getCurrentState()->changeToIdleState(bossPointer);
-}
-
-FlameThrowerCooldown::FlameThrowerCooldown(Boss* boss):FirstBossSmallerState(boss)
-{
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key"));
-
-	boss->getSprite()->runAction
-	(
-		cocos2d::Sequence::create
-		(
-			cocos2d::Repeat::create(action, 1),
-			cocos2d::CallFunc::create([&] {this->changeToIdle(); }),
-			nullptr
-		)
-	);
-}
-
-void FlameThrowerPerforming::ChangeToCooldown()
-{
-	bossPointer->getCurrentState()->setSmallerState(new FlameThrowerCooldown(bossPointer));
-	delete this;
-}
-
-FlameThrowerPerforming::FlameThrowerPerforming(Boss* boss) :FirstBossSmallerState(boss), waitingTime(1.0f)
-{
-	boss->activateFlameThrower();
-}
-
-void FlameThrowerPerforming::update(float deltaT)
-{
-	waitingTime -= deltaT;
-	if (waitingTime <= 0)
-		ChangeToCooldown();
-}
-
-void FlameThrowerCharging::ChangeToPerforming()
-{
-	bossPointer->getCurrentState()->setSmallerState(new FlameThrowerPerforming(bossPointer));
-	delete this;
-}
-
-FlameThrowerCharging::FlameThrowerCharging(Boss* boss):FirstBossSmallerState(boss)
-{
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key"));
-	boss->getSprite()->runAction
-	(
-		cocos2d::Sequence::create
-		(
-			cocos2d::Repeat::create(action, 1),
-			cocos2d::CallFunc::create([&] {this->ChangeToPerforming(); }),
-			nullptr
-		)
-	);
-}
-
 FlameThrower4FirstBoss::FlameThrower4FirstBoss(Boss *boss)
+	: FirstBossState(boss)
 {
-	currentState = new FlameThrowerCharging(boss);
-}
+	const auto startingAction = cocos2d::Animate::create
+	(
+		cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key")
+	);
 
-void FlameThrower4FirstBoss::update(const float& deltaT, Boss* bossInstance)
-{
-	currentState->update(deltaT);
+	const auto finishingAction = cocos2d::Animate::create
+	(
+		cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key")
+	);
+
+	boss->getSprite()->runAction
+	(
+		cocos2d::Sequence::create
+		(
+			cocos2d::Repeat::create(startingAction, 1),
+			cocos2d::CallFunc::create([&] {bossPointer->activateFlameThrower(); }),
+			cocos2d::DelayTime::create(1.0f),
+			cocos2d::Repeat::create(finishingAction, 1),
+			cocos2d::CallFunc::create([&] {changeToIdleState(); }),
+			nullptr
+		)
+	);
 }

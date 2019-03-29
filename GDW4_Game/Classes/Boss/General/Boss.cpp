@@ -65,7 +65,7 @@ FirstBossState* Boss::getCurrentState() const
 
 void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
 {
-	state->update(deltaT, this);
+	state->update(deltaT);
 	hitBox.updateHitBox(bossSprite->getPosition());
 
 	for (size_t i = 0; i < lavaList.size(); i++)
