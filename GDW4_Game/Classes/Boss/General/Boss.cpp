@@ -1,6 +1,8 @@
 #include "Boss.h"
 #include "Hero.h"
 #include "Boss/Ability States/BossIdleState.h"
+#include "Boss/Attacks/Projectiles.h"
+
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
 	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
@@ -96,7 +98,7 @@ void Boss::activateFlameThrower()
 	lavaList.push_back(new FlameThrower(this));
 }
 
-void Boss::shootSucker()
+void Boss::shootExplosiveBullet()
 {
 	lavaList.push_back(new ExplosiveBullet(heroPointer->sprite->getPosition(), this));
 }

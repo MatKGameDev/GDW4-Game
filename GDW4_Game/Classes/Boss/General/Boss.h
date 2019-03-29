@@ -1,11 +1,14 @@
 #pragma once
 
+//Header Files
 #include <2d/CCSprite.h>
 #include "HitBox.h"
 #include "Boss/Ability States/FirstBossState.h"
-#include "Boss/Attacks/Boss1Attack.h"
 
+//Foward Declare Classes
 class Hero;
+class Boss1LavaAttack;
+
 
 class Boss
 {
@@ -42,7 +45,7 @@ public:
 	//Attack functions
 	void spewLava();
 	void activateFlameThrower();
-	void shootSucker();
+	void shootExplosiveBullet();
 
 	//Utility functions
 	void removeFromLavaList(Boss1LavaAttack *elementToRemove);

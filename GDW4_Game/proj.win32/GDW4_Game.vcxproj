@@ -158,6 +158,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Boss\Ability States\FlameSplit.cpp" />
     <ClCompile Include="..\Classes\Boss\Ability States\FlameThrower.cpp" />
     <ClCompile Include="..\Classes\Boss\Attacks\Boss1Attack.cpp" />
+    <ClCompile Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.cpp" />
+    <ClCompile Include="..\Classes\Boss\Attacks\FlameThrowerProjectile.cpp" />
+    <ClCompile Include="..\Classes\Boss\Attacks\LavaBallProjectile.cpp" />
     <ClCompile Include="..\Classes\Boss\General\Boss.cpp" />
     <ClCompile Include="..\Classes\Boss\General\HitBox.cpp" />
     <ClCompile Include="..\Classes\ControlsMenu.cpp" />
@@ -208,6 +211,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Boss\Ability States\FlameSplit.h" />
     <ClInclude Include="..\Classes\Boss\Ability States\FlameThrower.h" />
     <ClInclude Include="..\Classes\Boss\Attacks\Boss1Attack.h" />
+    <ClInclude Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.h" />
+    <ClInclude Include="..\Classes\Boss\Attacks\FlameThrowerProjectile.h" />
+    <ClInclude Include="..\Classes\Boss\Attacks\LavaBallProjectile.h" />
+    <ClInclude Include="..\Classes\Boss\Attacks\Projectiles.h" />
     <ClInclude Include="..\Classes\Boss\General\Boss.h" />
     <ClInclude Include="..\Classes\Boss\General\HitBox.h" />
     <ClInclude Include="..\Classes\ControlsMenu.h" />

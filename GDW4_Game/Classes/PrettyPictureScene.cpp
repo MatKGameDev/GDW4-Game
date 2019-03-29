@@ -37,12 +37,22 @@ void PrettyPictureScene::preloadAnimations()
 {
 	//flamethrower attack
 	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_PRE_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	sprite->stopAllActions();
 	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
 	sprite->setPosition(500, 500);
 	this->addChild(sprite, 18);
+
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
+
 
 	//3 lava ball attack
 	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");

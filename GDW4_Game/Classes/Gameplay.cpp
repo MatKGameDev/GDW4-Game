@@ -6,6 +6,7 @@
 #include "XinputManager.h"
 #include "DeathScreen.h"
 #include "VictoryScreen.h"
+#include "Boss/Attacks/Projectiles.h"
 
 cocos2d::Scene* Gameplay::createScene()
 {

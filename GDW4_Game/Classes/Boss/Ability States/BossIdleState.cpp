@@ -20,7 +20,7 @@ void Idling4FirstBoss::update(const float &deltaT)
 	{
 		bossPointer->getSprite()->stopAllActions();
 		//chooseRandomAbility();
-		changeToFlameThrower();
+		changeToExplosiveBullet();
 	}
 }
 
@@ -35,7 +35,7 @@ void Idling4FirstBoss::chooseRandomAbility()
 		changeToFlameSplit();
 		break;
 	case 3:
-		//changeToExplosiveBullet(bossInstance);
+		changeToExplosiveBullet();
 		break;
 	default:
 		throw;
