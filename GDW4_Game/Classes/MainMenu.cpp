@@ -101,7 +101,7 @@ void MainMenu::preloadAnimations()
 {
 	//flamethrower attack
 	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
 	auto action = cocos2d::Animate::create(anim);
 	sprite->stopAllActions();
 	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
