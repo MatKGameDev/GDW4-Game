@@ -22,3 +22,9 @@ void HitBox::updateHitBox(const cocos2d::Vec2& newPosition)
 	hitBoxShape->drawRect(cocos2d::Vec2(hitBox.getMinX(), hitBox.getMinY()), cocos2d::Vec2(hitBox.getMaxX(), hitBox.getMaxY()), cocos2d::Color4F(0.0f, 1.0f, 0.0f, 1.0f));
 }
 
+void HitBox::setNewSize(const float& newWidth, const float& newHeight)
+{
+	width = newWidth;
+	height = newHeight;
+}
+

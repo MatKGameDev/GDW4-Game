@@ -8,16 +8,43 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 
 	//Play animation
 	sprite->stopAllActions();
-	auto action = cocos2d::Animate::create(cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key"));
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	const auto startingAnimation = cocos2d::Animate::create
+	(
+		cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_PRE_animation_key")
+	);
+
+	const auto midAnimation = cocos2d::Animate::create
+	(
+		cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_MID_animation_key")
+	);
+
+	const auto finishingAnimation = cocos2d::Animate::create
+	(
+		cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_POST_animation_key")
+	);
+
+	sprite->stopAllActions();
+	sprite->runAction
+	(
+		cocos2d::Sequence::create
+		(
+			cocos2d::Repeat::create(startingAnimation, 1),
+			cocos2d::CallFunc::create([&] {hitBox->setNewSize(200, 1920); }),
+			cocos2d::Repeat::create(midAnimation, 1),
+			cocos2d::CallFunc::create([&] {hitBox->setNewSize(0, 0); }),
+			cocos2d::Repeat::create(finishingAnimation,1),
+			cocos2d::CallFunc::create([&] {delete this; }),
+			nullptr
+		)
+
+	);
+
+	hitBox = new HitBox(bossPointer->getBossScene(), 0, 0);
 
 	//
 	sprite->setPosition(position);
 	bossPointer->getBossScene()->removeChild(sprite, false);
 	bossPointer->getBossScene()->addChild(sprite, 16);
-
-	//Setup hit box
-	hitBox = new HitBox(bossPointer->getBossScene(), 200, 1920);
 
 
 }
@@ -29,10 +56,9 @@ FlameThrower::~FlameThrower()
 
 void FlameThrower::update(const float& deltaT)
 {
-	onTime -= deltaT;
-	hitBox->updateHitBox(position);
-	if (onTime <= 0)
+	if(hitBox->hitBox.size.height > 0 && hitBox->hitBox.size.width > 0)
 	{
-		delete this;
+		hitBox->updateHitBox(position);
 	}
+	//
 }

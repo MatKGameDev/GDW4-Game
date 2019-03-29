@@ -19,4 +19,7 @@ public:
 
 	//Member functions
 	void updateHitBox(const cocos2d::Vec2 &newPosition);
+
+	//Setters
+	void setNewSize(const float& newWidth, const float& newHeight);
 };
