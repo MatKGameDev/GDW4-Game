@@ -176,10 +176,10 @@ void marcos::AnimationManager::init()
 
 	//// @mike its these ones 
 	m_BossExplosionAnimationPRE = setAnimation("Sprites/exploding_fireball.png", 6, 60, 60, 0.1f);
-	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_PRE_animation_key");
+	AnimationCache::getInstance()->addAnimation(m_BossExplosionAnimationPRE, "boss_explosive_PRE_animation_key");
 
 	m_BossExplosionAnimationPOST = setAnimation("Sprites/exploding_fireball_part2.png", 22, 120, 120, 0.1f);
-	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_POST_animation_key");
+	AnimationCache::getInstance()->addAnimation(m_BossExplosionAnimationPOST, "boss_explosive_POST_animation_key");
 
 	m_BossExplosiveTellAnimationPRE = setAnimation("Sprites/boss_explosive_attack_part1.png", 8, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_tell_PRE_animation_key");
