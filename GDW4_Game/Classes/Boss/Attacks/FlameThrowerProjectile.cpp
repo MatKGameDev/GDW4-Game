@@ -29,7 +29,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 		cocos2d::Sequence::create
 		(
 			cocos2d::Repeat::create(startingAnimation, 1),
-			cocos2d::CallFunc::create([&] {hitBox->setNewSize(200, 1920); }),
+			cocos2d::CallFunc::create([&] {hitBox->setNewSize(1920, 200); }),
 			cocos2d::Repeat::create(midAnimation, 1),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(0, 0); }),
 			cocos2d::Repeat::create(finishingAnimation,1),
@@ -56,9 +56,5 @@ FlameThrower::~FlameThrower()
 
 void FlameThrower::update(const float& deltaT)
 {
-	if(hitBox->hitBox.size.height > 0 && hitBox->hitBox.size.width > 0)
-	{
 		hitBox->updateHitBox(position);
-	}
-	//
 }

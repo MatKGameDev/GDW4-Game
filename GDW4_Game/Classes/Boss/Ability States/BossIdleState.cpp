@@ -19,8 +19,8 @@ void Idling4FirstBoss::update(const float &deltaT)
 	if (cooldownBeforeNextAbility <= 0)
 	{
 		bossPointer->getSprite()->stopAllActions();
-		//chooseRandomAbility();
-		changeToFlameThrower();
+		chooseRandomAbility();
+		//changeToFlameThrower();
 	}
 }
 
