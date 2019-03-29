@@ -77,6 +77,9 @@ private:
 	Sprite* backgroundL9;
 	Sprite* backgroundL10;
 
+	Sprite* foregroundL1;
+	Sprite* foregroundL2;
+
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack
 };

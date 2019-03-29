@@ -60,7 +60,10 @@ namespace marcos
 		static cocos2d::Animation* m_GrappleHoldLeftAnimation;
 
 		//boss
-		static cocos2d::Animation* m_BossFlameAnimation;
+		static cocos2d::Animation* m_BossFlameAnimationPRE;
+		static cocos2d::Animation* m_BossFlameAnimationMID;
+		static cocos2d::Animation* m_BossFlameAnimationPOST;
+
 		static cocos2d::Animation* m_BossFlameTellAnimationPRE;
 		static cocos2d::Animation* m_BossFlameTellAnimationPOST;
 
@@ -71,6 +74,8 @@ namespace marcos
 		static cocos2d::Animation* m_BossExplosiveTellAnimationPRE;
 		static cocos2d::Animation* m_BossExplosiveTellAnimationPOST;
 
+		static cocos2d::Animation* m_BossExplosionAnimationPRE;
+		static cocos2d::Animation* m_BossExplosionAnimationPOST;
 
 
 		static cocos2d::Animation* m_BossIdleAnimation;

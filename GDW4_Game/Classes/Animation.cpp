@@ -40,7 +40,10 @@ cocos2d::Animation* marcos::AnimationManager::m_GrappleHoldLeftAnimation = new c
 
 //boss
 
-cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimation = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimationPRE = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimationMID = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossFlameAnimationPOST = new cocos2d::Animation();
+
 cocos2d::Animation* marcos::AnimationManager::m_BossFlameTellAnimationPRE = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_BossFlameTellAnimationPOST = new cocos2d::Animation();
 
@@ -51,6 +54,9 @@ cocos2d::Animation* marcos::AnimationManager::m_BossSpitTellAnimationPOST = new 
 
 cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPRE = new cocos2d::Animation();
 cocos2d::Animation* marcos::AnimationManager::m_BossExplosiveTellAnimationPOST = new cocos2d::Animation();
+
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPRE = new cocos2d::Animation();
+cocos2d::Animation* marcos::AnimationManager::m_BossExplosionAnimationPOST = new cocos2d::Animation();
 
 cocos2d::Animation* marcos::AnimationManager::m_BossIdleAnimation = new cocos2d::Animation();
 
@@ -131,17 +137,17 @@ void marcos::AnimationManager::init()
 	AnimationCache::getInstance()->addAnimation(m_ShootingGrappleRightAnimation, "shooting_grapple_left_animation_key");
 
 
-	m_GrappleJumpRightAnimation = setAnimation("Sprites/grapple_jump_right.png", 6, 105, 135, 0.1f);
+	m_GrappleJumpRightAnimation = setAnimation("Sprites/grapple_jump_right.png", 5, 120, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpRightAnimation, "grapple_jump_right_animation_key");
 
-	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 6, 105, 135, 0.1f);
+	m_GrappleJumpLeftAnimation = setAnimation("Sprites/grapple_jump_left.png", 5, 120, 135, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleJumpLeftAnimation, "grapple_jump_left_animation_key");
 	
 
-	m_GrappleHoldRightAnimation = setAnimation("Sprites/grapple_hold_right.png", 1, 105, 175, 0.1f);
+	m_GrappleHoldRightAnimation = setAnimation("Sprites/grapple_hold_right.png", 1, 105, 195, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleHoldRightAnimation, "grapple_hold_right_animation_key");
 
-	m_GrappleHoldLeftAnimation = setAnimation("Sprites/grapple_hold_left.png", 1, 105, 175, 0.1f);
+	m_GrappleHoldLeftAnimation = setAnimation("Sprites/grapple_hold_left.png", 1, 105, 195, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_GrappleHoldLeftAnimation, "grapple_hold_left_animation_key");
 
 
@@ -154,8 +160,14 @@ void marcos::AnimationManager::init()
 	m_BossFlameTellAnimationPOST = setAnimation("Sprites/boss_flamethrow_part2.png", 5, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameTellAnimationPOST, "boss_flame_tell_POST_animation_key");
 
-	m_BossFlameAnimation = setAnimation("Sprites/flame.png", 8, 3, 1920, 500, 0.1f);
-	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimation, "boss_flame_animation_key");
+	m_BossFlameAnimationPRE = setAnimation("Sprites/flame_1.png", 2, 2, 1920, 500, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationPRE, "boss_flame_PRE_animation_key");
+
+	m_BossFlameAnimationMID = setAnimation("Sprites/flame_2.png", 4, 2, 1920, 500, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationMID, "boss_flame_MID_animation_key");
+
+	m_BossFlameAnimationPOST = setAnimation("Sprites/flame_3.png", 4, 2, 1920, 500, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationPOST, "boss_flame_POST_animation_key");
 
 	m_BossSpitAnimation = setAnimation("Sprites/fire_ball.png", 12, 70, 70, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossSpitAnimation, "boss_spit_animation_key");
@@ -166,10 +178,17 @@ void marcos::AnimationManager::init()
 	m_BossSpitTellAnimationPOST = setAnimation("Sprites/Spit_attack_part2.png", 9, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossSpitTellAnimationPOST, "boss_spit_tell_POST_animation_key");
 
-	m_BossSpitTellAnimationPRE = setAnimation("Sprites/boss_explosive_attack_part1.png", 9, 500, 1300, 0.1f);
+	//// @mike its these ones 
+	m_BossExplosionAnimationPRE = setAnimation("Sprites/exploding_fireball.png", 6, 60, 60, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosionAnimationPRE, "boss_explosive_PRE_animation_key");
+
+	m_BossExplosionAnimationPOST = setAnimation("Sprites/exploding_fireball_part2.png", 22, 120, 120, 0.1f);
+	AnimationCache::getInstance()->addAnimation(m_BossExplosionAnimationPOST, "boss_explosive_POST_animation_key");
+
+	m_BossExplosiveTellAnimationPRE = setAnimation("Sprites/boss_explosive_attack_part1.png", 8, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPRE, "boss_explosive_tell_PRE_animation_key");
 
-	m_BossSpitTellAnimationPOST = setAnimation("Sprites/boss_explosive_attack_part2.png", 4, 500, 1300, 0.1f);
+	m_BossExplosiveTellAnimationPOST = setAnimation("Sprites/boss_explosive_attack_part2.png", 4, 500, 1300, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossExplosiveTellAnimationPOST, "boss_explosive_tell_POST_animation_key");
 
 
@@ -202,7 +221,7 @@ cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_S
 
 	for (int i = 0; i < a_rows; i++)
 	{
-		for (int j = 0; j < a_RowFrames || j < 8; j++)
+		for (int j = 0; j < a_RowFrames && j < 8; j++)
 		{
 			auto frame = cocos2d::SpriteFrame::create(a_String, cocos2d::Rect(a_Width * j, a_Height * i, a_Width, a_Height));
 			m_AnimFrames.pushBack(frame);
