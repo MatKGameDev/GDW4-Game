@@ -18,6 +18,7 @@ public:
 
 	//Member functions
 	void update(const float& deltaT) override;
+	void hitByHero() override;
 
 private:
 	//Private members

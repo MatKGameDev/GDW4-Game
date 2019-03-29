@@ -278,10 +278,23 @@ void Gameplay::updateEnemies(float dt)
 
 	//loop through each attack checking for collisions
 	unsigned int attackListSize = boss->getLavaList().size();
-	for (unsigned int i = 0; i < attackListSize; i++)
+
+	/*for (unsigned int i = 0; i < attackListSize; i++)
 	{
-		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox()))
+		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox())) 
+		{
 			Hero::hero->takeDamage();
+
+		}
+	}*/
+
+	for (auto i : boss->getLavaList())
+	{
+		if (Hero::hero->isHitboxCollision(i->getHitBox()))
+		{
+			Hero::hero->takeDamage();
+			i->hitByHero();
+		}
 	}
 }
 

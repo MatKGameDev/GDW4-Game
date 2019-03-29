@@ -24,9 +24,10 @@ public:
 
 	//Pure virtual function
 	virtual void update(const float &deltaT) = 0;
+	virtual void hitByHero();
+	
 	//Getters
 	cocos2d::Rect getHitBox() const;
-
 };
 
 

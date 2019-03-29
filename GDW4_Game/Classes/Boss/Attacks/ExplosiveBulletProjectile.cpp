@@ -88,6 +88,11 @@ void ExplosiveBullet::update(const float& deltaT)
 	}
 }
 
+void ExplosiveBullet::hitByHero()
+{
+	delete this;
+}
+
 void ExplosiveBullet::setUpPhysic(const cocos2d::Vec2& heroPos)
 {
 	cocos2d::Vec2 tempVector = heroPos - position;

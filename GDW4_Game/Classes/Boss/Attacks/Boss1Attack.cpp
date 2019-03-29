@@ -15,6 +15,10 @@ Boss1LavaAttack::~Boss1LavaAttack()
 }
 
 
+void Boss1LavaAttack::hitByHero()
+{
+}
+
 cocos2d::Rect Boss1LavaAttack::getHitBox() const
 {
 	return hitBox->hitBox;
