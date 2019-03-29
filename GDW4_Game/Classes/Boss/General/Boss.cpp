@@ -39,11 +39,6 @@ std::vector<Boss1LavaAttack*> Boss::getLavaList() const
 	return lavaList;
 }
 
-cocos2d::Vec2 Boss::getMouthPosition() const
-{
-	return mouthPosition;
-}
-
 cocos2d::Scene* Boss::getBossScene() const
 {
 	return bossScene;
@@ -83,6 +78,11 @@ void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
 
 	//make sure sprite is visible
 	bossSprite->setVisible(true);
+}
+
+void Boss::addAttack(Boss1LavaAttack* attackToAdd)
+{
+	lavaList.push_back(attackToAdd);
 }
 
 void Boss::spewLava()
