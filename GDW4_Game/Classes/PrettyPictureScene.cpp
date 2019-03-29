@@ -44,6 +44,13 @@ void PrettyPictureScene::preloadAnimations()
 	sprite->setPosition(500, 500);
 	this->addChild(sprite, 18);
 
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_MID_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, 18);
 
 	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
 	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_POST_animation_key");
