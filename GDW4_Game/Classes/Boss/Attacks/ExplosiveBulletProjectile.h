@@ -1,5 +1,6 @@
 #pragma once
 #include "Boss/Attacks/Boss1Attack.h"
+#include "Vect2.h"
 
 class ExplosiveArea : public Boss1LavaAttack
 {
@@ -8,6 +9,12 @@ public:
 	~ExplosiveArea();
 
 	void update(const float& deltaT) override;
+private:
+	void addForceToHero() const;
+	Vect2 calculateDirectionToHero() const;
+	void resetHeroForce();
+
+	mutable bool appliedForce;
 };
 
 class ExplosiveBullet : public Boss1LavaAttack

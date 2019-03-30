@@ -31,6 +31,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 			cocos2d::Repeat::create(startingAnimation, 1),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(1920, 200); }),
 			cocos2d::Repeat::create(midAnimation, 1),
+			cocos2d::DelayTime::create(1.5),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(0, 0); }),
 			cocos2d::Repeat::create(finishingAnimation,1),
 			cocos2d::CallFunc::create([&] {delete this; }),

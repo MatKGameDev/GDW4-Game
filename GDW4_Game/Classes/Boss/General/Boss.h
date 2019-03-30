@@ -22,7 +22,7 @@ private:
 	Hero* heroPointer;
 
 public:
-	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 345);
+	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 325);
 	~Boss();
 
 	//Setters

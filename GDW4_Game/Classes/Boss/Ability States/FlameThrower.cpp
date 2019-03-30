@@ -20,7 +20,7 @@ FlameThrower4FirstBoss::FlameThrower4FirstBoss(Boss *boss)
 		(
 			cocos2d::Repeat::create(startingAction, 1),
 			cocos2d::CallFunc::create([&] {bossPointer->activateFlameThrower(); }),
-			cocos2d::DelayTime::create(1.0f),
+			cocos2d::DelayTime::create(2.5f),
 			cocos2d::Repeat::create(finishingAction, 1),
 			cocos2d::CallFunc::create([&] {changeToIdleState(); }),
 			nullptr

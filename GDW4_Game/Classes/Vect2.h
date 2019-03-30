@@ -51,7 +51,7 @@ public:
 	void set(float newX, float newY);
 	float getMagnitude();
 	float getMagnitudeSquared();
-	float getNormalized();
+	Vect2 getNormalized();
 	float dotProduct(const Vect2 rhs);
 	float crossProduct(const Vect2 rhs);
 	

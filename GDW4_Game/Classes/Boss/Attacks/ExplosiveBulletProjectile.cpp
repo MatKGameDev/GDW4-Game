@@ -1,9 +1,9 @@
 #include "Boss/Attacks/ExplosiveBulletProjectile.h"
 #include "Boss/General/Boss.h"
-
+#include "Hero.h"
 
 ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInstance)
-	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png")
+	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), appliedForce(false)
 {
 	//Set up the sprite
 	position = startPosition;
@@ -31,12 +31,39 @@ ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInsta
 
 ExplosiveArea::~ExplosiveArea()
 {
+	resetHeroForce();
 	bossPointer->removeFromLavaList(this);
 }
 
 void ExplosiveArea::update(const float& deltaT)
 {
 	hitBox->updateHitBox(position);
+	addForceToHero();
+}
+
+void ExplosiveArea::addForceToHero() const
+{
+	if (Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength() < 500 && !appliedForce)
+	{
+		appliedForce = true;
+		Hero::hero->force += calculateDirectionToHero() * 10000;
+	}
+	else 
+	{
+		Hero::hero->force = Vect2(0, 0);
+		appliedForce = false;
+	}
+}
+
+Vect2 ExplosiveArea::calculateDirectionToHero() const
+{
+	return Vect2(position.x - Hero::hero->getPosition().x, position.y - Hero::hero->getPosition().y).getNormalized();
+}
+
+void ExplosiveArea::resetHeroForce()
+{
+	if (appliedForce)
+		Hero::hero->force = Vect2(0,0);
 }
 
 ExplosiveBullet::ExplosiveBullet(const cocos2d::Vec2& heroLocation, Boss* bossInstance)

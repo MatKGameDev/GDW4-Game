@@ -12,4 +12,5 @@ public:
 	void hitByEnvironment() override;
 private:
 	float waitingTime;
+	bool isWaiting{ true };
 };

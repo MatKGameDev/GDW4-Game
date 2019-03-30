@@ -23,7 +23,7 @@ FlameSplit4FirstBoss::FlameSplit4FirstBoss(Boss *boss)
 		(
 			cocos2d::Repeat::create(startingAction, 1),
 			cocos2d::CallFunc::create([&] {bossPointer->spewLava(); }),
-			cocos2d::DelayTime::create(3),
+			cocos2d::DelayTime::create(2),
 			cocos2d::Repeat::create(finishingAction, 1),
 			cocos2d::CallFunc::create([&] {changeToIdleState(); }),
 			nullptr

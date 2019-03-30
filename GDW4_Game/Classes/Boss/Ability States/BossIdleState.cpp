@@ -2,7 +2,7 @@
 #include "Boss/General/Boss.h"
 
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
-	: FirstBossState(boss), cooldownBeforeNextAbility{ 5.f }
+	: FirstBossState(boss), cooldownBeforeNextAbility{ 3.f }
 {
 	const auto animationForIdling = cocos2d::Animate::create
 	(
