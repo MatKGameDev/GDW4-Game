@@ -39,7 +39,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 
 	);
 
-	hitBox = new HitBox(bossPointer->getBossScene(), 0, 0);
+	hitBox = new HitBox(position, 0, 0, bossPointer->getBossScene());
 
 	//
 	sprite->setPosition(position);

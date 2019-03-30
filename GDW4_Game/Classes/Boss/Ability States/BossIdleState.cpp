@@ -20,7 +20,6 @@ void Idling4FirstBoss::update(const float &deltaT)
 	{
 		bossPointer->getSprite()->stopAllActions();
 		chooseRandomAbility();
-		//changeToFlameThrower();
 	}
 }
 

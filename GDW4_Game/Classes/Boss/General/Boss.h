@@ -17,9 +17,8 @@ private:
 	FirstBossState *state;
 	cocos2d::Sprite *bossSprite;
 	std::vector<Boss1LavaAttack*> lavaList;
-	const cocos2d::Vec2 mouthPosition;
 	cocos2d::Scene *bossScene;
-	HitBox hitBox;
+	HitBox* hitBox;
 	Hero* heroPointer;
 
 public:
@@ -39,8 +38,8 @@ public:
 
 	//Member functions
 	void takeDamage();
-	void update(const float &deltaT, const cocos2d::Vec2 &heroPosition);
-	void addAttack(Boss1LavaAttack* attackToAdd);
+	void update(const float &deltaT);
+	
 
 	//Attack functions
 	void spewLava();
@@ -49,4 +48,5 @@ public:
 
 	//Utility functions
 	void removeFromLavaList(Boss1LavaAttack *elementToRemove);
+	void addAttack(Boss1LavaAttack* attackToAdd);
 };

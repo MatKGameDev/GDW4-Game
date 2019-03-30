@@ -17,6 +17,8 @@
 using namespace cocos2d;
 
 class Boss; //forward declare
+class MouseAndKeyboardHandler;
+class ControllerHandler;
 
 class Gameplay : public cocos2d::Scene
 {
@@ -33,25 +35,12 @@ public:
 	void initGameObjects();
 	void initSprites();
 	void initListeners();
-	void initMouseListener();
-	void initKeyboardListener();
-	void initControllerListener();
 
-	void update(float dt);
+	void update(float dt) override;
 	void spawnEnemies();
-	void updateObjects(float dt);
-	void updateEnemies(float dt);
+	
 	void removeAllObjects();
 
-	//mouse callbacks
-	void mouseDownCallback(Event* event);
-	void mouseUpCallback(Event* event);
-	void mouseMoveCallback(Event* event);
-	void mouseScrollCallback(Event* event);
-
-	//keyboard callbacks
-	void keyDownCallback(EventKeyboard::KeyCode keycode, Event* event);
-	void keyUpCallback(EventKeyboard::KeyCode keycode, Event* event);
 
 	//controller callbacks
 	void buttonPressCallback(Controller* controller, int keyCode, Event* event);
@@ -65,11 +54,18 @@ private:
 	EventListenerKeyboard* keyboardListener;
 	EventListenerController* controllerListener;
 
+	MouseAndKeyboardHandler* mouseAndKeyboardHandler;
+	ControllerHandler* controllerHandler;
+
 	Vect2 mousePosition;
 
 	Sprite* background;
 
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack
+
+	//Utility functions
+	void updateObjects(const float& dt);
+	void updateEnemies(const float& dt);
 };
 #endif

@@ -6,6 +6,7 @@
 #include "PauseMenu.h"
 #include "HelpBubble.h"
 #include "ControllerInput.h"
+#include "Input Handler/InputHandler.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -248,63 +249,14 @@ void Tutorial::initSprites()
 	this->addChild(Grapple::grapple->indicator, 7);
 }
 
+/**
+ * This function initialize the mouse, keyboard, and controller handlers. 
+ * Any input with those three will be process by the Handler instead
+ */
 void Tutorial::initListeners()
 {
-	//Init the mouse listener
-	initMouseListener();
-	//Init the keyboard listener
-	initKeyboardListener();
-	//init controller listener
-	initControllerListener();
-}
-
-void Tutorial::initMouseListener()
-{
-	//Init the mouse listener
-	mouseListener = EventListenerMouse::create();
-
-	//On Mouse Down
-	mouseListener->onMouseDown = CC_CALLBACK_1(Tutorial::mouseDownCallback, this);
-
-	//On Mouse Up
-	mouseListener->onMouseUp = CC_CALLBACK_1(Tutorial::mouseUpCallback, this);
-
-	//On Mouse Move
-	mouseListener->onMouseMove = CC_CALLBACK_1(Tutorial::mouseMoveCallback, this);
-
-	//On Mouse Scroll
-	mouseListener->onMouseScroll = CC_CALLBACK_1(Tutorial::mouseScrollCallback, this);
-
-	//Add the mouse listener to the dispatcher
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
-}
-
-void Tutorial::initKeyboardListener()
-{
-	//Create the keyboard listener
-	keyboardListener = EventListenerKeyboard::create();
-
-	//Setting up callbacks
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(Tutorial::keyDownCallback, this);
-	keyboardListener->onKeyReleased = CC_CALLBACK_2(Tutorial::keyUpCallback, this);
-
-	//add the keyboard listener to the dispatcher
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-}
-
-void Tutorial::initControllerListener()
-{
-	controllerListener = EventListenerController::create();
-
-	//set up callbacks
-	controllerListener->onKeyDown = CC_CALLBACK_3(Tutorial::buttonPressCallback, this);
-	controllerListener->onKeyUp = CC_CALLBACK_3(Tutorial::buttonReleaseCallback, this);
-	controllerListener->onAxisEvent = CC_CALLBACK_3(Tutorial::axisEventCallback, this);
-
-	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
-
-	//add the controller listener to the dispatcher
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+	mouseAndKeyboardHandler = new MouseAndKeyboardHandler(_eventDispatcher,this);
+	controllerHandler = new ControllerHandler(_eventDispatcher, this);
 }
 
 //UPDATE
@@ -367,24 +319,22 @@ void Tutorial::spawnEnemies()
 
 }
 
-void Tutorial::updateObjects(float dt)
+void Tutorial::updateObjects(const float& dt)
 {
 	//update all platforms
-	unsigned int numPlatforms = Platform::platformList.size();
-	for (unsigned int i = 0; i < numPlatforms; i++)
-		Platform::platformList[i]->update();
+	for (auto i : Platform::platformList)
+		i->update();
 
 	//update all ice projectiles
-	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
-		IceProjectile::iceProjectileList[i]->update(dt);
+	for (auto i : IceProjectile::iceProjectileList)
+		i->update(dt);
 
 	//update all help bubbles
-	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
-	for (unsigned int i = 0; i < numHelpBubbles; i++)
-		HelpBubble::helpBubbleList[i]->update(dt);
+	for (auto i : HelpBubble::helpBubbleList)
+		i->update(dt);
 }
 
-void Tutorial::updateEnemies(float dt)
+void Tutorial::updateEnemies(const float& dt)
 {
 
 }
@@ -393,221 +343,4 @@ void Tutorial::updateEnemies(float dt)
 void Tutorial::removeAllObjects()
 {
 
-}
-
-//--- Callbacks ---//
-
-void Tutorial::mouseDownCallback(Event* event)
-{
-	//Cast the event as a mouse event
-	EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);
-	auto mouseButton = mouseEvent->getMouseButton();
-
-	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_LEFT)
-	{
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
-	}
-	if (mouseButton == cocos2d::EventMouse::MouseButton::BUTTON_RIGHT)
-	{
-		//Get the position of the mouse button press
-		auto mouseClickPosition = mouseEvent->getLocationInView();
-		mouseClickPosition.y += 1080;
-
-		auto mouseGameViewPosition = mouseClickPosition;
-		mouseGameViewPosition.y += 25;
-
-		//calculate proper x position for grapple
-		if (Hero::hero->getPosition().x > 1920/2)
-		{
-			//do some simple math to convert mouse click position on screen to in-game world position
-			mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
-			mouseGameViewPosition.x += Hero::hero->sprite->getPosition().x;
-		}
-
-		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
-	}
-}
-
-void Tutorial::mouseUpCallback(Event* event)
-{
-}
-
-void Tutorial::mouseMoveCallback(Event* event)
-{
-}
-
-void Tutorial::mouseScrollCallback(Event* event)
-{
-}
-
-void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
-{
-	switch (keyCode)
-	{
-	case EventKeyboard::KeyCode::KEY_A:
-		HeroStateManager::currentState->handleInput(InputType::p_a);
-		Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-		Hero::hero->moveState = Hero::MoveDirection::movingLeft;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_D:
-		HeroStateManager::currentState->handleInput(InputType::p_d);
-		Hero::hero->lookState = Hero::LookDirection::lookingRight;
-		Hero::hero->moveState = Hero::MoveDirection::movingRight;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_W:
-		HeroAttackBase::isWKeyHeld = true;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_S:
-		HeroStateManager::currentState->handleInput(InputType::p_s);
-		break;
-
-	case EventKeyboard::KeyCode::KEY_SPACE:
-		HeroStateManager::currentState->handleInput(InputType::p_space);
-		break;
-
-		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	case EventKeyboard::KeyCode::KEY_Q:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
-		break;
-
-	case EventKeyboard::KeyCode::KEY_E:
-		//HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
-		break;
-
-	case EventKeyboard::KeyCode::KEY_ESCAPE:
-		director->pushScene(PauseMenu::createScene());
-	}
-}
-
-void Tutorial::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
-{
-	switch (keyCode)
-	{
-	case EventKeyboard::KeyCode::KEY_A:
-		//make sure the hero is moving in this direction before we decide if they are now idle
-		if (Hero::hero->moveState == Hero::MoveDirection::movingLeft)
-			Hero::hero->moveState = Hero::MoveDirection::idle;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_D:
-		//make sure the hero is moving in this direction before we decide if they are now idle
-		if (Hero::hero->moveState == Hero::MoveDirection::movingRight)
-			Hero::hero->moveState = Hero::MoveDirection::idle;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_W:
-		HeroAttackBase::isWKeyHeld = false;
-		break;
-
-	case EventKeyboard::KeyCode::KEY_SPACE:
-		HeroStateManager::currentState->handleInput(InputType::r_space);
-		break;
-	}
-}
-
-void Tutorial::buttonPressCallback(Controller * controller, int keyCode, Event * event)
-{
-	switch (keyCode)
-	{
-	case ControllerInput::A:
-		HeroStateManager::currentState->handleInput(InputType::p_space);
-		break;
-
-	case ControllerInput::Start:
-		director->pushScene(PauseMenu::createScene());
-		break;
-	}
-}
-
-void Tutorial::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
-{
-	switch (keyCode)
-	{
-	case ControllerInput::A:
-		HeroStateManager::currentState->handleInput(InputType::r_space);
-		break;
-	}
-}
-
-void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * event)
-{
-	switch (keyCode)
-	{
-	//x axis of the left stick
-	case ControllerInput::leftStickX:
-		//moving to the left
-		if (controller->getKeyStatus(keyCode).value <= -1)
-		{
-			ControllerInput::isLeftStickIdle = false;
-			HeroStateManager::currentState->handleInput(InputType::p_a);
-			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
-		}
-		//moving to the right
-		else if (controller->getKeyStatus(keyCode).value >= 1)
-		{
-			ControllerInput::isLeftStickIdle = false;
-			HeroStateManager::currentState->handleInput(InputType::p_d);
-			Hero::hero->lookState = Hero::LookDirection::lookingRight;
-			Hero::hero->moveState = Hero::MoveDirection::movingRight;
-		}
-		else if (!ControllerInput::isLeftStickIdle) //not moving AND left stick isn't at rest
-		{
-			Hero::hero->moveState = Hero::MoveDirection::idle;
-			ControllerInput::isLeftStickIdle = true;
-		}
-		break;
-
-	//y axis of the left stick
-	case ControllerInput::leftStickY:
-		if (controller->getKeyStatus(keyCode).value >= 1)
-			HeroAttackBase::isWKeyHeld = true;
-		else
-		{
-			HeroAttackBase::isWKeyHeld = false;
-			if (controller->getKeyStatus(keyCode).value <= -1)
-				HeroStateManager::currentState->handleInput(InputType::p_s);
-		}
-		break;
-
-	case ControllerInput::leftTrigger:
-		//check for attack
-		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftTriggerReset)
-		{
-			ControllerInput::isLeftTriggerReset = false;
-			HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
-		}
-		else if (controller->getKeyStatus(keyCode).value <= -1)
-			ControllerInput::isLeftTriggerReset = true;
-		break;
-
-	case ControllerInput::rightTrigger:
-		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isRightTriggerReset)
-		{
-			ControllerInput::isRightTriggerReset = false;
-
-			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
-			XinputManager::instance->update();
-			XinputController* controller1 = XinputManager::instance->getController(0); 
-			Stick sticks[2];
-			controller1->getSticks(sticks);
-
-			//calculate angle (in radians) using atan2 with the right stick's y and x values
-			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
-
-			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
-			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
-			{
-				//calculate angle (in radians) using atan2 with the right stick's y and x values
-				grappleAngle = atan2(0.0f, 0.0f);
-			}
-			Grapple::grapple->shoot(grappleAngle); //shoot grapple
-		}
-		else if (controller->getKeyStatus(keyCode).value <= -1)
-			ControllerInput::isRightTriggerReset = true;
-		break;
-	}
 }
