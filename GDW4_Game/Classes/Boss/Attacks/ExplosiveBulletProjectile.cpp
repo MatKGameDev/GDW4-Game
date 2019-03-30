@@ -9,7 +9,7 @@ ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInsta
 	position = startPosition;
 	sprite->setPosition(position);
 
-	hitBox = new HitBox(bossPointer->getBossScene(), 120, 120);
+	hitBox = new HitBox(position, 120, 120, bossPointer->getBossScene());
 
 	//Set up the animation
 	const auto animation = cocos2d::Animate::create
@@ -64,7 +64,7 @@ ExplosiveBullet::ExplosiveBullet(const cocos2d::Vec2& heroLocation, Boss* bossIn
 	);
 
 	//Set up hit box
-	hitBox = new HitBox(bossPointer->getBossScene(), 50, 50);
+	hitBox = new HitBox(position, 50, 50, bossPointer->getBossScene());
 
 }
 
@@ -89,6 +89,11 @@ void ExplosiveBullet::update(const float& deltaT)
 }
 
 void ExplosiveBullet::hitByHero()
+{
+	delete this;
+}
+
+void ExplosiveBullet::hitByEnvironment()
 {
 	delete this;
 }

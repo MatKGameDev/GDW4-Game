@@ -9,6 +9,7 @@ public:
 
 	//Functions
 	void update(const float &deltaT) override;
+	void hitByEnvironment() override;
 private:
 	float waitingTime;
 };

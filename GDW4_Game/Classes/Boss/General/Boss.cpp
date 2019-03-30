@@ -2,19 +2,23 @@
 #include "Hero.h"
 #include "Boss/Ability States/BossIdleState.h"
 #include "Boss/Attacks/Projectiles.h"
+#include "VictoryScreen.h"
+#include "GroundTile.h"
 
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
-	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), mouthPosition(100, 500), bossScene(sceneForBoss),
-	hitBox(sceneForBoss, height, width), heroPointer(heroInstance), health(10)
+	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), bossScene(sceneForBoss),
+	heroPointer(heroInstance), health(10)
 {
 	bossSprite->setPosition(230, 450);
+	hitBox = new HitBox(bossSprite->getPosition(), height, width, bossScene);
 	state = new Idling4FirstBoss(this);
 }
 
 Boss::~Boss()
 {
 	delete state;
+	delete hitBox;
 }
 
 void Boss::setState(FirstBossState* newState)
@@ -46,13 +50,16 @@ cocos2d::Scene* Boss::getBossScene() const
 
 cocos2d::Rect Boss::getHitBox() const
 {
-	return hitBox.hitBox;
+	return hitBox->hitBox;
 }
 
 void Boss::takeDamage()
 {
 	bossSprite->setVisible(false); //flicker sprite upon taking damage
 	health--;
+
+	if (health == 0)
+		cocos2d::Director::getInstance()->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
 }
 
 FirstBossState* Boss::getCurrentState() const
@@ -60,29 +67,29 @@ FirstBossState* Boss::getCurrentState() const
 	return state;
 }
 
-void Boss::update(const float &deltaT, const cocos2d::Vec2 &heroPosition)
+void Boss::update(const float &deltaT)
 {
 	state->update(deltaT);
-	hitBox.updateHitBox(bossSprite->getPosition());
+	hitBox->updateHitBox(bossSprite->getPosition());
 
-	for (size_t i = 0; i < lavaList.size(); i++)
+	for (auto attack : lavaList) 
 	{
-		try {
-			lavaList[i]->update(deltaT);
-		}
-		catch (...)
+		//Update the position of the attack
+		attack->update(deltaT);
+
+		//Check if the attack hits the ground tile
+		for (auto ground: GroundTile::groundTileList)
 		{
-			lavaList.erase(lavaList.begin() + i);
+			if (attack->getHitBox().intersectsRect(ground->hitBox))
+			{
+				attack->hitByEnvironment();
+				break;
+			}
 		}
 	}
 
 	//make sure sprite is visible
 	bossSprite->setVisible(true);
-}
-
-void Boss::addAttack(Boss1LavaAttack* attackToAdd)
-{
-	lavaList.push_back(attackToAdd);
 }
 
 void Boss::spewLava()
@@ -110,4 +117,9 @@ void Boss::removeFromLavaList(Boss1LavaAttack* elementToRemove)
 		if (lavaList[i] == elementToRemove)
 			lavaList.erase(lavaList.begin() + i);
 	}
+}
+
+void Boss::addAttack(Boss1LavaAttack* attackToAdd)
+{
+	lavaList.push_back(attackToAdd);
 }

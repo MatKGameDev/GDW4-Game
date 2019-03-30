@@ -10,15 +10,15 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	{
 	case 1:
 		waitingTime = 1.5;
-		position = cocos2d::Vec2(250, 500);
+		position = cocos2d::Vec2(300, 500);
 		break;
 	case 2:
 		waitingTime = 2;
-		position = cocos2d::Vec2(250, 200);
+		position = cocos2d::Vec2(300, 200);
 		break;
 	case 3:
 		waitingTime = 2.5;
-		position = cocos2d::Vec2(250, 750);
+		position = cocos2d::Vec2(300, 750);
 		break;
 	default:
 		throw;
@@ -30,7 +30,7 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	velocity.set(1000, 0);
 
 	//Set sprite size
-	hitBox = new HitBox(bossPointer->getBossScene(), 50.f, 50);
+	hitBox = new HitBox(position, 50.f, 50, bossPointer->getBossScene());
 
 	//Set up animation for sprite
 	const auto animation = cocos2d::Animate::create
@@ -64,4 +64,9 @@ void LavaBall::update(const float& deltaT)
 		if (position.x > 1920)
 			delete this;
 	}
+}
+
+void LavaBall::hitByEnvironment()
+{
+	delete this;
 }

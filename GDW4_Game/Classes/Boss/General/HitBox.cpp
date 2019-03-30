@@ -1,10 +1,10 @@
 #include "HitBox.h"
 
-
-HitBox::HitBox(cocos2d::Scene* aScene, float aHeight, float aWidth)
-	: hitBoxShape(cocos2d::DrawNode::create()),height(aHeight), width(aWidth), scene(aScene)
+HitBox::HitBox(const cocos2d::Vec2& position, const float& aHeight, const float& aWidth, cocos2d::Scene* aScene)
+	: hitBoxShape(cocos2d::DrawNode::create()), height(aHeight), width(aWidth), scene(aScene)
 {
 	scene->addChild(hitBoxShape, 1);
+	updateHitBox(position);
 }
 
 HitBox::~HitBox()
