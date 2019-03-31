@@ -4,17 +4,16 @@
 class Idling4FirstBoss : public FirstBossState
 {
 public:
+	//Constructor
 	Idling4FirstBoss(Boss *boss);
+
+	//Member functions
 	void update(const float &deltaT) override;
-
-
 private:
 	float cooldownBeforeNextAbility;
+	static int numberOfCast;
+	static const int maxNumberOfCastPerRound;
 
 	//Utility functions
-	/*
-	 * List	of utility functions
-	 * 1. Choose a random ability
-	 */
 	void chooseRandomAbility();
 };

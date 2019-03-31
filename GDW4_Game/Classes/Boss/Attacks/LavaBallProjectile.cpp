@@ -29,7 +29,7 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	velocity.set(1000, 0);
 
 	//Set sprite size
-	hitBox = new HitBox(position, 50.f, 50, bossPointer->getBossScene());
+	hitBox = new HitBox(position, 50.f, 50);
 
 	//Set up animation for sprite
 	const auto animation = marcos::AnimationManager::getAnimation("boss_spit_animation_key");

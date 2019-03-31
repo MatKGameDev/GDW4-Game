@@ -4,19 +4,20 @@
 
 /**
  * @brief Initialize data members for explosive area and set up sprite animation
- * 
+ *
  * @param startPosition The position where the explosive bullet was destroyed
  * @param bossInstance The current bossPointer
  */
 ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInstance)
-	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), appliedForce(false)
+	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), appliedForce(false),
+	constantG(10000)
 {
 	//Set up the sprite's information
 	position = startPosition;
 	sprite->setPosition(position);
 
 	//Set up hitbox
-	hitBox = new HitBox(position, 120, 120, bossPointer->getBossScene());
+	hitBox = new HitBox(position, 120, 120);
 
 	//Get the animation
 	const auto animation = marcos::AnimationManager::getAnimation("boss_explosive_POST_animation_key");
@@ -44,7 +45,7 @@ ExplosiveArea::~ExplosiveArea()
 }
 
 /**
- * @brief This function updates the hitbox, as well as 
+ * @brief This function updates the hitbox, as well as
  * add force to the player
  */
 void ExplosiveArea::update(const float& deltaT)
@@ -63,9 +64,9 @@ void ExplosiveArea::addForceToHero() const
 	if (isHeroInRange() && !appliedForce)
 	{
 		appliedForce = true;
-		Hero::hero->force += calculateDirectionToHero() * 10000;
+		Hero::hero->force += calculateDirectionToHero() * constantG;
 	}
-	else 
+	else
 	{
 		resetHeroForce();
 		appliedForce = false;
@@ -75,7 +76,7 @@ void ExplosiveArea::addForceToHero() const
 /**
  * @brief This function calculate the direction from the hero
  * to the center of the explosive area
- * 
+ *
  * @return Returns Vect2 class
  */
 Vect2 ExplosiveArea::calculateDirectionToHero() const
@@ -90,7 +91,7 @@ Vect2 ExplosiveArea::calculateDirectionToHero() const
 void ExplosiveArea::resetHeroForce() const
 {
 	if (appliedForce)
-		Hero::hero->force = Vect2(0,0);
+		Hero::hero->force = Vect2(0, 0);
 }
 
 /**
@@ -103,7 +104,21 @@ bool ExplosiveArea::isHeroInRange() const
 }
 
 /**
- *@brief This initialize the data members and sprite action for the explosive bullet 
+ * @brief Calculate distance square between the hero's position and  the 
+ * explosive area position
+ * @return Return distance square as float
+ */
+float ExplosiveArea::calculateDistanceSquare() const
+{
+	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLengthSq();
+}
+
+//Explosive Bullet static members
+const float ExplosiveBullet::accelerationMultiplier = 2000;
+const float ExplosiveBullet::velocityMultiplier = 1250;
+
+/**
+ *@brief This initialize the data members and sprite action for the explosive bullet
  */
 ExplosiveBullet::ExplosiveBullet(const cocos2d::Vec2& heroLocation, Boss* bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png")
@@ -127,7 +142,7 @@ ExplosiveBullet::ExplosiveBullet(const cocos2d::Vec2& heroLocation, Boss* bossIn
 	);
 
 	//Set up hit box
-	hitBox = new HitBox(position, 50, 50, bossPointer->getBossScene());
+	hitBox = new HitBox(position, 50, 50);
 }
 
 ExplosiveBullet::~ExplosiveBullet()
@@ -138,7 +153,7 @@ ExplosiveBullet::~ExplosiveBullet()
 
 /**
  * @brief Updates the physics for the object
- * @param deltaT The changes in time from the last frame to the 
+ * @param deltaT The changes in time from the last frame to the
  * current frame
  */
 void ExplosiveBullet::update(const float& deltaT)
@@ -148,7 +163,7 @@ void ExplosiveBullet::update(const float& deltaT)
 		//physics update
 		velocity += acceleration * deltaT;
 		position += velocity * deltaT;
-		
+
 		////Update the sprite
 		sprite->setPosition(position);
 		hitBox->updateHitBox(position);
@@ -178,7 +193,7 @@ void ExplosiveBullet::hitByEnvironment()
  */
 void ExplosiveBullet::setUpPhysic(const cocos2d::Vec2& heroPos)
 {
-	cocos2d::Vec2 tempVector = heroPos - position;
-	acceleration = tempVector.getNormalized() * 2000;
-	velocity = tempVector.getNormalized() * 1250;
+	const cocos2d::Vec2 tempVector = heroPos - position;
+	acceleration = tempVector.getNormalized() * accelerationMultiplier;
+	velocity = tempVector.getNormalized() * velocityMultiplier;
 }

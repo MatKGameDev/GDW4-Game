@@ -35,13 +35,14 @@ class Boss
 	std::vector<HitBox*> initIdleHitbox() const;
 	std::vector<HitBox*> initFlameSplitHitbox() const;
 	std::vector<HitBox*> initFlameThrowerHitbox() const;
+	void setHitboxIndex(HitboxIndex newIndex);
 public:
 	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 325);
 	~Boss();
 
 	//Setters
 	void setState(FirstBossState *newState);
-	void setHitboxIndex(HitboxIndex newIndex);
+	
 
 	//Getters
 	int getHealth() const;

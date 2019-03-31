@@ -31,7 +31,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 	);
 
 	//Set hit box
-	hitBox = new HitBox(position, 0, 0, bossPointer->getBossScene());
+	hitBox = new HitBox(position, 0, 0);
 }
 
 FlameThrower::~FlameThrower()

@@ -27,9 +27,11 @@ private:
 	Vect2 calculateDirectionToHero() const;
 	void resetHeroForce() const;
 	bool isHeroInRange() const;
+	float calculateDistanceSquare() const;
 
 	//Private data members
 	mutable bool appliedForce;
+	const float constantG;
 };
 
 /**
@@ -52,6 +54,7 @@ public:
 private:
 	//Private members
 	bool isWaiting{ true };
+	static const float accelerationMultiplier, velocityMultiplier;
 
 	//Utility functions
 	void setUpPhysic(const cocos2d::Vec2& heroPos);
