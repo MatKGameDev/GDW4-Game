@@ -6,12 +6,17 @@
 #include "GroundTile.h"
 
 
+void Boss::initHitbox()
+{
+	hitboxList.push_back(new HitBox(cocos2d::Vec2(), 200, 325, bossScene));
+}
+
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
 	: bossSprite(cocos2d::Sprite::create("Sprites/boss.png")), bossScene(sceneForBoss),
 	heroPointer(heroInstance), health(10)
 {
 	bossSprite->setPosition(230, 450);
-	hitBox = new HitBox(bossSprite->getPosition(), height, width, bossScene);
+	hitBox = new HitBox(bossSprite->getPosition(), 700,325, bossScene);
 	state = new Idling4FirstBoss(this);
 }
 

@@ -1,8 +1,10 @@
 #pragma once
 #ifndef ANIMATION_H
 #define ANIMATION_H
+#include "cocos2d.h"
+using namespace cocos2d;
 
-#include "GameObject.h"
+//#include "GameObject.h"
 
 namespace marcos
 {
@@ -17,8 +19,9 @@ namespace marcos
 		static void init();
 
 		static cocos2d::Animation* setAnimation(const std::string a_String, const int a_NumFrames, const float a_Width, const float a_Height, const float a_Delay);
-
 		static cocos2d::Animation * setAnimation(const std::string a_String, const int a_NumFrames, const int a_rows, const float a_Width, const float a_Height, const float a_Delay);
+		static cocos2d::Animate* getAnimation(const std::string& animationKey);
+		static cocos2d::Animate* getAnimationWithAnimationTime(const std::string& animationKey, const float &animationTime);
 
 
 		//idling

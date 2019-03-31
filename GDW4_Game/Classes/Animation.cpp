@@ -163,7 +163,7 @@ void marcos::AnimationManager::init()
 	m_BossFlameAnimationPRE = setAnimation("Sprites/flame_1.png", 2, 2, 1920, 500, 0.1f);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationPRE, "boss_flame_PRE_animation_key");
 
-	m_BossFlameAnimationMID = setAnimation("Sprites/flame_2.png", 4, 2, 1920, 500, 0.1f);
+	m_BossFlameAnimationMID = setAnimation("Sprites/flame_2.png", 4, 2, 1920, 500, 0.1);
 	AnimationCache::getInstance()->addAnimation(m_BossFlameAnimationMID, "boss_flame_MID_animation_key");
 
 	m_BossFlameAnimationPOST = setAnimation("Sprites/flame_3.png", 4, 2, 1920, 500, 0.1f);
@@ -232,3 +232,33 @@ cocos2d::Animation* marcos::AnimationManager::setAnimation(const std::string a_S
 	return Animation;
 
 }
+
+/**
+ * This static function will create an animation based on the animation key
+ * @param animationKey The name of the key to create animation from
+ * 
+ * @return Return the cocos2d::Animate pointer
+ */
+cocos2d::Animate* marcos::AnimationManager::getAnimation(const std::string& animationKey)
+{
+	return Animate::create(AnimationCache::getInstance()->getAnimation(animationKey));
+}
+
+/**
+ * This function will create an animation based on the animation key
+ * and change the total animation time based on value
+ * 
+ * @param animationKey The key string for animation
+ * @param animationTime The total animation time for the animation
+ * 
+ * @return Return the cocos2d::Animate pointer
+ */
+cocos2d::Animate* marcos::AnimationManager::getAnimationWithAnimationTime(const std::string& animationKey,
+	const float& animationTime)
+{
+	const float delay = animationTime/ AnimationCache::getInstance()->getAnimation(animationKey)->getFrames().size();
+	AnimationCache::getInstance()->getAnimation(animationKey)->setDelayPerUnit(delay);
+	return getAnimation(animationKey);
+}
+
+

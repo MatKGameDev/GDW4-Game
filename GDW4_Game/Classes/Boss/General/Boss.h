@@ -4,6 +4,7 @@
 #include <2d/CCSprite.h>
 #include "HitBox.h"
 #include "Boss/Ability States/FirstBossState.h"
+#include "Animation.h"
 
 //Foward Declare Classes
 class Hero;
@@ -18,8 +19,12 @@ private:
 	cocos2d::Sprite *bossSprite;
 	std::vector<Boss1LavaAttack*> lavaList;
 	cocos2d::Scene *bossScene;
+	std::vector<HitBox*> hitboxList;
 	HitBox* hitBox;
 	Hero* heroPointer;
+
+	//Private Utility functions
+	void initHitbox();
 
 public:
 	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 325);

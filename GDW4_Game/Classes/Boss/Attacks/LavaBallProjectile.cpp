@@ -32,12 +32,9 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	hitBox = new HitBox(position, 50.f, 50, bossPointer->getBossScene());
 
 	//Set up animation for sprite
-	const auto animation = cocos2d::Animate::create
-	(
-		cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key")
-	);
+	const auto animation = marcos::AnimationManager::getAnimation("boss_spit_animation_key");
 
-	sprite->stopAllActions();
+	//Run the actions
 	sprite->runAction
 	(
 		cocos2d::Sequence::create

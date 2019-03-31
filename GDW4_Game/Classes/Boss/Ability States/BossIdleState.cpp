@@ -4,10 +4,10 @@
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
 	: FirstBossState(boss), cooldownBeforeNextAbility{ 3.f }
 {
-	const auto animationForIdling = cocos2d::Animate::create
-	(
-		cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key")
-	);
+	//Get the animation
+	const auto animationForIdling = marcos::AnimationManager::getAnimation("boss_idle_animation_key");
+
+	//Run the animation
 	boss->getSprite()->runAction(cocos2d::RepeatForever::create(animationForIdling));
 }
 

@@ -3,7 +3,7 @@
 HitBox::HitBox(const cocos2d::Vec2& position, const float& aHeight, const float& aWidth, cocos2d::Scene* aScene)
 	: hitBoxShape(cocos2d::DrawNode::create()), height(aHeight), width(aWidth), scene(aScene)
 {
-	scene->addChild(hitBoxShape, 1);
+	scene->addChild(hitBoxShape, 50);
 	updateHitBox(position);
 }
 
