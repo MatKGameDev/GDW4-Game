@@ -429,7 +429,7 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
-		indicator->setVisible(0);
+		//indicator->setVisible(0);
 		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 13); //have grapple start point move with the hero
 
 		if (isLatched)
@@ -443,6 +443,7 @@ void Grapple::update(float dt, Scene* scene)
 				Hero::hero->arm->setVisible(0);
 				sprite->setVisible(0);
 				grapple->tip->setVisible(0);
+				indicator->setVisible(0);
 
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
