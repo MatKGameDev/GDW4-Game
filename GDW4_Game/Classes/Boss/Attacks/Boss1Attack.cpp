@@ -19,6 +19,10 @@ void Boss1LavaAttack::hitByHero()
 {
 }
 
+void Boss1LavaAttack::hitByEnvironment()
+{
+}
+
 cocos2d::Rect Boss1LavaAttack::getHitBox() const
 {
 	return hitBox->hitBox;

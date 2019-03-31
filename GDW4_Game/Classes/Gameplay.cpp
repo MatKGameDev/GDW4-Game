@@ -284,7 +284,7 @@ void Gameplay::updateObjects(float dt)
 void Gameplay::updateEnemies(float dt)
 {
 	//update boss
-	boss->update(dt, Hero::hero->sprite->getPosition());
+	boss->update(dt);
 
 	//check for an attack hitting the boss
 	HeroAttackBase* currentAttack = HeroAttackManager::currentAttack;

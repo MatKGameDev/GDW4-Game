@@ -14,7 +14,7 @@ public:
 	cocos2d::Rect hitBox;
 
 	//Constructors and Destructor
-	HitBox(cocos2d::Scene* aScene, float aHeight, float aWidth);
+	HitBox(const cocos2d::Vec2& position, const float& aHeight, const float& aWidth, cocos2d::Scene* aScene);
 	~HitBox();
 
 	//Member functions
