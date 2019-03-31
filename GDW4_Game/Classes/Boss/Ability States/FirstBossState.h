@@ -21,4 +21,6 @@ protected:
 	virtual void changeToFlameSplit();
 	virtual void changeToFlameThrower();
 	virtual void changeToExplosiveBullet();
+
+
 };
