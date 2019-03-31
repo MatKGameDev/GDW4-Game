@@ -5,3 +5,5 @@ bool ControllerInput::isRightTriggerReset = true;
 bool ControllerInput::isLeftStickReset = true;
 
 bool ControllerInput::isLeftStickIdle = true;
+
+bool ControllerInput::isControllerUsed = false;

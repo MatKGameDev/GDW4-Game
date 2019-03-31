@@ -33,7 +33,7 @@ bool PrettyPictureScene::init()
 void PrettyPictureScene::update(float dt)
 {
 	timer += dt;
-	if (timer > 12.0f && !isDone)
+	if (timer > 10.0f && !isDone)
 	{
 		TileBase::deleteAllTiles(); //delete any leftover tiles
 		isDone = true;

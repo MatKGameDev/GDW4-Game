@@ -15,7 +15,8 @@ public:
 	static Grapple* grapple;
 	void initGrapple();
 
-	const float MOVE_SPEED;
+	static const float MOVE_SPEED;
+	static const float MAX_LENGTH;
 
 	Sprite* sprite;
 	Sprite* tip;
@@ -43,6 +44,7 @@ public:
 	bool isLatched;
 	bool isHeroAtEndPoint;
 
+	void predictCollision();
 	void shoot(Vect2 destination);
 	void shoot(float a_theta);
 	void extendGrapple();
@@ -54,6 +56,7 @@ public:
 	bool isCollidingWith(cocos2d::Rect otherObject);
 	bool checkPointCollision(Vect2 pointToCheck, cocos2d::Rect otherObject);
 	bool checkTunnelingCollision(cocos2d::Rect otherObject);
+	bool checkAllPlatformCollisions();
 
 	void update(float dt, Scene* scene);
 };

@@ -53,5 +53,7 @@ public:
 	static bool isLeftStickReset;
 
 	static bool isLeftStickIdle;
+
+	static bool isControllerUsed;
 };
 #endif

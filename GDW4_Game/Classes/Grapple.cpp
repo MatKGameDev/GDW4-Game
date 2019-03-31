@@ -1,13 +1,15 @@
 #include "Grapple.h"
 #include "PlatformTile.h"
 #include "GroundTile.h"
-#include <iostream>
+#include "XinputManager.h"
 #include "HeroStateManager.h"
 
 Grapple* Grapple::grapple = 0;
 
+const float Grapple::MOVE_SPEED = 800.0f;
+const float Grapple::MAX_LENGTH = 500.0f;
+
 Grapple::Grapple() :
-	MOVE_SPEED(800),
 	isActive(false),
 	isLatched(false),
 	isHeroAtEndPoint(false),
@@ -39,6 +41,135 @@ void Grapple::initGrapple()
 		grapple->tip = Sprite::create("Sprites/grappleTip.png");
 		grapple->tip->setVisible(0);
 		grapple->tip->setAnchorPoint(Vec2(0.f, 0.0f));
+	}
+}
+
+void Grapple::predictCollision()
+{
+	if (ControllerInput::isControllerUsed)
+	{
+		//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
+		XinputManager::instance->update();
+		XinputController* controller1 = XinputManager::instance->getController(0);
+		Stick sticks[2];
+		controller1->getSticks(sticks);
+
+		//calculate angle (in radians) using atan2 with the right stick's y and x values
+		float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
+
+		//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
+		if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+		{
+			//calculate angle (in radians) using atan2 with the right stick's y and x values
+			grappleAngle = atan2(0.0f, 1.0f);
+		}
+
+		//calculate endpoint
+		Vect2 normalizedEndPoint(sin(grappleAngle), cos(grappleAngle));
+		endPoint = Hero::hero->getPosition() + (normalizedEndPoint * 480); //calculate endpoint by extending the normalized version
+
+		Vec2 heroPosition = Vec2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+
+		//loop through each platform tile to check for intersects
+		unsigned int tileListSize = PlatformTile::platformTileList.size();
+		for (unsigned int i = 0; i < tileListSize; i++)
+		{
+			cocos2d::Vec2 platformStart = Vec2(PlatformTile::platformTileList[i]->hitBox.getMinX(), PlatformTile::platformTileList[i]->hitBox.getMidY());
+			cocos2d::Vec2 platformEnd = Vec2(PlatformTile::platformTileList[i]->hitBox.getMaxX(), PlatformTile::platformTileList[i]->hitBox.getMidY());
+
+			Vec2 intersectPoint = myHelper::getLineLineIntersect(
+				heroPosition, 
+				Vec2(endPoint.x, endPoint.y), 
+				platformStart, 
+				platformEnd);
+
+			//there is an intersection
+			if (intersectPoint != Vec2(0, 0))
+			{
+				bool isCollisionAlongLine = false;
+
+				//we have to do collision checks now because there could be something inbetween
+				unsigned int numPlatforms = PlatformTile::platformTileList.size();
+				for (unsigned int j = 0; j < numPlatforms; j++)
+				{
+					//make sure we skip past the platform that's already been confirmed for collision
+					if (!(PlatformTile::platformTileList[j] == PlatformTile::platformTileList[i]))
+					{
+						cocos2d::Vec2 otherPlatformStart = Vec2(PlatformTile::platformTileList[j]->hitBox.getMinX(), PlatformTile::platformTileList[j]->hitBox.getMidY());
+						cocos2d::Vec2 otherPlatformEnd = Vec2(PlatformTile::platformTileList[j]->hitBox.getMaxX(), PlatformTile::platformTileList[j]->hitBox.getMidY());
+
+						Vec2 blockingPoint = myHelper::getLineLineIntersect(
+							heroPosition,
+							intersectPoint,
+							otherPlatformStart,
+							otherPlatformEnd);
+
+						//there is a platform blocking the grapple
+						if (blockingPoint != Vec2(0, 0))
+						{
+							isCollisionAlongLine = true;
+							break;
+						}
+					}
+				}
+
+				//no collision yet, lets go through the ground blocks
+				if (!isCollisionAlongLine)
+				{
+					GroundTile* currentTile;
+					unsigned int numGroundTiles = GroundTile::groundTileList.size();
+					for (unsigned int i = 0; i < numGroundTiles; i++)
+					{
+						currentTile = GroundTile::groundTileList[i];
+						//first lets check if the distance is out of range to quickly eliminate most blocks
+						if (Vect2::calculateDistance(heroPosition, Vect2(currentTile->hitBox.getMidX(), currentTile->hitBox.getMidY())) < (MAX_LENGTH + 100))
+						{
+							//this part is a bit tricky, to efficiently calculate collision blocking the grapple from hitting the platform,
+							//all we really need is 2 lines, one from the top left corner of the block to the bottom right, and one from the
+							//bottom left corner to the top right, and then check if the grapple passed either of the lines
+
+							//check top left to bottom right
+							cocos2d::Vec2 blockTopLeft = Vec2(currentTile->hitBox.getMinX(), currentTile->hitBox.getMaxY());
+							cocos2d::Vec2 blockBottomRight = Vec2(currentTile->hitBox.getMaxX(), currentTile->hitBox.getMinY());
+
+							Vec2 groundBlockPoint1 = myHelper::getLineLineIntersect(
+								heroPosition,
+								intersectPoint,
+								blockTopLeft,
+								blockBottomRight);
+
+							//check bottom left to top right
+							cocos2d::Vec2 blockBottomLeft = Vec2(currentTile->hitBox.getMinX(), currentTile->hitBox.getMinY());
+							cocos2d::Vec2 blockTopRight = Vec2(currentTile->hitBox.getMaxX(), currentTile->hitBox.getMaxY());
+
+							Vec2 groundBlockPoint2 = myHelper::getLineLineIntersect(
+								heroPosition,
+								intersectPoint,
+								blockBottomLeft,
+								blockTopRight);
+
+							//there is an intersection
+							if (groundBlockPoint1 != Vec2(0, 0) || groundBlockPoint2 != Vec2(0, 0))
+							{
+								isCollisionAlongLine = true;
+								break;
+							}
+						}
+					}
+				}
+
+				//if there isnt anything blocking the two intersections
+				if (!isCollisionAlongLine)
+				{
+					indicator->setPosition(intersectPoint);
+					indicator->setVisible(1);
+					endPoint = intersectPoint;
+					break; //break out of loop if we find a connection
+				}
+			}
+			else //there is no intersection with any platforms
+				indicator->setVisible(0);
+		}
 	}
 }
 
@@ -105,9 +236,6 @@ void Grapple::shoot(float a_theta)
 		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingLeft)
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
 
-		Vect2 normalizedEndPoint(sin(theta), cos(theta));
-		endPoint = normalizedEndPoint * 99999; //calculate new endpoint by extending the normalized version
-
 		initialPosClicked = endPoint;
 
 		//make arm visible and rotate it
@@ -132,7 +260,8 @@ void Grapple::extendGrapple()
 	//get normalized new endpoint
 	Vect2 normalizedEndPoint(sin(theta), cos(theta));
 
-	endPoint = normalizedEndPoint * 99999; //calculate new endpoint by extending the normalized version
+	endPoint = Hero::hero->getPosition() + (normalizedEndPoint * MAX_LENGTH); //calculate new endpoint by extending the normalized version
+	//initialPosClicked = endPoint;
 }
 
 //called when the grapple latches onto something
@@ -174,7 +303,7 @@ void Grapple::unLatch()
 bool Grapple::isMaxLength()
 {
 	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
-	if (grappleLength.getMagnitude() > 500) //check max length
+	if (grappleLength.getMagnitude() > MAX_LENGTH) //check max length
 		return true;
 	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
 		return true;
@@ -268,10 +397,39 @@ bool Grapple::checkTunnelingCollision(cocos2d::Rect otherObject)
 	return false;
 }
 
+//goes through each tile looking for collision
+bool Grapple::checkAllPlatformCollisions()
+{
+	//loop through each platform tile to check for intersects
+	unsigned int tileListSize = PlatformTile::platformTileList.size();
+	for (unsigned int i = 0; i < tileListSize; i++)
+	{
+		cocos2d::Vec2 platformStart = Vec2(PlatformTile::platformTileList[i]->hitBox.getMinX(), PlatformTile::platformTileList[i]->hitBox.getMidY());
+		cocos2d::Vec2 platformEnd = Vec2(PlatformTile::platformTileList[i]->hitBox.getMaxX(), PlatformTile::platformTileList[i]->hitBox.getMidY());
+
+		Vec2 intersectPoint = myHelper::getLineLineIntersect(
+			Vec2(lastFrameGrappleTip.x, lastFrameGrappleTip.y),
+			Vec2(grappleTip.x, grappleTip.y),
+			platformStart,
+			platformEnd);
+
+		//there is an intersection
+		if (intersectPoint != Vec2(0, 0))
+		{
+			latchPoint = intersectPoint;
+			grappleTip = latchPoint;
+			return true;
+		}
+	}
+
+	return false; //no collision
+}
+
 void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
+		indicator->setVisible(0);
 		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 13); //have grapple start point move with the hero
 
 		if (isLatched)
@@ -281,9 +439,11 @@ void Grapple::update(float dt, Scene* scene)
 			//check if the hero has reached the end of the grapple latch point
 			if (heroMoveScale >= 1.0f)
 			{
-				Hero::hero->arm->setVisible(0); //make arm invisible
+				//hide grappling sprites
+				Hero::hero->arm->setVisible(0);
 				sprite->setVisible(0);
 				grapple->tip->setVisible(0);
+
 				isHeroAtEndPoint = true;
 				heroMoveScale = 1.0f;
 
@@ -310,15 +470,8 @@ void Grapple::update(float dt, Scene* scene)
 			lengthScale += 35 / heroToDestinationDistance;
 
 			//check for collision on each platform
-			unsigned int numPlatforms = PlatformTile::platformTileList.size();
-			for (unsigned int i = 0; i < numPlatforms; i++)
-			{
-				if (checkTunnelingCollision(PlatformTile::platformTileList[i]->hitBox))
-				{
-					latch();
-					break;
-				}
-			}
+			if (checkAllPlatformCollisions())
+				latch();
 
 			//check for collision on each ground tile
 			unsigned int numGroundTiles = GroundTile::groundTileList.size();
@@ -355,4 +508,6 @@ void Grapple::update(float dt, Scene* scene)
 		//rotate arm
 		Hero::hero->arm->setRotation(theta * 180 / M_PI);
 	}
+	else //grapple is inactive
+		predictCollision();
 }

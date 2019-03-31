@@ -180,11 +180,6 @@
     <ClCompile Include="..\Classes\Boss\Ability States\ExplosiveBullet.cpp">
       <Filter>Boss\Ability States</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ControlsMenu.cpp" />
-    <ClCompile Include="..\Classes\DeathScreen.cpp" />
-    <ClCompile Include="..\Classes\HelpBubble.cpp" />
-    <ClCompile Include="..\Classes\PauseMenu.cpp" />
-    <ClCompile Include="..\Classes\VictoryScreen.cpp" />
     <ClCompile Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.cpp">
       <Filter>Boss\Particles</Filter>
     </ClCompile>
@@ -193,6 +188,24 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Boss\Attacks\LavaBallProjectile.cpp">
       <Filter>Boss\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\VictoryScreen.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PauseMenu.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DeathScreen.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ControlsMenu.cpp">
+      <Filter>src\Helper Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ControllerInput.cpp">
+      <Filter>src\Helper Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelpBubble.cpp">
+      <Filter>src\Environment Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,11 +341,6 @@
     <ClInclude Include="..\Classes\Boss\Ability States\ExplosiveBullet.h">
       <Filter>Boss\Ability States</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ControlsMenu.h" />
-    <ClInclude Include="..\Classes\DeathScreen.h" />
-    <ClInclude Include="..\Classes\HelpBubble.h" />
-    <ClInclude Include="..\Classes\PauseMenu.h" />
-    <ClInclude Include="..\Classes\VictoryScreen.h" />
     <ClInclude Include="..\Classes\Boss\Attacks\ExplosiveBulletProjectile.h">
       <Filter>Boss\Particles</Filter>
     </ClInclude>
@@ -344,6 +352,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Boss\Attacks\Projectiles.h">
       <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\VictoryScreen.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PauseMenu.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DeathScreen.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ControlsMenu.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ControllerInput.h">
+      <Filter>src\Helper Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelpBubble.h">
+      <Filter>src\Environment Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
