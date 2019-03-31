@@ -57,7 +57,7 @@ void Grapple::predictCollision()
 		//calculate angle (in radians) using atan2 with the right stick's y and x values
 		float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-		//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
+		//check if right stick is at rest (add a small buffer account for reading being slightly off or controller rest not being perfectly calibrated)
 		if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
 		{
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
@@ -66,7 +66,7 @@ void Grapple::predictCollision()
 
 		//calculate endpoint
 		Vect2 normalizedEndPoint(sin(grappleAngle), cos(grappleAngle));
-		endPoint = Hero::hero->getPosition() + (normalizedEndPoint * 480); //calculate endpoint by extending the normalized version
+		endPoint = Hero::hero->getPosition() + (normalizedEndPoint * (MAX_LENGTH - 20)); //calculate endpoint by extending the normalized version
 
 		Vec2 heroPosition = Vec2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
