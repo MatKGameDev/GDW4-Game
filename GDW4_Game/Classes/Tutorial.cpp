@@ -571,6 +571,7 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 		if (controller->getKeyStatus(keyCode).value <= -1)
 		{
 			ControllerInput::isLeftStickIdle = false;
+			ControllerInput::isControllerUsed = true; //controller has been used this playthrough
 			HeroStateManager::currentState->handleInput(InputType::p_a);
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->moveState = Hero::MoveDirection::movingLeft;

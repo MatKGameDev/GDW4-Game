@@ -476,6 +476,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 		if (controller->getKeyStatus(keyCode).value <= -1)
 		{
 			ControllerInput::isLeftStickIdle = false;
+			ControllerInput::isControllerUsed = true; //controller has been used this playthrough
 			HeroStateManager::currentState->handleInput(InputType::p_a);
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
@@ -484,6 +485,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 		else if (controller->getKeyStatus(keyCode).value >= 1)
 		{
 			ControllerInput::isLeftStickIdle = false;
+			ControllerInput::isControllerUsed = true; //controller has been used this playthrough
 			HeroStateManager::currentState->handleInput(InputType::p_d);
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			Hero::hero->moveState = Hero::MoveDirection::movingRight;
