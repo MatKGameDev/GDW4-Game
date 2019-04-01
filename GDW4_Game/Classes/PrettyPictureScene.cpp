@@ -1,5 +1,5 @@
 #include "PrettyPictureScene.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 
 Scene * PrettyPictureScene::createScene()
 {
@@ -19,6 +19,7 @@ bool PrettyPictureScene::init()
 
 	image = Sprite::create("Backgrounds/cutscene.png");
 	image->setAnchorPoint(Vec2(0.0f, 0.0f));
+	image -> setPosition(Vec2(0.0f, 0.0f));
 	this->addChild(image);
 
 	timer = 0.0f;
@@ -32,10 +33,9 @@ bool PrettyPictureScene::init()
 void PrettyPictureScene::update(float dt)
 {
 	timer += dt;
-	if (timer > 12.0f && !isDone)
+	if (timer > 10.0f && !isDone)
 	{
 		isDone = true;
-		this->removeAllChildren();
-		director->replaceScene(TransitionFade::create(1.5f, Gameplay::createScene(), Color3B(0, 0, 0)));
+		director->replaceScene(TransitionFade::create(1.5f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 	}
 }

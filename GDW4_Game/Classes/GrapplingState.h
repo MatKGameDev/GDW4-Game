@@ -12,6 +12,7 @@ public:
 	void onEnter();
 	void onExit();
 	void handleInput(InputType input);
+
 	void update(float dt);
 };
 #endif

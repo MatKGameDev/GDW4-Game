@@ -15,7 +15,8 @@ void GrapplingState::onEnter()
 {
 	HeroStateManager::currentState = this;
 
-	if (Grapple::grapple->grappleTip.x < Hero::hero->getPosition().x) //hero should be facing left
+	Hero::hero->lookState = Grapple::grapple->lookDirectionOnShoot;
+	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft) //hero should be facing left
 	{
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_left_animation_key");
 		auto action = cocos2d::Animate::create(anim);

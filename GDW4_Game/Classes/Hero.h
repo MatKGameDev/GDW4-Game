@@ -46,6 +46,10 @@ public:
 	void jump();
 
 	void takeDamage();
+	void reset();
+
+	void updateArmPosition();
+	void updatePositionBasedOnArm();
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;

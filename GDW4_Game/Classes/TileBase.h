@@ -9,7 +9,8 @@ class GameObject; //forward declare
 enum TileType
 {
 	platform,
-	ground
+	ground,
+	spike
 };
 
 //base class for a tile

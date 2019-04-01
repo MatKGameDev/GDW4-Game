@@ -40,8 +40,8 @@ namespace marcos
 		static cocos2d::Animation* m_MeleeAttackRightAnimation;
 		static cocos2d::Animation* m_MeleeAttackLeftAnimation;
 
-		static cocos2d::Animation* m_ProjectileAttackRightAnimation;
-		static cocos2d::Animation* m_ProjectileAttackLeftAnimation;
+		static cocos2d::Animation* m_MeleeAttackUpRightAnimation;
+		static cocos2d::Animation* m_MeleeAttackUpLeftAnimation;
 
 
 		//grappling
@@ -55,14 +55,28 @@ namespace marcos
 		static cocos2d::Animation* m_GrappleJumpRightAnimation;
 		static cocos2d::Animation* m_GrappleJumpLeftAnimation;
 
+
+		static cocos2d::Animation* m_GrappleHoldRightAnimation;
+		static cocos2d::Animation* m_GrappleHoldLeftAnimation;
+
 		//boss
-		static cocos2d::Animation* m_BossFlameAnimation;
+		static cocos2d::Animation* m_BossFlameAnimationPRE;
+		static cocos2d::Animation* m_BossFlameAnimationMID;
+		static cocos2d::Animation* m_BossFlameAnimationPOST;
+
 		static cocos2d::Animation* m_BossFlameTellAnimationPRE;
 		static cocos2d::Animation* m_BossFlameTellAnimationPOST;
 
 		static cocos2d::Animation* m_BossSpitAnimation;
 		static cocos2d::Animation* m_BossSpitTellAnimationPRE;
 		static cocos2d::Animation* m_BossSpitTellAnimationPOST;
+
+		static cocos2d::Animation* m_BossExplosiveTellAnimationPRE;
+		static cocos2d::Animation* m_BossExplosiveTellAnimationPOST;
+
+		static cocos2d::Animation* m_BossExplosionAnimationPRE;
+		static cocos2d::Animation* m_BossExplosionAnimationPOST;
+
 
 		static cocos2d::Animation* m_BossIdleAnimation;
 
