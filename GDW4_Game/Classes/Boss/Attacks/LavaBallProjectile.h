@@ -13,4 +13,7 @@ public:
 private:
 	float waitingTime;
 	bool isWaiting{ true };
+
+	//Private member functions
+	void setUpPhysics();
 };
