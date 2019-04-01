@@ -19,7 +19,7 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	moveState(MoveDirection::idle)
 {
 	//initialize arm
-	arm = cocos2d::Sprite::create("Sprites/arm_right.png");
+	arm = cocos2d::Sprite::create("Sprites/armV2.png");
 
 	mass = 5;					
 
@@ -84,6 +84,29 @@ void Hero::reset()
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();
 	health = 3;
+}
+
+//updates the hero's arm position (only visible while grappling)
+void Hero::updateArmPosition()
+{
+	float armRightOffset = 23;
+	float armLeftOffset = 30;
+	float armYOffset = 25;
+	if (Grapple::grapple->lookDirectionOnShoot == LookDirection::lookingRight)
+		arm->setPosition(Vec2(this->getPosition().x - armRightOffset, this->getPosition().y + armYOffset)); //update arm position each frame
+	else //hero looking left
+		arm->setPosition(Vec2(this->getPosition().x + armLeftOffset, this->getPosition().y + armYOffset)); //update arm position each frame
+}
+
+void Hero::updatePositionBasedOnArm()
+{
+	float armRightOffset = 23;
+	float armLeftOffset = 30;
+	float armYOffset = 25;
+	if (Grapple::grapple->lookDirectionOnShoot == LookDirection::lookingRight)
+		this->sprite->setPosition(Vec2(arm->getPosition().x + armRightOffset, arm->getPosition().y - armYOffset)); //update hero based on arm position when being pulled in
+	else //hero looking left
+		this->sprite->setPosition(Vec2(arm->getPosition().x - armLeftOffset, arm->getPosition().y - armYOffset)); //update hero based on arm position when being pulled in
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -177,7 +200,11 @@ void Hero::updateCollisions()
 	{
 		unsigned int tileListSize = TileBase::tileList.size();
 		for (unsigned int i = 0; i < tileListSize; i++)
-			TileBase::tileList[i]->checkAndResolveCollision(this);
+		{
+			//check if it's a spike tile (deals damage)
+			if (TileBase::tileList[i]->checkAndResolveCollision(this) && TileBase::tileList[i]->type == TileType::spike)
+				this->takeDamage();
+		}
 	}
 }
 
@@ -199,6 +226,11 @@ void Hero::update(float dt)
 	updateHitboxes();
 	updateCollisions();
 	HeroAttackManager::update(dt);
+	updateArmPosition();
 
-	arm->setPosition(Vec2(getPosition().x, getPosition().y + 25)); //update arm position each frame
+	//show grapple sprite and rotate properly
+	Grapple::grapple->startPoint = Vect2(arm->getPosition()); //have grapple start point move with the hero
+	float grappleDistance = Vect2::calculateDistance(Grapple::grapple->startPoint, Grapple::grapple->grappleTip);
+	Grapple::grapple->sprite->setTextureRect(cocos2d::Rect(Grapple::grapple->startPoint.x, Grapple::grapple->startPoint.y, 4, grappleDistance));
+	Grapple::grapple->sprite->setPosition(Vec2(Grapple::grapple->startPoint.x, Grapple::grapple->startPoint.y));
 }

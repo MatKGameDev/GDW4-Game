@@ -1,11 +1,13 @@
 #include "Tutorial.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
 #include "PauseMenu.h"
 #include "HelpBubble.h"
 #include "ControllerInput.h"
+#include "SpikeTile.h"
+#include "DeathScreen.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -40,12 +42,20 @@ bool Tutorial::init()
 void Tutorial::initUI()
 {
 	//initialize help bubbles
-	HelpBubble* jumpHint = new HelpBubble("Sprites/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
 	this->addChild(jumpHint->sprite, 18);
 
-	HelpBubble* holdJumpHint = new HelpBubble("Sprites/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
+	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
 	holdJumpHint->sprite->setScale(3.0);
 	this->addChild(holdJumpHint->sprite, 18);
+
+	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(1500, 600), 0, 1900);
+	grapplingHint->sprite->setScale(1.2);
+	this->addChild(grapplingHint->sprite, 18);
+
+	HelpBubble* grappleJumpHint = new HelpBubble("HintBubbles/grappleJumpHint.png", cocos2d::Vec2(1900, 800), 0, 1900);
+	grappleJumpHint->sprite->setScale(1.2);
+	this->addChild(grappleJumpHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
@@ -159,12 +169,15 @@ void Tutorial::initSprites()
 
 	this->addChild(foregroundParallax, 90);
 
+	//delete any existing tiles before we import our map
+	TileBase::deleteAllTiles();
 	//get the tilemap in
 	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest3.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
 	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platforms");
+	cocos2d::TMXLayer* spikeLayer = testTileMap->getLayer("spikes");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -172,6 +185,7 @@ void Tutorial::initSprites()
 	{
 		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map grid
 		{
+			//check for ground tile
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
@@ -201,11 +215,15 @@ void Tutorial::initSprites()
 				}
 			}
 
+			//check for platform tile
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
-			{
 				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
-			}
+
+			////check for spike tile
+			//currentTile = spikeLayer->getTileAt(Vec2(x, y));
+			//if (currentTile != NULL)
+			//	SpikeTile* newSpikeTile = new SpikeTile(currentTile->getPosition(), 64);
 		}
 	}
 
@@ -219,9 +237,10 @@ void Tutorial::initSprites()
 	//use a follow camera with strict dimensions for horizontal scrolling
 	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
 
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
-	this->addChild(Hero::hero->arm, 21); //add hero arm
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+	Hero::hero->arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+	this->addChild(Hero::hero->arm, 21); //add hero arm
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -232,7 +251,7 @@ void Tutorial::initSprites()
 
 	//add grapple sprite
 	//add repeating pattern to grapple sprite
-	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+	Grapple::grapple->sprite = Sprite::create("Sprites/grapple.png");
 	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
 	Grapple::grapple->sprite->setVisible(0);
 	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
@@ -240,13 +259,13 @@ void Tutorial::initSprites()
 
 	//grapple tip sprite
 	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
-	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
-	this->addChild(Grapple::grapple->tip, 6);
+	//Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->tip, 7);
 
 	//grapple destination indicator
 	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
 	Grapple::grapple->indicator->setVisible(0);
-	this->addChild(Grapple::grapple->indicator, 7);
+	this->addChild(Grapple::grapple->indicator, 6);
 }
 
 void Tutorial::initListeners()
@@ -342,8 +361,16 @@ void Tutorial::update(float dt)
 		if (Hero::hero->moveBox.getMaxX() >= 6000)
 		{
 			Hero::hero->reset();
+			Hero::hero->lookState = Hero::LookDirection::lookingRight; //make sure they're looking right (over the clif)
 			HelpBubble::deleteAllInstances();
 			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+		else if (Hero::hero->health == 0) //check for ded
+		{
+			Hero::hero->reset(); //reset hero
+			HelpBubble::deleteAllInstances();
+			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 	}
@@ -415,7 +442,7 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
-		mouseGameViewPosition.y += 25;
+		mouseGameViewPosition.y += 45;
 
 		//calculate proper x position for grapple
 		if (Hero::hero->getPosition().x > 1920/2)
@@ -463,6 +490,7 @@ void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_S:
 		HeroStateManager::currentState->handleInput(InputType::p_s);
+		//HeroAttackBase::isSKeyHeld = true;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_SPACE:

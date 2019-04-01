@@ -27,7 +27,7 @@ void Grapple::initGrapple()
 		grapple = new Grapple;
 
 		//set up repeating pattern sprite
-		grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+		grapple->sprite = Sprite::create("Sprites/grapple.png");
 		Texture2D::TexParams params;
 		params.minFilter = GL_NEAREST;
 		params.magFilter = GL_NEAREST;
@@ -66,9 +66,9 @@ void Grapple::predictCollision()
 
 		//calculate endpoint
 		Vect2 normalizedEndPoint(sin(grappleAngle), cos(grappleAngle));
-		endPoint = Hero::hero->getPosition() + (normalizedEndPoint * (MAX_LENGTH - 20)); //calculate endpoint by extending the normalized version
+		endPoint = Vect2(Hero::hero->getPosition()) + (normalizedEndPoint * (MAX_LENGTH - 50)); //calculate endpoint by extending the normalized version
 
-		Vec2 heroPosition = Vec2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+		Vec2 heroPosition = Hero::hero->arm->getPosition();
 
 		//loop through each platform tile to check for intersects
 		unsigned int tileListSize = PlatformTile::platformTileList.size();
@@ -182,7 +182,6 @@ void Grapple::shoot(Vect2 destination)
 		isActive = true;
 		initialPosClicked = destination;
 		initialPosClicked.y -= 13;
-		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
 
 		//determine look position after latching
 		if (Hero::hero->getPosition().x <= initialPosClicked.x)
@@ -195,8 +194,12 @@ void Grapple::shoot(Vect2 destination)
 			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
 		}
+		lookDirectionOnShoot = Hero::hero->lookState;
+		Hero::hero->updateArmPosition();
+		lastFrameGrappleTip = Hero::hero->arm->getPosition();
 
 		extendGrapple();
+		initialPosClicked = endPoint;
 
 		//make arm visible and rotate it
 		Hero::hero->arm->setVisible(1);
@@ -218,7 +221,7 @@ void Grapple::shoot(float a_theta)
 		//set all initial variables upon grapple being shot out
 		theta = a_theta;
 		isActive = true;
-		lastFrameGrappleTip = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+		lastFrameGrappleTip = Hero::hero->arm->getPosition();
 
 		//determine look position after latching
 		if (theta > 0)
@@ -235,6 +238,8 @@ void Grapple::shoot(float a_theta)
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
 		else if (theta == 0 && Hero::hero->lookState == Hero::LookDirection::lookingLeft)
 			Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
+
+		lookDirectionOnShoot = Hero::hero->lookState;
 
 		initialPosClicked = endPoint;
 
@@ -254,34 +259,21 @@ void Grapple::shoot(float a_theta)
 void Grapple::extendGrapple()
 {
 	//find the angle at which the grapple is being shot at
-	Vect2 distance = initialPosClicked - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y); //calculate distance vector between the grapple and the hero
+	Vect2 distance = initialPosClicked - Hero::hero->arm->getPosition(); //calculate distance vector between the grapple and the hero
 	theta = atan2(distance.x, distance.y); //perform atan2 (returns the angle in radians between the positive x axis (1, 0) and the point provided) on the distance
 
 	//get normalized new endpoint
 	Vect2 normalizedEndPoint(sin(theta), cos(theta));
 
-	endPoint = Hero::hero->getPosition() + (normalizedEndPoint * MAX_LENGTH); //calculate new endpoint by extending the normalized version
-	//initialPosClicked = endPoint;
+	endPoint = Vect2(Hero::hero->arm->getPosition()) + (normalizedEndPoint * MAX_LENGTH); //calculate new endpoint by extending the normalized version
 }
 
 //called when the grapple latches onto something
 void Grapple::latch()
 {
 	isLatched = true;
-	heroLatchPosition = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+	heroLatchPosition = Vect2(Hero::hero->arm->getPosition());
 	heroToLatchPointDistance = Vect2::calculateDistance(heroLatchPosition, latchPoint);
-
-	//determine look position after latching
-	if (heroLatchPosition.x <= latchPoint.x)
-	{
-		Hero::hero->lookState = Hero::LookDirection::lookingRight;
-		Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() - 1);
-	}
-	else //heroLatchPos.x > latchPoint.x
-	{
-		Hero::hero->lookState = Hero::LookDirection::lookingLeft;
-		Hero::hero->arm->setZOrder(Hero::hero->sprite->getZOrder() + 1);
-	}
 }
 
 //grapple detaches and disappears, reset all values for the grapple
@@ -302,7 +294,7 @@ void Grapple::unLatch()
 //check for grapple hook max length or out of bounds
 bool Grapple::isMaxLength()
 {
-	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y);
+	Vect2 grappleLength = grappleTip - Vect2(Hero::hero->arm->getPosition());
 	if (grappleLength.getMagnitude() > MAX_LENGTH) //check max length
 		return true;
 	else if (grappleTip.x < 0 || grappleTip.x > GameObject::MAX_X || grappleTip.y < 0 || grappleTip.y > GameObject::MAX_Y) //check for out of bounds
@@ -429,8 +421,9 @@ void Grapple::update(float dt, Scene* scene)
 {
 	if (isActive)
 	{
+		tip->setScale(1.2f);
 		//indicator->setVisible(0);
-		startPoint = Vect2(Hero::hero->getPosition().x, Hero::hero->getPosition().y + 13); //have grapple start point move with the hero
+		startPoint = Vect2(Hero::hero->arm->getPosition()); //have grapple start point move with the hero
 
 		if (isLatched)
 		{
@@ -453,7 +446,8 @@ void Grapple::update(float dt, Scene* scene)
 
 			//move the hero to the new position, determined by lerping along the grapple
 			Vect2 newHeroPosition = Vect2::lerp(heroLatchPosition, latchPoint, heroMoveScale);
-			Hero::hero->sprite->setPosition(Vec2(newHeroPosition.x, newHeroPosition.y));
+			Hero::hero->arm->setPosition(Vec2(newHeroPosition.x, newHeroPosition.y));
+			Hero::hero->updatePositionBasedOnArm();
 			Hero::hero->velocity.y = 0;
 
 			//check to see if the hero has been latched for beyond the max duration
@@ -497,12 +491,13 @@ void Grapple::update(float dt, Scene* scene)
 			float grappleDistance = Vect2::calculateDistance(startPoint, grappleTip);
 
 			//show grapple sprite and rotate properly
+			sprite->setAnchorPoint(Vec2(0.5f, 0.0f));
 			sprite->setTextureRect(cocos2d::Rect(startPoint.x, startPoint.y, 4, grappleDistance));
-			sprite->setPosition(Vec2(startPoint.x, startPoint.y + 10));
+			sprite->setPosition(Vec2(startPoint.x, startPoint.y));
 			sprite->setRotation(theta * 180 / M_PI);
 
 			//show grapple tip sprite and rotate properly
-			tip->setPosition(Vec2(grappleTip.x, grappleTip.y + 16));
+			tip->setPosition(Vec2(grappleTip.x, grappleTip.y));
 			tip->setRotation(theta * 180 / M_PI);
 		}
 

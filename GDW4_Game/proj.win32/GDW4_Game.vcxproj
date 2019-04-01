@@ -185,7 +185,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ProjectileIceAttack.cpp" />
     <ClCompile Include="..\Classes\MeleeFireAttack.cpp" />
     <ClCompile Include="..\Classes\GameObject.cpp" />
-    <ClCompile Include="..\Classes\Gameplay.cpp" />
+    <ClCompile Include="..\Classes\Boss1Scene.cpp" />
     <ClCompile Include="..\Classes\Grapple.cpp" />
     <ClCompile Include="..\Classes\Hero.cpp" />
     <ClCompile Include="..\Classes\HeroAttackBase.cpp" />
@@ -195,6 +195,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Platform.cpp" />
     <ClCompile Include="..\Classes\RunningState.cpp" />
     <ClCompile Include="..\Classes\ShootingGrappleState.cpp" />
+    <ClCompile Include="..\Classes\SpikeTile.cpp" />
     <ClCompile Include="..\Classes\TileBase.cpp" />
     <ClCompile Include="..\Classes\Tutorial.cpp" />
     <ClCompile Include="..\Classes\Vect2.cpp" />
@@ -241,7 +242,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ProjectileIceAttack.h" />
     <ClInclude Include="..\Classes\MeleeFireAttack.h" />
     <ClInclude Include="..\Classes\GameObject.h" />
-    <ClInclude Include="..\Classes\Gameplay.h" />
+    <ClInclude Include="..\Classes\Boss1Scene.h" />
     <ClInclude Include="..\Classes\Grapple.h" />
     <ClInclude Include="..\Classes\Hero.h" />
     <ClInclude Include="..\Classes\HeroAttackBase.h" />
@@ -251,6 +252,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Platform.h" />
     <ClInclude Include="..\Classes\RunningState.h" />
     <ClInclude Include="..\Classes\ShootingGrappleState.h" />
+    <ClInclude Include="..\Classes\SpikeTile.h" />
     <ClInclude Include="..\Classes\TileBase.h" />
     <ClInclude Include="..\Classes\Tutorial.h" />
     <ClInclude Include="..\Classes\Vect2.h" />

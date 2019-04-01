@@ -1,7 +1,7 @@
 #include "DeathScreen.h"
 #include "MainMenu.h"
 #include "Tutorial.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 
 Scene * DeathScreen::createScene()
 {
