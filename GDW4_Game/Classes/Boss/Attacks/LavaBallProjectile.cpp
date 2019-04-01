@@ -4,42 +4,47 @@
 LavaBall::LavaBall(int order, Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png")
 {
-
 	//Set Position for the lava ball
 	switch (order)
 	{
 	case 1:
-		waitingTime = 1.5;
-		position = cocos2d::Vec2(300, 500);
+		waitingTime = 0.5;
+		position = cocos2d::Vec2(350, 500);
 		break;
 	case 2:
-		waitingTime = 2;
-		position = cocos2d::Vec2(300, 200);
+		waitingTime = 1;
+		position = cocos2d::Vec2(350, 200);
 		break;
 	case 3:
-		waitingTime = 2.5;
-		position = cocos2d::Vec2(300, 750);
+		waitingTime = 1.5;
+		position = cocos2d::Vec2(350, 750);
 		break;
 	default:
 		throw;
 	}
-	sprite->setPosition(position);
-
+	
 	//Set physic variables
+	sprite->setPosition(position);
 	acceleration.set(2000, 0);
 	velocity.set(1000, 0);
 
 	//Set sprite size
-	hitBox = new HitBox(position, 50.f, 50, bossPointer->getBossScene());
+	hitBox = new HitBox(position, 50.f, 50);
 
 	//Set up animation for sprite
-	const auto animation = cocos2d::Animate::create
-	(
-		cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key")
-	);
+	const auto animation = marcos::AnimationManager::getAnimation("boss_spit_animation_key");
 
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(animation->clone(), 1));
+	//Run the actions
+	sprite->runAction
+	(
+		cocos2d::Sequence::create
+		(
+			cocos2d::Repeat::create(animation->clone(), 1),
+			cocos2d::DelayTime::create(waitingTime),
+			cocos2d::CallFunc::create([&] {isWaiting = false; }),
+			nullptr
+		)
+	);
 }
 
 LavaBall::~LavaBall()
@@ -49,11 +54,7 @@ LavaBall::~LavaBall()
 
 void LavaBall::update(const float& deltaT)
 {
-	if (waitingTime > 0)
-	{
-		waitingTime -= deltaT;
-	}
-	else
+	if (!isWaiting)
 	{
 		velocity += acceleration * deltaT;
 		position += velocity * deltaT;

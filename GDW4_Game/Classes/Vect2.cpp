@@ -223,10 +223,11 @@ float Vect2::getMagnitudeSquared()
 	return (x * x) + (y * y); //pythagorean theorum
 }
 
-float Vect2::getNormalized()
+Vect2 Vect2::getNormalized()
 {
-	return 0.0f;
+	return Vect2(x,y) / Vect2(x,y).getMagnitude();
 }
+
 
 float Vect2::dotProduct(const Vect2 rhs)
 {

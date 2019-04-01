@@ -4,6 +4,7 @@
 #include <2d/CCSprite.h>
 #include "HitBox.h"
 #include "Boss/Ability States/FirstBossState.h"
+#include "Animation.h"
 
 //Foward Declare Classes
 class Hero;
@@ -12,41 +13,55 @@ class Boss1LavaAttack;
 
 class Boss
 {
-private:
+	enum HitboxIndex
+	{
+		idling, //Use this for idling, explosive bullet
+		flameSplitter,
+		flamethrower,
+	};
+	friend class FirstBossState;
+
+	//Private data members
 	int health;
 	FirstBossState *state;
-	cocos2d::Sprite *bossSprite;
+	cocos2d::Sprite *sprite;
 	std::vector<Boss1LavaAttack*> lavaList;
+	std::vector<std::vector<HitBox*>> hitBoxLists;
+	HitboxIndex hitboxIndex{ idling };
 	cocos2d::Scene *bossScene;
-	HitBox* hitBox;
-	Hero* heroPointer;
 
+	//Private functions
+	void initHitbox();
+	std::vector<HitBox*> initIdleHitbox() const;
+	std::vector<HitBox*> initFlameSplitHitbox() const;
+	std::vector<HitBox*> initFlameThrowerHitbox() const;
+	void setHitboxIndex(HitboxIndex newIndex);
 public:
-	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 345);
+	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 325);
 	~Boss();
 
 	//Setters
 	void setState(FirstBossState *newState);
+	
 
 	//Getters
 	int getHealth() const;
 	cocos2d::Sprite* getSprite() const;
 	std::vector<Boss1LavaAttack*> getLavaList() const;
 	cocos2d::Scene* getBossScene() const;
-	cocos2d::Rect getHitBox() const;
+	std::vector<HitBox*> getHitBox() const;
 	FirstBossState* getCurrentState() const;
 
 	//Member functions
 	void takeDamage();
 	void update(const float &deltaT);
 	
-
 	//Attack functions
 	void spewLava();
 	void activateFlameThrower();
 	void shootExplosiveBullet();
 
 	//Utility functions
-	void removeFromLavaList(Boss1LavaAttack *elementToRemove);
+	void removeFromLavaList(Boss1LavaAttack *attackToRemove);
 	void addAttack(Boss1LavaAttack* attackToAdd);
 };

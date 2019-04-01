@@ -189,6 +189,8 @@
     <ClCompile Include="..\Classes\Boss\Attacks\LavaBallProjectile.cpp">
       <Filter>Boss\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Ability States\RestingState.cpp">
+      <Filter>Boss\Ability States</Filter>
     <ClCompile Include="..\Classes\VictoryScreen.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
@@ -355,6 +357,13 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Boss\Attacks\Projectiles.h">
       <Filter>Boss\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ControllerInput.h" />
+    <ClInclude Include="..\Classes\Boss\Ability States\RestingState.h">
+      <Filter>Boss\Ability States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\BossStates.h">
+      <Filter>Boss\Ability States</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\VictoryScreen.h">
       <Filter>src\Scenes</Filter>

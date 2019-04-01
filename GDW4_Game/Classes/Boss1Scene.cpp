@@ -24,9 +24,9 @@ bool Boss1Scene::init()
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
-	director->setAnimationInterval(1.0f/60.0f);
+	director->setAnimationInterval(1.0f / 60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
-	
+
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -270,7 +270,7 @@ void Boss1Scene::update(float dt)
 void Boss1Scene::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
-	
+
 }
 
 void Boss1Scene::updateObjects(float dt)
@@ -292,29 +292,22 @@ void Boss1Scene::updateEnemies(float dt)
 
 	//check for an attack hitting the boss
 	HeroAttackBase* currentAttack = HeroAttackManager::currentAttack;
-	if (currentAttack == HeroAttackManager::meleeFire && myHelper::isCollision(currentAttack->hitbox, boss->getHitBox()))
+	for (auto i : boss->getHitBox())
 	{
-		currentAttack->disabled = true;
-		boss->takeDamage();
-	}
+		if (currentAttack == HeroAttackManager::meleeFire && myHelper::isCollision(currentAttack->hitbox,i->hitBox))
+		{
+			currentAttack->disabled = true;
+			boss->takeDamage();
+		}
 
-	//check for collision on boss
-	if (Hero::hero->isHitboxCollision(boss->getHitBox()))
-	{
-		Hero::hero->takeDamage();
+		//check for collision on boss
+		if (Hero::hero->isHitboxCollision(i->hitBox))
+		{
+			Hero::hero->takeDamage();
+		}
 	}
 
 	//loop through each attack checking for collisions
-	unsigned int attackListSize = boss->getLavaList().size();
-
-	/*for (unsigned int i = 0; i < attackListSize; i++)
-	{
-		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox())) 
-		{
-			Hero::hero->takeDamage();
-
-		}
-	}*/
 
 	for (auto i : boss->getLavaList())
 	{
@@ -329,7 +322,7 @@ void Boss1Scene::updateEnemies(float dt)
 //removes all game objects from the world
 void Boss1Scene::removeAllObjects()
 {
-	
+
 }
 
 //--- Callbacks ---//
@@ -398,7 +391,7 @@ void Boss1Scene::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		HeroStateManager::currentState->handleInput(InputType::p_space);
 		break;
 
-	//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
+		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
 	case EventKeyboard::KeyCode::KEY_Q:
 		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
 		break;
@@ -470,7 +463,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 {
 	switch (keyCode)
 	{
-	//x axis of the left stick
+		//x axis of the left stick
 	case ControllerInput::leftStickX:
 		//moving to the left
 		if (controller->getKeyStatus(keyCode).value <= -1)
@@ -497,7 +490,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 		}
 		break;
 
-	//y axis of the left stick
+		//y axis of the left stick
 	case ControllerInput::leftStickY:
 		if (controller->getKeyStatus(keyCode).value >= 1)
 			HeroAttackBase::isWKeyHeld = true;
