@@ -1,6 +1,6 @@
 #include "PauseMenu.h"
 #include "Tutorial.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "ControlsMenu.h"
 
 Scene * PauseMenu::createScene()

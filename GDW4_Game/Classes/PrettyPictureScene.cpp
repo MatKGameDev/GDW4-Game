@@ -1,5 +1,5 @@
 #include "PrettyPictureScene.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 
 Scene * PrettyPictureScene::createScene()
 {
@@ -35,8 +35,7 @@ void PrettyPictureScene::update(float dt)
 	timer += dt;
 	if (timer > 10.0f && !isDone)
 	{
-		TileBase::deleteAllTiles(); //delete any leftover tiles
 		isDone = true;
-		director->replaceScene(TransitionFade::create(1.5f, Gameplay::createScene(), Color3B(0, 0, 0)));
+		director->replaceScene(TransitionFade::create(1.5f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 	}
 }

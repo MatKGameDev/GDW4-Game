@@ -25,7 +25,7 @@
 
 
 #include "AppDelegate.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "Tutorial.h"
 #include "HeroStateManager.h"
 #include "MainMenu.h"

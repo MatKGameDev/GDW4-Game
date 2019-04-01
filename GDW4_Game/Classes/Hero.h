@@ -48,6 +48,9 @@ public:
 	void takeDamage();
 	void reset();
 
+	void updateArmPosition();
+	void updatePositionBasedOnArm();
+
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;
 	void updateHitboxes() override;

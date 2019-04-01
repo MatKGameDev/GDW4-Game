@@ -49,13 +49,13 @@
     <Filter Include="Boss\General">
       <UniqueIdentifier>{0ae7bdf6-5b1b-4b29-a72a-c8b5247a308e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Hero Stuff\states">
+      <UniqueIdentifier>{ed12288c-b12d-47a5-85d3-1c2c1816b491}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Gameplay.cpp">
-      <Filter>src\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\myHelper.cpp">
       <Filter>src\Helper Stuff</Filter>
@@ -100,37 +100,37 @@
       <Filter>src\Animation Stuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AttackingState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\FallingState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GrappleJumpState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GrapplingState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HeroStateBase.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HeroStateManager.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\HoldingPlatformState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\IdleState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\JumpingState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\RunningState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ShootingGrappleState.cpp">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Platform.cpp">
       <Filter>src\Environment Objects</Filter>
@@ -207,13 +207,16 @@
     <ClCompile Include="..\Classes\HelpBubble.cpp">
       <Filter>src\Environment Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\SpikeTile.cpp">
+      <Filter>src\Environment Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Boss1Scene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Gameplay.h">
-      <Filter>src\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Vect2.h">
       <Filter>src\Helper Stuff</Filter>
@@ -261,37 +264,37 @@
       <Filter>src\Helper Stuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AttackingState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\FallingState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GrappleJumpState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GrapplingState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HeroStateBase.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HeroStateManager.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\HoldingPlatformState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\IdleState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\JumpingState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\RunningState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ShootingGrappleState.h">
-      <Filter>states</Filter>
+      <Filter>src\Hero Stuff\states</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Platform.h">
       <Filter>src\Environment Objects</Filter>
@@ -371,13 +374,14 @@
     <ClInclude Include="..\Classes\HelpBubble.h">
       <Filter>src\Environment Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\SpikeTile.h">
+      <Filter>src\Environment Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss1Scene.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="states">
-      <UniqueIdentifier>{ed12288c-b12d-47a5-85d3-1c2c1816b491}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

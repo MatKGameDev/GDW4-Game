@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GAMEPLAY_H
-#define GAMEPLAY_H
+#ifndef BOSSFIGHT1_H
+#define BOSSFIGHT1_H
 
 #include "cocos2d.h"
 #include "Vect2.h"
@@ -18,10 +18,10 @@ using namespace cocos2d;
 
 class Boss; //forward declare
 
-class Gameplay : public cocos2d::Scene
+class Boss1Scene : public cocos2d::Scene
 {
 public:
-	CREATE_FUNC(Gameplay);
+	CREATE_FUNC(Boss1Scene);
 	static Scene* createScene();
 
 	Boss* boss;

@@ -1,4 +1,4 @@
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "PauseMenu.h"
 #include <iostream>
 #include "HeroStateManager.h"
@@ -8,13 +8,13 @@
 #include "VictoryScreen.h"
 #include "Boss/Attacks/Projectiles.h"
 
-cocos2d::Scene* Gameplay::createScene()
+cocos2d::Scene* Boss1Scene::createScene()
 {
-	Scene* scene = Gameplay::create();
+	Scene* scene = Boss1Scene::create();
 	return scene;
 }
 
-bool Gameplay::init()
+bool Boss1Scene::init()
 {
 	if (!Scene::init())
 		return false;
@@ -37,12 +37,12 @@ bool Gameplay::init()
 }
 
 //initializes the user interface
-void Gameplay::initUI()
+void Boss1Scene::initUI()
 {
 
 }
 
-void Gameplay::initGameObjects()
+void Boss1Scene::initGameObjects()
 {
 	Hero::hero->moveState = Hero::MoveDirection::idle;
 
@@ -52,13 +52,15 @@ void Gameplay::initGameObjects()
 	boss = new Boss(Hero::hero, this);
 }
 
-void Gameplay::initSprites()
+void Boss1Scene::initSprites()
 {
 	//add background
 	background = Sprite::create("Backgrounds/background.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
+	//delete any existing tiles before we import our map
+	TileBase::deleteAllTiles();
 	//get the tilemap in
 	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/bossMap.tmx"); //ayy it works
 	addChild(testTileMap, 1);
@@ -114,11 +116,13 @@ void Gameplay::initSprites()
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(700, 200));
+	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
 
-	Hero::hero->arm = cocos2d::Sprite::create("Sprites/arm_right.png");
-	this->addChild(Hero::hero->arm, 21); //add hero arm
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+	Hero::hero->arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+	this->addChild(Hero::hero->arm, 21); //add hero arm
 
 	//add boss
 	this->addChild(boss->getSprite(), 17);
@@ -132,7 +136,7 @@ void Gameplay::initSprites()
 
 	//add grapple sprite
 	//add repeating pattern to grapple sprite
-	Grapple::grapple->sprite = Sprite::create("Sprites/testGrapple.png");
+	Grapple::grapple->sprite = Sprite::create("Sprites/grapple.png");
 	Texture2D::TexParams params;
 	params.minFilter = GL_NEAREST;
 	params.magFilter = GL_NEAREST;
@@ -145,16 +149,16 @@ void Gameplay::initSprites()
 
 	//grapple tip
 	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
-	Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
-	this->addChild(Grapple::grapple->tip, 6);
+	//Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->tip, 7);
 
 	//grapple destination indicator
 	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
 	Grapple::grapple->indicator->setVisible(0);
-	this->addChild(Grapple::grapple->indicator, 7);
+	this->addChild(Grapple::grapple->indicator, 6);
 }
 
-void Gameplay::initListeners()
+void Boss1Scene::initListeners()
 {
 	//Init the mouse listener
 	initMouseListener();
@@ -164,48 +168,48 @@ void Gameplay::initListeners()
 	initControllerListener();
 }
 
-void Gameplay::initMouseListener()
+void Boss1Scene::initMouseListener()
 {
 	//Init the mouse listener
 	mouseListener = EventListenerMouse::create();
 
 	//On Mouse Down
-	mouseListener->onMouseDown = CC_CALLBACK_1(Gameplay::mouseDownCallback, this);
+	mouseListener->onMouseDown = CC_CALLBACK_1(Boss1Scene::mouseDownCallback, this);
 
 	//On Mouse Up
-	mouseListener->onMouseUp = CC_CALLBACK_1(Gameplay::mouseUpCallback, this);
+	mouseListener->onMouseUp = CC_CALLBACK_1(Boss1Scene::mouseUpCallback, this);
 
 	//On Mouse Move
-	mouseListener->onMouseMove = CC_CALLBACK_1(Gameplay::mouseMoveCallback, this);
+	mouseListener->onMouseMove = CC_CALLBACK_1(Boss1Scene::mouseMoveCallback, this);
 
 	//On Mouse Scroll
-	mouseListener->onMouseScroll = CC_CALLBACK_1(Gameplay::mouseScrollCallback, this);
+	mouseListener->onMouseScroll = CC_CALLBACK_1(Boss1Scene::mouseScrollCallback, this);
 
 	//Add the mouse listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
-void Gameplay::initKeyboardListener()
+void Boss1Scene::initKeyboardListener()
 {
 	//Create the keyboard listener
 	keyboardListener = EventListenerKeyboard::create();
 
 	//Setting up callbacks
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(Gameplay::keyDownCallback, this);
-	keyboardListener->onKeyReleased = CC_CALLBACK_2(Gameplay::keyUpCallback, this);
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(Boss1Scene::keyDownCallback, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(Boss1Scene::keyUpCallback, this);
 
 	//Add the keyboard listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 }
 
-void Gameplay::initControllerListener()
+void Boss1Scene::initControllerListener()
 {
 	controllerListener = EventListenerController::create();
 
 	//set up callbacks
-	controllerListener->onKeyDown = CC_CALLBACK_3(Gameplay::buttonPressCallback, this);
-	controllerListener->onKeyUp = CC_CALLBACK_3(Gameplay::buttonReleaseCallback, this);
-	controllerListener->onAxisEvent = CC_CALLBACK_3(Gameplay::axisEventCallback, this);
+	controllerListener->onKeyDown = CC_CALLBACK_3(Boss1Scene::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(Boss1Scene::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(Boss1Scene::axisEventCallback, this);
 
 	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
 
@@ -214,7 +218,7 @@ void Gameplay::initControllerListener()
 }
 
 //UPDATE
-void Gameplay::update(float dt)
+void Boss1Scene::update(float dt)
 {
 	if (!isTransitioning)
 	{
@@ -263,13 +267,13 @@ void Gameplay::update(float dt)
 	}
 }
 
-void Gameplay::spawnEnemies()
+void Boss1Scene::spawnEnemies()
 {
 	//spawns all enemies to keep a certain amount of each in the map
 	
 }
 
-void Gameplay::updateObjects(float dt)
+void Boss1Scene::updateObjects(float dt)
 {
 	//update all platforms
 	unsigned int numPlatforms = Platform::platformList.size();
@@ -281,7 +285,7 @@ void Gameplay::updateObjects(float dt)
 		IceProjectile::iceProjectileList[i]->update(dt);
 }
 
-void Gameplay::updateEnemies(float dt)
+void Boss1Scene::updateEnemies(float dt)
 {
 	//update boss
 	boss->update(dt);
@@ -323,14 +327,14 @@ void Gameplay::updateEnemies(float dt)
 }
 
 //removes all game objects from the world
-void Gameplay::removeAllObjects()
+void Boss1Scene::removeAllObjects()
 {
 	
 }
 
 //--- Callbacks ---//
 
-void Gameplay::mouseDownCallback(Event* event)
+void Boss1Scene::mouseDownCallback(Event* event)
 {
 	//Cast the event as a mouse event
 	EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);
@@ -347,24 +351,25 @@ void Gameplay::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
+		mouseGameViewPosition.y += 15;
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
 	}
 }
 
-void Gameplay::mouseUpCallback(Event* event)
+void Boss1Scene::mouseUpCallback(Event* event)
 {
 }
 
-void Gameplay::mouseMoveCallback(Event* event)
+void Boss1Scene::mouseMoveCallback(Event* event)
 {
 }
 
-void Gameplay::mouseScrollCallback(Event* event)
+void Boss1Scene::mouseScrollCallback(Event* event)
 {
 }
 
-void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
+void Boss1Scene::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	switch (keyCode)
 	{
@@ -382,7 +387,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_S:
 		HeroStateManager::currentState->handleInput(InputType::p_s);
-		HeroAttackBase::isSKeyHeld = true;
+		//HeroAttackBase::isSKeyHeld = true;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_W:
@@ -407,7 +412,7 @@ void Gameplay::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	}
 }
 
-void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
+void Boss1Scene::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	switch (keyCode)
 	{
@@ -437,7 +442,7 @@ void Gameplay::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 	}
 }
 
-void Gameplay::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+void Boss1Scene::buttonPressCallback(Controller * controller, int keyCode, Event * event)
 {
 	switch (keyCode)
 	{
@@ -451,7 +456,7 @@ void Gameplay::buttonPressCallback(Controller * controller, int keyCode, Event *
 	}
 }
 
-void Gameplay::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+void Boss1Scene::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
 {
 	switch (keyCode)
 	{
@@ -461,7 +466,7 @@ void Gameplay::buttonReleaseCallback(Controller * controller, int keyCode, Event
 	}
 }
 
-void Gameplay::axisEventCallback(Controller * controller, int keyCode, Event * event)
+void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event * event)
 {
 	switch (keyCode)
 	{
