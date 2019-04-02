@@ -26,6 +26,7 @@ public:
 
 	Boss* boss;
 
+	float transitionDelay;
 	bool isTransitioning;
 
 	virtual bool init();

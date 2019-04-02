@@ -157,6 +157,9 @@
     <ClCompile Include="..\Classes\InitialLoadScreen.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Hud.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\DyingState.cpp">
       <Filter>Hero\States</Filter>
     </ClCompile>
@@ -324,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\InitialLoadScreen.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Hud.h">
+      <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\DyingState.h">
       <Filter>Hero\States</Filter>

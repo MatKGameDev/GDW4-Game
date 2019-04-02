@@ -8,6 +8,7 @@
 #include "ControllerInput.h"
 #include "SpikeTile.h"
 #include "DeathScreen.h"
+#include "Hud.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -75,7 +76,7 @@ void Tutorial::initSprites()
 	Size size = Director::sharedDirector()->getVisibleSize();  //screen size
 	Vec2 center = Vec2(size.width / 2 + origin.x, size.height / 2 + origin.y); //center point
 
-	fieldWidth = size.width * 10;  //x boundary for camera
+	fieldWidth = 13888;  //x boundary for camera
 	fieldHeight = size.height - 40; //y boundary for camera
 
 	Texture2D::TexParams params;
@@ -362,7 +363,7 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 16000)
+		if (Hero::hero->moveBox.getMaxX() >= 13888)
 		{
 			Hero::hero->reset();
 			Hero::hero->lookState = Hero::LookDirection::lookingRight; //make sure they're looking right (over the clif)
@@ -414,6 +415,14 @@ void Tutorial::updateObjects(float dt)
 	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
 	for (unsigned int i = 0; i < numHelpBubbles; i++)
 		HelpBubble::helpBubbleList[i]->update(dt);
+
+	
+	//update UI
+	for (unsigned int i = 0; i < HudObject::HudList.size(); i++)
+	{
+		HudObject::HudList[i]->update(dt);
+	}
+
 }
 
 void Tutorial::updateEnemies(float dt)

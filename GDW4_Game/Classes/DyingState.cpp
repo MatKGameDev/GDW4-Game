@@ -13,23 +13,26 @@ DyingState::~DyingState()
 
 void DyingState::onEnter()
 {
-	HeroStateManager::currentState = this;
-
-	Hero::hero->sprite->stopAllActions();
-
-	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	if (HeroStateManager::currentState != this)
 	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("hero_death_left_animation_key");
-		auto action = cocos2d::Animate::create(anim);
+		HeroStateManager::currentState = this;
+
 		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	}
-	else //looking right
-	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("hero_death_right_animation_key");
-		auto action = cocos2d::Animate::create(anim);
-		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+
+		if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("hero_death_left_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
+		else //looking right
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("hero_death_right_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
 	}
 }
 

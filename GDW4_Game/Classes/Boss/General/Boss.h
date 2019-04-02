@@ -18,6 +18,7 @@ class Boss
 		idling, //Use this for idling, explosive bullet
 		flameSplitter,
 		flamethrower,
+		death
 	};
 	friend class FirstBossState;
 
@@ -35,6 +36,7 @@ class Boss
 	std::vector<HitBox*> initIdleHitbox() const;
 	std::vector<HitBox*> initFlameSplitHitbox() const;
 	std::vector<HitBox*> initFlameThrowerHitbox() const;
+	std::vector<HitBox*> initDeathHitbox() const;
 	void setHitboxIndex(HitboxIndex newIndex);
 public:
 	Boss(Hero* heroInstance, cocos2d::Scene *sceneForBoss, float height = 581, float width = 325);

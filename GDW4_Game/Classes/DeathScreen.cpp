@@ -36,9 +36,13 @@ bool DeathScreen::init()
 void DeathScreen::initUI()
 {
 	//set background
-	background = Sprite::create("Backgrounds/uLoseTest.png");
+	background = Sprite::create("Backgrounds/deathScreen.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
+
+	textOverlay = Sprite::create("Backgrounds/uLoseTest.png");
+	textOverlay->setAnchorPoint(Vec2(0.0f, 0.0f));
+	this->addChild(textOverlay, 2);
 
 	//set our sprite labels
 	tryAgainText = Sprite::create("Text/tryAgainTest.png");
@@ -184,7 +188,7 @@ void DeathScreen::mouseDownCallback(Event* event)
 		//start game
 		if (tryAgainRect.containsPoint(cursorPos))
 		{
-			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(1.f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		//open controls menu
@@ -229,7 +233,7 @@ void DeathScreen::buttonPressCallback(Controller * controller, int keyCode, Even
 		//start game
 		if (currentSelection == MenuOptions::tryAgain)
 		{
-			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(1.f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		//open controls menu

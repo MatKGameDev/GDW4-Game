@@ -17,7 +17,7 @@ void marcos::AnimationManager::init()
 	addAnimation("Sprites/jump_right.png", 15, 105, 135, "jumping_right_animation_key");
 	addAnimation("Sprites/jump_left.png", 15, 105, 135, "jumping_left_animation_key");
 	addAnimation("Sprites/falling_right.png", 14, 105, 135, "falling_right_animation_key");
-	addAnimation("Sprites/falling_left.png", 14, 105, 135, "falling_left_animation_key");
+	addAnimation("Sprites/falling_left.png", 8, 105, 135, "falling_left_animation_key");
 
 	//Hero Attacking Animations
 	addAnimation("Sprites/melee_right.png", 4, 177, 138, "melee_right_animation_key");
@@ -64,7 +64,7 @@ void marcos::AnimationManager::initBossStateAnimation()
 	addAnimation("Sprites/boss_explosive_attack_part2.png", 4, bossWidth, bossHeight, "boss_explosive_tell_POST_animation_key");
 	addAnimation("Sprites/boss_idle.png", 8, 5, bossWidth, bossHeight, "boss_idle_animation_key");
 	addAnimation("Sprites/BossDeathGame.png", 12, 4, bossWidth + 150, bossHeight, "boss_death_animation_key");
-	addAnimation("Sprites/boss_resting.png", 16, bossWidth, bossHeight, "boss_restinga_animation_key");
+	addAnimation("Sprites/boss_resting.png", 16, bossWidth, bossHeight, "boss_resting_animation_key");
 }
 
 /**

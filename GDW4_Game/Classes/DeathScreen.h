@@ -53,6 +53,7 @@ private:
 	Vec2 cursorPos;
 
 	Sprite* background;
+	Sprite* textOverlay;
 
 	Sprite* tryAgainText;
 	Sprite* mainMenuText;

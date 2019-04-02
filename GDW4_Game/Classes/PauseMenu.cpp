@@ -36,6 +36,10 @@ bool PauseMenu::init()
 void PauseMenu::initUI()
 {
 	//set our sprite labels
+	background = Sprite::create("Backgrounds/pause_menu.png");
+	background->setAnchorPoint(Vec2(0.0f, 0.0f));
+	this->addChild(background, 5);
+
 	resumeText = Sprite::create("Text/resumeTest.png");
 	resumeText->setPosition(1920 / 2, 700);
 	this->addChild(resumeText, 10);

@@ -9,8 +9,7 @@
  * @param bossInstance The current bossPointer
  */
 ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInstance)
-	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), appliedForce(false),
-	constantG(7500)
+	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), constantG(7500)
 {
 	//Set up the sprite's information
 	position = startPosition;
@@ -18,17 +17,20 @@ ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInsta
 	attackType = BossAttack::ExplosiveBullet;
 
 	//Set up hitbox
-	hitBox = new HitBox(position, 120, 120);
+	hitBox = new HitBox(position, 0, 0);
 
 	//Get the animation
-	const auto animation = marcos::AnimationManager::getAnimation("boss_explosive_POST_animation_key");
+	const auto suckingAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_explosive_MID_animation_key",3);
+	const auto explodingAnimation = marcos::AnimationManager::getAnimation("boss_explosive_POST_animation_key");
 
 	//Run action
 	sprite->runAction
 	(
 		cocos2d::Sequence::create
 		(
-			cocos2d::Repeat::create(animation, 1),
+			cocos2d::Repeat::create(suckingAnimation, 1),
+			cocos2d::CallFunc::create([&] {isExploding = true; hitBox->setNewSize(120, 120); }),
+			cocos2d::Repeat::create(explodingAnimation, 1),
 			cocos2d::CallFunc::create([&] {delete this; }),
 			nullptr
 		)
@@ -52,21 +54,22 @@ ExplosiveArea::~ExplosiveArea()
 void ExplosiveArea::update(const float& deltaT)
 {
 	hitBox->updateHitBox(position);
-	addForceToHero();
+	if (!isExploding)
+		addForceToHero();
+	else
+		resetHeroForce();
+
 }
 
 /**
  * @brief This function adds a force to the hero if they are in range
  * and reset it to zero if they are not;
  */
-void ExplosiveArea::addForceToHero() const
+void ExplosiveArea::addForceToHero()
 {
 	//Apply force to hero if the hero position is in range AND
-	if (isHeroInRange())
+	if (isHeroInRange()) 
 		Hero::hero->force = calculateDirectionToHero() * constantG;
-	else
-		resetHeroForce();
-	
 }
 
 /**
@@ -95,13 +98,12 @@ void ExplosiveArea::resetHeroForce() const
  */
 bool ExplosiveArea::isHeroInRange() const
 {
-	return true;
-	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength() 
-	< 300;
+	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength()
+		< 250;
 }
 
 /**
- * @brief Calculate distance square between the hero's position and  the 
+ * @brief Calculate distance square between the hero's position and  the
  * explosive area position
  * @return Return distance square as float
  */
@@ -140,6 +142,8 @@ ExplosiveBullet::ExplosiveBullet(const cocos2d::Vec2& heroLocation, Boss* bossIn
 
 	//Set up hit box
 	hitBox = new HitBox(position, 50, 50);
+
+	dealingDamage = 0;
 }
 
 ExplosiveBullet::~ExplosiveBullet()

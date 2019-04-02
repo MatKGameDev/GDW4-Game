@@ -13,7 +13,7 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70),
 	invincibilityTimer(0),
-	health(3),
+	health(5),
 	isAirborne(false),
 	bypassSpeedCap(false),
 	lookState(LookDirection::lookingRight),
@@ -76,12 +76,14 @@ void Hero::jump()
 }
 
 //hero takes damage from any source
-void Hero::takeDamage(float sourcePositionX)
+void Hero::takeDamage(float sourcePositionX, const int& damageTaken)
 {
+	if (damageTaken == 0)
+		return;
 	//make sure hero isn't already invulnerable or ded
 	if (invincibilityTimer <= 0 && HeroStateManager::currentState != HeroStateManager::dying)
 	{
-		health--;
+		health-= damageTaken;
 		invincibilityTimer = 0.99;
 
 		bypassSpeedCap = true;
@@ -110,7 +112,6 @@ void Hero::reset()
 	moveState = MoveDirection::idle;
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();
-	health = 3;
 }
 
 //updates the hero's arm position (only visible while grappling)
