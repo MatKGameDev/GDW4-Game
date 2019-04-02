@@ -8,6 +8,7 @@
 #include "ControllerInput.h"
 #include "SpikeTile.h"
 #include "DeathScreen.h"
+#include "Hud.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -410,6 +411,14 @@ void Tutorial::updateObjects(float dt)
 	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
 	for (unsigned int i = 0; i < numHelpBubbles; i++)
 		HelpBubble::helpBubbleList[i]->update(dt);
+
+	
+	//update UI
+	for (unsigned int i = 0; i < HudObject::HudList.size(); i++)
+	{
+		HudObject::HudList[i]->update(dt);
+	}
+
 }
 
 void Tutorial::updateEnemies(float dt)

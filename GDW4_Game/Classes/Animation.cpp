@@ -17,7 +17,7 @@ void marcos::AnimationManager::init()
 	addAnimation("Sprites/jump_right.png", 15, 105, 135, "jumping_right_animation_key");
 	addAnimation("Sprites/jump_left.png", 15, 105, 135, "jumping_left_animation_key");
 	addAnimation("Sprites/falling_right.png", 14, 105, 135, "falling_right_animation_key");
-	addAnimation("Sprites/falling_left.png", 14, 105, 135, "falling_left_animation_key");
+	addAnimation("Sprites/falling_left.png", 8, 105, 135, "falling_left_animation_key");
 
 	//Hero Attacking Animations
 	addAnimation("Sprites/melee_right.png", 4, 177, 138, "melee_right_animation_key");

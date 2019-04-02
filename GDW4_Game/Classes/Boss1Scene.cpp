@@ -7,6 +7,7 @@
 #include "DeathScreen.h"
 #include "VictoryScreen.h"
 #include "Boss/Attacks/Projectiles.h"
+#include "Hud.h"
 
 cocos2d::Scene* Boss1Scene::createScene()
 {
@@ -31,7 +32,7 @@ bool Boss1Scene::init()
 	initGameObjects();
 	initSprites();
 	initListeners();
-
+	initUI();
 	scheduleUpdate();
 
 	return true;
@@ -40,7 +41,11 @@ bool Boss1Scene::init()
 //initializes the user interface
 void Boss1Scene::initUI()
 {
-
+	for (int i = 0; i < Hero::hero->health; i++)
+	{
+		HudObject* health = new HudObject("Sprites/PlayerHealth.png", cocos2d::Vec2(70 + (70 * i), 1000));
+		this->addChild(health->sprite, 100);
+	}
 }
 
 void Boss1Scene::initGameObjects()
@@ -287,6 +292,11 @@ void Boss1Scene::updateObjects(float dt)
 	//update all ice projectiles
 	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
+
+	for (unsigned int i = 0; i < HudObject::HudList.size(); i++)
+	{
+		HudObject::HudList[i]->update(dt);
+	}
 }
 
 void Boss1Scene::updateEnemies(float dt)

@@ -34,9 +34,13 @@ bool VictoryScreen::init()
 void VictoryScreen::initUI()
 {
 	//set background
-	background = Sprite::create("Backgrounds/uWinTest.png");
+	background = Sprite::create("Backgrounds/winscreen.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
+
+	textOverlay = Sprite::create("Backgrounds/uWinTest.png");
+	textOverlay->setAnchorPoint(Vec2(0.0f, 0.0f));
+	this->addChild(textOverlay, 2);
 
 	mainMenuText = Sprite::create("Text/mainMenuTest.png");
 	mainMenuText->setPosition(1920 / 2, 400);
