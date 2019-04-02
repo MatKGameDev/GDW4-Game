@@ -30,7 +30,8 @@ void ControlsMenu::initUI()
 {
 	//set controls list image
 	controlsList = Sprite::create("Backgrounds/controlsListTest.png");
-	controlsList->setPosition(1920 / 2, 1080 / 2 + 120);
+	controlsList->setAnchorPoint(Vec2(0, 0));
+	controlsList->setPosition(0, 0);
 	this->addChild(controlsList, 7);
 
 	//set our sprite labels

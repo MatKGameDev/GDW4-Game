@@ -27,8 +27,6 @@ bool MainMenu::init()
 	initMouseListener();
 	initControllerListener();
 
-	preloadAnimations();
-
 	scheduleUpdate();
 
 	return true;
@@ -58,6 +56,14 @@ void MainMenu::initUI()
 
 void MainMenu::initAnimations()
 {
+	auto sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(0, 0);
+	this->addChild(sprite, -5);
 }
 
 void MainMenu::initMouseListener()
@@ -94,70 +100,6 @@ void MainMenu::initControllerListener()
 
 	//add the controller listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
-}
-
-//preloads boss animations to reduce lag on the boss scene
-void MainMenu::preloadAnimations()
-{
-	//flamethrower attack
-	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
-	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
-	auto action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
-	sprite->setAnchorPoint(Vec2(0, 0));
-	sprite->setPosition(0, 0);
-	this->addChild(sprite, -5);
-
-	//3 lava ball attack
-	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	//boss
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
-
-	sprite = cocos2d::Sprite::create("Sprites/boss.png");
-	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key");
-	action = cocos2d::Animate::create(anim);
-	sprite->stopAllActions();
-	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	sprite->setPosition(500, 500);
-	this->addChild(sprite, -20);
 }
 
 //move to the next selection on the menu
