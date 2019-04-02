@@ -39,7 +39,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance,
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
 
+	Director::getInstance()->setDisplayStats(false);
+
     // create the application instance
     AppDelegate app;
+	Director::getInstance()->setDisplayStats(false);
     return Application::getInstance()->run();
+	Director::getInstance()->setDisplayStats(false);
 }

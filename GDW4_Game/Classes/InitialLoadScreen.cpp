@@ -15,7 +15,6 @@ bool InitialLoadScreen::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	image = Sprite::create("Backgrounds/bootScreen.png");
 	image->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -150,6 +149,15 @@ void InitialLoadScreen::preloadAnimations()
 
 	sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
 	anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(0, 0);
+	this->addChild(sprite, -21);
+
+	sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_death_animation_key");
 	action = cocos2d::Animate::create(anim);
 	sprite->stopAllActions();
 	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));

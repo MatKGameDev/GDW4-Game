@@ -69,6 +69,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 	director->setDisplayStats(false);
 	auto scene = InitialLoadScreen::createScene();
 	director->runWithScene(scene);
+	Director::getInstance()->setDisplayStats(false);
 
 	return true;
 }
