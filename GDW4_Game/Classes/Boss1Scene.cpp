@@ -20,6 +20,7 @@ bool Boss1Scene::init()
 	if (!Scene::init())
 		return false;
 
+	transitionDelay = 3.0f;
 	isTransitioning = false;
 
 	srand(time(NULL)); //seed rng
@@ -126,6 +127,7 @@ void Boss1Scene::initSprites()
 	Hero::hero->sprite->setPosition(Vec2(700, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
+	Hero::hero->health = 5;
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
@@ -164,6 +166,7 @@ void Boss1Scene::initSprites()
 	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
 	Grapple::grapple->indicator->setVisible(0);
 	this->addChild(Grapple::grapple->indicator, 6);
+
 }
 
 void Boss1Scene::initListeners()
@@ -258,19 +261,20 @@ void Boss1Scene::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//FOR TESTING BOSS DEATH
-		if (boss->getHealth() == 0)
+	 if (Hero::hero->health <= 0)
 		{
-			Hero::hero->reset(); //reset hero
-			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
-			isTransitioning = true;
-		}
-		else if (Hero::hero->health == 0)
-		{
-			Hero::hero->reset(); //reset hero
-			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
-			isTransitioning = true;
+			if (transitionDelay == 3.0f)
+			{
+				Hero::hero->reset(); //reset hero
+				HeroStateManager::dying->onEnter();
+			}
+
+			transitionDelay -= dt;
+			if (transitionDelay <= 0.0f)
+			{
+				director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
+				isTransitioning = true;
+			}
 		}
 	}
 }
@@ -321,17 +325,19 @@ void Boss1Scene::updateEnemies(float dt)
 	}
 
 	//loop through each attack checking for collisions
-
 	for (auto i : boss->getLavaList())
 	{
 		if (Hero::hero->isHitboxCollision(i->getHitBox()))
 		{
-			if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
-				Hero::hero->takeDamage(i->getHitBox().getMinX());
-			else //not flamethrower attack
-				Hero::hero->takeDamage(i->getHitBox().getMidX());
-
-			i->hitByHero();
+			if (i->getHitBox().size.height > 0 && i->getHitBox().size.width > 0)
+			{
+				if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
+					Hero::hero->takeDamage(i->getHitBox().getMinX(), i->getDealingDamage());
+				else //not flamethrower attack
+					Hero::hero->takeDamage(i->getHitBox().getMidX(), i->getDealingDamage());
+				i->hitByHero();
+			}
+			
 		}
 	}
 }

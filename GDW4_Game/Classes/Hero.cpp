@@ -76,19 +76,25 @@ void Hero::jump()
 }
 
 //hero takes damage from any source
-void Hero::takeDamage(float sourcePositionX)
+void Hero::takeDamage(float sourcePositionX, const int& damageTaken)
 {
-	//make sure hero isn't already invulnerable
-	if (invincibilityTimer <= 0)
+	if (damageTaken == 0)
+		return;
+	//make sure hero isn't already invulnerable or ded
+	if (invincibilityTimer <= 0 && HeroStateManager::currentState != HeroStateManager::dying)
 	{
-		health--;
+		health-= damageTaken;
 		invincibilityTimer = 0.99;
 
 		bypassSpeedCap = true;
 
-		//if we're not in any of the grappling states, go into falling state
-		if (HeroStateManager::currentState != HeroStateManager::grappling && HeroStateManager::currentState != HeroStateManager::shootingGrapple && HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+		//if we're not in any of the grappling states or dying, go into falling state
+		if (HeroStateManager::currentState != HeroStateManager::grappling &&
+			HeroStateManager::currentState != HeroStateManager::shootingGrapple &&
+			HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+		{
 			HeroStateManager::falling->onEnter();
+		}
 		
 		if (this->getPosition().x < sourcePositionX)
 			Hero::hero->velocity = Vect2(-600, 400);
@@ -106,7 +112,6 @@ void Hero::reset()
 	moveState = MoveDirection::idle;
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();
-	health = 5;
 }
 
 //updates the hero's arm position (only visible while grappling)
@@ -229,7 +234,10 @@ void Hero::updateCollisions()
 		{
 			//check if it's a spike tile (deals damage)
 			if (TileBase::tileList[i]->checkAndResolveCollision(this) && TileBase::tileList[i]->type == TileType::spike)
+			{
 				this->takeDamage(TileBase::tileList[i]->hitBox.getMidX());
+				this->health++;
+			}
 		}
 	}
 }

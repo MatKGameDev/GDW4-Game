@@ -160,6 +160,9 @@
     <ClCompile Include="..\Classes\Hud.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\DyingState.cpp">
+      <Filter>Hero\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\IceProjectile.h" />
@@ -327,6 +330,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Hud.h">
       <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DyingState.h">
+      <Filter>Hero\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

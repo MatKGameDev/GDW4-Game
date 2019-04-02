@@ -12,15 +12,23 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	{
 	case 1:
 		waitingTime = 0.5;
-		position = cocos2d::Vec2(350, 500);
+		position = cocos2d::Vec2(350, 450);
 		break;
 	case 2:
 		waitingTime = 1.1;
-		position = cocos2d::Vec2(350, 200);
+		position = cocos2d::Vec2(350, 600); 
 		break;
 	case 3:
 		waitingTime = 1.6;
-		position = cocos2d::Vec2(350, 750);
+		position = cocos2d::Vec2(350, 300); 
+		break;
+	case 4:
+		waitingTime = 2.2;
+		position = cocos2d::Vec2(350, 750); 
+		break;
+	case 5:
+		waitingTime = 2.8;
+		position = cocos2d::Vec2(350, 150); 
 		break;
 	default:
 		throw;
@@ -28,8 +36,6 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	
 	//Set physic variables
 	sprite->setPosition(position);
-	/*acceleration.set(2000, 0);
-	velocity.set(1000, 0);*/
 
 	//Set sprite size
 	hitBox = new HitBox(position, 50.f, 50);
@@ -44,11 +50,7 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 		(
 			cocos2d::Repeat::create(animation->clone(), 1),
 			cocos2d::DelayTime::create(waitingTime),
-			cocos2d::CallFunc::create([&]
-	{
-		setUpPhysics();
-		isWaiting = false;
-	}),
+			cocos2d::CallFunc::create([&]{setUpPhysics();isWaiting = false;}),
 			nullptr
 		)
 	);

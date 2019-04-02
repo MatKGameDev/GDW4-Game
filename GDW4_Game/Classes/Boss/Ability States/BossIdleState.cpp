@@ -3,10 +3,10 @@
 
 //Static function initialize
 int Idling4FirstBoss::numberOfCast = 0;
-const int Idling4FirstBoss::maxNumberOfCastPerRound = 20;
+const int Idling4FirstBoss::maxNumberOfCastPerRound = 7;
 
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
-	: FirstBossState(boss), cooldownBeforeNextAbility{ 1.f }
+	: FirstBossState(boss), cooldownBeforeNextAbility{ 2.f }
 {
 	//Get the animation
 	const auto animationForIdling = marcos::AnimationManager::getAnimation("boss_idle_animation_key");
@@ -58,18 +58,13 @@ void Idling4FirstBoss::update(const float &deltaT)
  */
 void Idling4FirstBoss::chooseRandomAbility()
 {
-	switch (cocos2d::RandomHelper::random_int(1, 3))
-	{
-	case 1:
-		changeToFlameThrower();
-		break;
-	case 2:
-		changeToFlameSplit();
-		break;
-	case 3:
+	const int randomNum = cocos2d::RandomHelper::random_int(1, 20);
+
+	if (randomNum >= 1 && randomNum <= 5)
 		changeToExplosiveBullet();
-		break;
-	default:
-		throw;
-	}
+	else if (randomNum >= 6 && randomNum <= 14)
+		changeToFlameSplit();
+	else
+		changeToFlameThrower();
+
 }

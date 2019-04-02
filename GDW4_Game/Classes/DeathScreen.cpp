@@ -188,7 +188,7 @@ void DeathScreen::mouseDownCallback(Event* event)
 		//start game
 		if (tryAgainRect.containsPoint(cursorPos))
 		{
-			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(1.f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		//open controls menu
@@ -233,7 +233,7 @@ void DeathScreen::buttonPressCallback(Controller * controller, int keyCode, Even
 		//start game
 		if (currentSelection == MenuOptions::tryAgain)
 		{
-			director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+			director->replaceScene(TransitionFade::create(1.f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
 		}
 		//open controls menu

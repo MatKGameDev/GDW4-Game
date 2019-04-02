@@ -4,14 +4,15 @@
 #include "Boss/Attacks/Projectiles.h"
 #include "VictoryScreen.h"
 #include "GroundTile.h"
+#include "Boss/Ability States/RestingState.h"
 
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
-	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(50)
+	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(30)
 {
 	sprite->setPosition(230, 450);
 	initHitbox();
-	state = new Idling4FirstBoss(this);
+	state = new RestingState(this);
 }
 
 Boss::~Boss()
@@ -89,8 +90,11 @@ void Boss::takeDamage()
 	sprite->setVisible(false); //flicker sprite upon taking damage
 	health--;
 
-	if (health == 0)
+	if (health == 0) 
+	{
+		hitboxIndex = death;
 		state->changeToDeathState();
+	}
 }
 
 /**
@@ -136,7 +140,7 @@ void Boss::update(const float &deltaT)
  */
 void Boss::spewLava()
 {
-	for (size_t i = 1; i <= 3; i++)
+	for (size_t i = 1; i <= 5; i++)
 	{
 		lavaList.push_back(new LavaBall(i, this));
 	}
@@ -188,6 +192,7 @@ void Boss::initHitbox()
 	hitBoxLists.push_back(initIdleHitbox());
 	hitBoxLists.push_back(initFlameSplitHitbox());
 	hitBoxLists.push_back(initFlameThrowerHitbox());
+	hitBoxLists.push_back(initDeathHitbox());
 }
 
 /**
@@ -230,5 +235,11 @@ std::vector<HitBox*> Boss::initFlameThrowerHitbox() const
 	tempVector.push_back(new HitBox(Vec2(350, 890), 90, 100));
 	tempVector.push_back(new HitBox(Vec2(395, 675), 350, 75));
 	tempVector.push_back(new HitBox(Vec2(340, 125), 175, 100));
+	return tempVector;
+}
+
+std::vector<HitBox*> Boss::initDeathHitbox() const
+{
+	std::vector<HitBox*> tempVector;
 	return tempVector;
 }

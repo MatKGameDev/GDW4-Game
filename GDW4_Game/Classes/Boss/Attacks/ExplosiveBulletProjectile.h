@@ -23,14 +23,14 @@ private:
 	explicit ExplosiveArea(const cocos2d::Vec2 &startPosition, Boss *bossInstance);
 
 	//Utility function
-	void addForceToHero() const;
+	void addForceToHero();
 	Vect2 calculateDirectionToHero() const;
 	void resetHeroForce() const;
 	bool isHeroInRange() const;
 	float calculateDistanceSquare() const;
 
 	//Private data members
-	mutable bool appliedForce;
+	bool isExploding{false};
 	const float constantG;
 };
 

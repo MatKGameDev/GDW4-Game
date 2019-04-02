@@ -29,6 +29,7 @@ void HoldingPlatformState::onEnter()
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 	}
+
 }
 
 void HoldingPlatformState::onExit()

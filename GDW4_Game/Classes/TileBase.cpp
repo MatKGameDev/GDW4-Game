@@ -9,6 +9,7 @@ std::vector<TileBase*> TileBase::tileList = std::vector<TileBase*>();
 TileBase::TileBase(cocos2d::Vec2 position, float tileSize)
 {
 	hitBox.setRect(position.x, position.y, tileSize, tileSize);
+	type = TileType::spike;
 	tileList.push_back(this);
 }
 
