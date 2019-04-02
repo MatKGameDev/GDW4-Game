@@ -12,13 +12,18 @@ public:
 
 	//Member functions
 	virtual void update(const float& deltaTime);
-	virtual void changeToIdleState(); //Only Idle state is allow to change publicly
+	void changeToIdleState() const; //Idle state is allowed to change publicly
+	void changeToDeathState() const; //Dealth state is allowed to change publicly
 
 protected:
 	Boss *bossPointer;
 
-	//Utility Functions
-	virtual void changeToFlameSplit();
-	virtual void changeToFlameThrower();
-	virtual void changeToExplosiveBullet();
+	/*
+	 * State changes functions. These can only
+	 * be changes through inheritance
+	 */
+	void changeToFlameSplit() const;
+	void changeToFlameThrower() const;
+	void changeToExplosiveBullet() const;
+	void changeToRestingState() const;
 };

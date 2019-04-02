@@ -8,6 +8,10 @@
 class Boss;
 class HitBox;
 
+/**
+ * This class is the base class for all attacks for the boss.\n 
+ * This class cannot be created by itself.
+ */
 class Boss1LavaAttack
 {
 public:
@@ -20,8 +24,8 @@ public:
 
 	virtual ~Boss1LavaAttack();
 
-	//Pure virtual function
-	virtual void update(const float &deltaT) = 0;
+	//Member functions
+	virtual void update(const float &deltaT);
 	virtual void hitByHero();
 	virtual void hitByEnvironment();
 
