@@ -31,8 +31,19 @@ DeathState::DeathState(Boss* bossInstance)
  */
 void DeathState::changeToVictoryScreen()
 {
+	removeAllElements();
 	cocos2d::Director::getInstance()->replaceScene
 	(
 		TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0))
 	);
+}
+
+void DeathState::removeAllElements()
+{
+	auto lavaList = bossPointer->getLavaList();
+	for (auto i : lavaList) {
+		delete i;
+	}
+
+	bossPointer->getLavaList().clear();
 }
