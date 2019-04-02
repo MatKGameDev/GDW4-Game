@@ -137,12 +137,6 @@ void Boss1Scene::initSprites()
 	//add boss
 	this->addChild(boss->getSprite(), 17);
 
-	//add hero hurtbox FOR TESTING PURPOSES
-	testHurtbox = DrawNode::create();
-	this->addChild(testHurtbox, 30);
-	//add fire melee attack hixbox FOR TESTING PURPOSES
-	testMeleeAttack = DrawNode::create();
-	this->addChild(testMeleeAttack, 40);
 
 	//add grapple sprite
 	//add repeating pattern to grapple sprite
@@ -235,26 +229,6 @@ void Boss1Scene::update(float dt)
 	{
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
-
-		testHurtbox->clear();
-		//DRAW HURTBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
-			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-			Color4F(1.0f, 0.0f, 0.0f, 0.f));
-		//DRAW MOVEBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-			Color4F(0.0f, 1.0f, 0.0f, .0f));
-		//DRAW BOSS HITBOX FOR TESTING
-
-
-		testMeleeAttack->clear();
-		//DRAW MELEE ATTACK HITBOX FOR TESTING
-		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
-			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
 
 		spawnEnemies();     //spawn enemies if needed 
 		updateObjects(dt);  //update objects
@@ -412,11 +386,6 @@ void Boss1Scene::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		HeroStateManager::currentState->handleInput(InputType::p_space);
-		break;
-
-		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	case EventKeyboard::KeyCode::KEY_Q:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
 		break;
 
 	case EventKeyboard::KeyCode::KEY_E:
