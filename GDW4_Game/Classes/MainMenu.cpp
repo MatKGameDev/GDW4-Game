@@ -27,8 +27,6 @@ bool MainMenu::init()
 	initMouseListener();
 	initControllerListener();
 
-	preloadAnimations();
-
 	scheduleUpdate();
 
 	return true;

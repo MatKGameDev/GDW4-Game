@@ -39,7 +39,7 @@ void InitialLoadScreen::preloadAnimations()
 void InitialLoadScreen::update(float dt)
 {
 	timer += dt;
-	if (timer > 10.0f && !isDone)
+	if (timer > 2.0f && !isDone)
 	{
 		isDone = true;
 		director->replaceScene(TransitionFade::create(1.5f, MainMenu::createScene(), Color3B(0, 0, 0)));
