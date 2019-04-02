@@ -71,7 +71,7 @@ void Tutorial::initSprites()
 	Size size = Director::sharedDirector()->getVisibleSize();  //screen size
 	Vec2 center = Vec2(size.width / 2 + origin.x, size.height / 2 + origin.y); //center point
 
-	fieldWidth = size.width * 4;  //x boundary for camera
+	fieldWidth = size.width * 10;  //x boundary for camera
 	fieldHeight = size.height - 40; //y boundary for camera
 
 	Texture2D::TexParams params;
@@ -172,7 +172,7 @@ void Tutorial::initSprites()
 	//delete any existing tiles before we import our map
 	TileBase::deleteAllTiles();
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest3.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Final.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
@@ -358,7 +358,7 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 6000)
+		if (Hero::hero->moveBox.getMaxX() >= 16000)
 		{
 			Hero::hero->reset();
 			Hero::hero->lookState = Hero::LookDirection::lookingRight; //make sure they're looking right (over the clif)
