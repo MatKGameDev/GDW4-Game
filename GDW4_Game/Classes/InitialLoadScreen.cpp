@@ -20,7 +20,9 @@ bool InitialLoadScreen::init()
 	image = Sprite::create("Backgrounds/bootScreen.png");
 	image->setAnchorPoint(Vec2(0.0f, 0.0f));
 	image->setPosition(Vec2(0.0f, 0.0f));
-	this->addChild(image);
+	this->addChild(image, 1);
+
+	preloadAnimations();
 
 	timer = 0.0f;
 	isDone = false;
@@ -30,7 +32,7 @@ bool InitialLoadScreen::init()
 	return true;
 }
 
-//preloads boss animations to reduce lag later on
+//preloads animations to reduce lag later on
 void InitialLoadScreen::preloadAnimations()
 {
 	//flamethrower attack
@@ -42,17 +44,124 @@ void InitialLoadScreen::preloadAnimations()
 	sprite->setPosition(500, 500);
 	this->addChild(sprite, -20);
 
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
 	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key");
 	action = cocos2d::Animate::create(anim);
 	sprite->stopAllActions();
 	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
 
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_explosive_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_tell_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_explosive_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_explosive_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_PRE_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_MID_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_POST_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+	sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(0, 0);
+	this->addChild(sprite, -21);
 }
 
 void InitialLoadScreen::update(float dt)
 {
-	if (timer == 0.0f)
-		preloadAnimations();
+	//if (timer == 0.0f)
+		//preloadAnimations();
 
 	timer += dt;
 	if (timer > 2.0f && !isDone)
