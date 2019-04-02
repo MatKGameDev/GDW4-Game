@@ -47,7 +47,7 @@ public:
 	void moveLeft();
 	void jump();
 
-	void takeDamage(float sourcePositionX);
+	void takeDamage(float sourcePositionX, const int& damageTaken = 1);
 	void reset();
 
 	void updateArmPosition();

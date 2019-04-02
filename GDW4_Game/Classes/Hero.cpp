@@ -76,12 +76,14 @@ void Hero::jump()
 }
 
 //hero takes damage from any source
-void Hero::takeDamage(float sourcePositionX)
+void Hero::takeDamage(float sourcePositionX, const int& damageTaken)
 {
+	if (damageTaken == 0)
+		return;
 	//make sure hero isn't already invulnerable or ded
 	if (invincibilityTimer <= 0 && HeroStateManager::currentState != HeroStateManager::dying)
 	{
-		health--;
+		health-= damageTaken;
 		invincibilityTimer = 0.99;
 
 		bypassSpeedCap = true;

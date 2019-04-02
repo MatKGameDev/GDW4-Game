@@ -158,6 +158,7 @@ void Boss1Scene::initSprites()
 	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
 	Grapple::grapple->indicator->setVisible(0);
 	this->addChild(Grapple::grapple->indicator, 6);
+
 }
 
 void Boss1Scene::initListeners()
@@ -252,14 +253,7 @@ void Boss1Scene::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//FOR TESTING BOSS DEATH
-		if (boss->getHealth() == 0)
-		{
-			Hero::hero->reset(); //reset hero
-			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
-			isTransitioning = true;
-		}
-		else if (Hero::hero->health == 0)
+	 if (Hero::hero->health == 0)
 		{
 			if (transitionDelay == 3.0f)
 			{
@@ -322,12 +316,15 @@ void Boss1Scene::updateEnemies(float dt)
 	{
 		if (Hero::hero->isHitboxCollision(i->getHitBox()))
 		{
-			if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
-				Hero::hero->takeDamage(i->getHitBox().getMinX());
-			else //not flamethrower attack
-				Hero::hero->takeDamage(i->getHitBox().getMidX());
-
-			i->hitByHero();
+			if (i->getHitBox().size.height > 0 && i->getHitBox().size.width > 0)
+			{
+				if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
+					Hero::hero->takeDamage(i->getHitBox().getMinX(), i->getDealingDamage());
+				else //not flamethrower attack
+					Hero::hero->takeDamage(i->getHitBox().getMidX(), i->getDealingDamage());
+				i->hitByHero();
+			}
+			
 		}
 	}
 }

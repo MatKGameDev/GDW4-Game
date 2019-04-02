@@ -52,3 +52,8 @@ Boss1LavaAttack::BossAttack Boss1LavaAttack::getAttackType() const
 {
 	return attackType;
 }
+
+int Boss1LavaAttack::getDealingDamage() const
+{
+	return dealingDamage;
+}
