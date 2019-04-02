@@ -10,7 +10,7 @@
  */
 ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png"), appliedForce(false),
-	constantG(10000)
+	constantG(7500)
 {
 	//Set up the sprite's information
 	position = startPosition;
@@ -95,6 +95,7 @@ void ExplosiveArea::resetHeroForce() const
  */
 bool ExplosiveArea::isHeroInRange() const
 {
+	return true;
 	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength() 
 	< 300;
 }
