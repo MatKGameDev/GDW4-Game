@@ -56,6 +56,7 @@ void Tutorial::initUI()
 	HelpBubble* grappleJumpHint = new HelpBubble("HintBubbles/grappleJumpHint.png", cocos2d::Vec2(1900, 800), 0, 1900);
 	grappleJumpHint->sprite->setScale(1.2);
 	this->addChild(grappleJumpHint->sprite, 18);
+
 }
 
 void Tutorial::initGameObjects()
@@ -410,6 +411,15 @@ void Tutorial::updateObjects(float dt)
 	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
 	for (unsigned int i = 0; i < numHelpBubbles; i++)
 		HelpBubble::helpBubbleList[i]->update(dt);
+
+	//update UI
+
+	//if (Hero::hero->getPosition().x > 1920 / 2)
+	//{
+	//	//do some simple math to convert mouse click position on screen to in-game world position
+	//	mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
+	//	mouseGameViewPosition.x += Hero::hero->sprite->getPosition().x;
+	//}
 }
 
 void Tutorial::updateEnemies(float dt)
