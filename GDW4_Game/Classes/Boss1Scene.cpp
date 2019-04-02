@@ -45,6 +45,9 @@ void Boss1Scene::initUI()
 		HudObject* health = new HudObject("Sprites/PlayerHealth.png", cocos2d::Vec2(70 + (70 * i), 1000));
 		this->addChild(health->sprite, 100);
 	}
+
+	HudObject* BossHealthBar = new HudObject("Sprites/BossHealth.png", cocos2d::Vec2(1000, 1000));
+	this->addChild(BossHealthBar->sprite, 100);
 }
 
 void Boss1Scene::initGameObjects()
