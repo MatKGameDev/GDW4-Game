@@ -125,7 +125,7 @@ void Boss1Scene::initSprites()
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
-	Hero::hero->sprite->setPosition(Vec2(700, 200));
+	Hero::hero->sprite->setPosition(Vec2(1700, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
 	Hero::hero->health = 5;

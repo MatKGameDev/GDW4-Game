@@ -60,7 +60,7 @@ void Tutorial::initUI()
 	attackHint->sprite->setScale(1.2);
 	this->addChild(attackHint->sprite, 18);
 
-	HelpBubble* dropHint = new HelpBubble("HintBubbles/dropHint.png", cocos2d::Vec2(5975, 875), 5700, 8800);
+	HelpBubble* dropHint = new HelpBubble("HintBubbles/dropHint.png", cocos2d::Vec2(5975, 875), 5600, 5999);
 	dropHint->sprite->setScale(1.2);
 	this->addChild(dropHint->sprite, 18);
 }
