@@ -108,6 +108,15 @@ void MainMenu::preloadAnimations()
 	sprite->setPosition(500, 500);
 	this->addChild(sprite, -20);
 
+	sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(0, 0);
+	this->addChild(sprite, -5);
+
 	//3 lava ball attack
 	sprite = cocos2d::Sprite::create("Sprites/spit_sprite.png");
 	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_spit_animation_key");
