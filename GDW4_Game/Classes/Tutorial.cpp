@@ -35,6 +35,11 @@ bool Tutorial::init()
 	initListeners();
 	initMusic();
 
+	//Init music
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("wonderPlace.wav");
+
+	
 	scheduleUpdate();
 
 	return true;
