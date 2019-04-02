@@ -35,6 +35,13 @@ void marcos::AnimationManager::init()
 	addAnimation("Sprites/grapple_hold_right.png", 1, 105, 195, "grapple_hold_right_animation_key");
 	addAnimation("Sprites/grapple_hold_left.png", 1, 105, 195, "grapple_hold_left_animation_key");
 
+	//Hero Death Animations
+	addAnimation("Sprites/death_left.png", 25, 168, 135, "hero_death_left_animation_key");
+	addAnimation("Sprites/death_right.png", 25, 168, 135, "hero_death_right_animation_key");
+
+
+	addAnimation("Backgrounds/mainMenu.png", 4, 7, 1920, 1080, "main_menu_animation_key");
+
 	//Boss State Animations
 	initBossStateAnimation();
 
@@ -56,6 +63,8 @@ void marcos::AnimationManager::initBossStateAnimation()
 	addAnimation("Sprites/boss_explosive_attack_part1.png", 8, bossWidth, bossHeight, "boss_explosive_tell_PRE_animation_key");
 	addAnimation("Sprites/boss_explosive_attack_part2.png", 4, bossWidth, bossHeight, "boss_explosive_tell_POST_animation_key");
 	addAnimation("Sprites/boss_idle.png", 8, 5, bossWidth, bossHeight, "boss_idle_animation_key");
+	addAnimation("Sprites/BossDeathGame", 12, 4, bossWidth + 50, bossHeight, "boss_death_animation_key");
+	addAnimation("Sprites/boss_resting.png", 16, bossWidth, bossHeight, "boss_restinga_animation_key");
 }
 
 /**
@@ -64,7 +73,8 @@ void marcos::AnimationManager::initBossStateAnimation()
 void marcos::AnimationManager::initBossAttackParticleAnimation()
 {
 	addAnimation("Sprites/exploding_fireball.png", 6, 60, 60, "boss_explosive_PRE_animation_key");
-	addAnimation("Sprites/exploding_fireball_part2.png", 22, 120, 120, "boss_explosive_POST_animation_key");
+	addAnimation("Sprites/exploding_fireballpart2.png", 17, 60, 60, "boss_explosive_MID_animation_key");
+	addAnimation("Sprites/exploding_fireballpart3.png", 8, 120, 120, "boss_explosive_POST_animation_key");
 	addAnimation("Sprites/flame_1.png", 2, 2, 1920, 500, "boss_flame_PRE_animation_key");
 	addAnimation("Sprites/flame_2.png", 4, 2, 1920, 500, "boss_flame_MID_animation_key");
 	addAnimation("Sprites/flame_3.png", 4, 2, 1920, 500, "boss_flame_POST_animation_key");
