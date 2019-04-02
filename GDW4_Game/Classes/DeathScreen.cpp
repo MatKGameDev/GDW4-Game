@@ -36,9 +36,13 @@ bool DeathScreen::init()
 void DeathScreen::initUI()
 {
 	//set background
-	background = Sprite::create("Backgrounds/uLoseTest.png");
+	background = Sprite::create("Backgrounds/deathScreen.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
+
+	textOverlay = Sprite::create("Backgrounds/uLoseTest.png");
+	textOverlay->setAnchorPoint(Vec2(0.0f, 0.0f));
+	this->addChild(textOverlay, 2);
 
 	//set our sprite labels
 	tryAgainText = Sprite::create("Text/tryAgainTest.png");

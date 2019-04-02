@@ -157,7 +157,7 @@
     <ClCompile Include="..\Classes\InitialLoadScreen.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Hud.cpp">
+    <ClCompile Include="..\Classes\Hud.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -325,7 +325,7 @@
     <ClInclude Include="..\Classes\InitialLoadScreen.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Hud.h">
+    <ClInclude Include="..\Classes\Hud.h">
       <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>

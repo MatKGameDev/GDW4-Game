@@ -7,6 +7,7 @@
 #include "DeathScreen.h"
 #include "VictoryScreen.h"
 #include "Boss/Attacks/Projectiles.h"
+#include "Hud.h"
 
 cocos2d::Scene* Boss1Scene::createScene()
 {
@@ -39,7 +40,11 @@ bool Boss1Scene::init()
 //initializes the user interface
 void Boss1Scene::initUI()
 {
-
+	for (int i = 0; i < Hero::hero->health; i++)
+	{
+		HudObject* health = new HudObject("Sprites/PlayerHealth.png", cocos2d::Vec2(70 + (70 * i), 1000));
+		this->addChild(health->sprite, 100);
+	}
 }
 
 void Boss1Scene::initGameObjects()
