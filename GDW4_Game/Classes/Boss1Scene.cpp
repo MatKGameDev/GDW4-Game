@@ -31,7 +31,7 @@ bool Boss1Scene::init()
 	initGameObjects();
 	initSprites();
 	initListeners();
-
+	initUI();
 	scheduleUpdate();
 
 	return true;
@@ -288,6 +288,11 @@ void Boss1Scene::updateObjects(float dt)
 	//update all ice projectiles
 	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
+
+	for (unsigned int i = 0; i < HudObject::HudList.size(); i++)
+	{
+		HudObject::HudList[i]->update(dt);
+	}
 }
 
 void Boss1Scene::updateEnemies(float dt)

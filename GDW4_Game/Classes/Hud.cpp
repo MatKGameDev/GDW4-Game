@@ -24,10 +24,17 @@ HudObject::HudObject(std::string filePath, cocos2d::Vec2 position)
 
 void HudObject::update(float dt)
 {
-		if (Hero::hero->getPosition().x > 1920 / 2)
+	if (HudList.size() > 0)
+	{
+		if (Hero::hero->health < HudList.size())
 		{
-			//do some simple math to convert mouse click position on screen to in-game world position
-			sprite->setPositionX(sprite->getPosition().x - 1920 / 2);
-			sprite->setPositionX(sprite->getPosition().x + Hero::hero->sprite->getPosition().x);
+			HudList[Hero::hero->health]->sprite->setVisible(0);
+			HudList.erase(HudList.begin() + Hero::hero->health);
 		}
+	}
+	else if (Hero::hero->health == 0)
+	{
+		HudList[0]->sprite->setVisible(0);
+		HudList.erase(HudList.begin());
+	}
 }

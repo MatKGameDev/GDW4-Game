@@ -81,7 +81,7 @@ void Hero::takeDamage(float sourcePositionX)
 	//make sure hero isn't already invulnerable
 	if (invincibilityTimer <= 0)
 	{
-		//health--;
+		health--;
 		invincibilityTimer = 0.99;
 
 		bypassSpeedCap = true;
@@ -106,7 +106,7 @@ void Hero::reset()
 	moveState = MoveDirection::idle;
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();
-	health = 3;
+	health = 5;
 }
 
 //updates the hero's arm position (only visible while grappling)
