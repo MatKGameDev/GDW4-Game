@@ -56,6 +56,14 @@ void MainMenu::initUI()
 
 void MainMenu::initAnimations()
 {
+	auto sprite = cocos2d::Sprite::create("Backgrounds/greyBackground.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("main_menu_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+	sprite->setAnchorPoint(Vec2(0, 0));
+	sprite->setPosition(0, 0);
+	this->addChild(sprite, -5);
 }
 
 void MainMenu::initMouseListener()

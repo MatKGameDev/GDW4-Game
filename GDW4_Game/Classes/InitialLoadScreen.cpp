@@ -33,6 +33,23 @@ bool InitialLoadScreen::init()
 //preloads boss animations to reduce lag later on
 void InitialLoadScreen::preloadAnimations()
 {
+	//flamethrower attack
+	auto sprite = cocos2d::Sprite::create("Sprites/flame_sprite.png");
+	auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_flame_animation_key");
+	auto action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
+
+	anim = cocos2d::AnimationCache::getInstance()->getAnimation("boss_idle_animation_key");
+	action = cocos2d::Animate::create(anim);
+	sprite->stopAllActions();
+	sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	sprite->setPosition(500, 500);
+	this->addChild(sprite, -20);
+
 
 }
 
