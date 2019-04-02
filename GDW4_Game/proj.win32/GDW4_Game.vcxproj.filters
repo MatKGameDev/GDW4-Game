@@ -154,6 +154,9 @@
     <ClCompile Include="..\Classes\Boss\Ability States\DeathState.cpp">
       <Filter>Boss\Ability States</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\InitialLoadScreen.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\IceProjectile.h" />
@@ -315,6 +318,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Boss\Ability States\DeathState.h">
       <Filter>Boss\Ability States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InitialLoadScreen.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
