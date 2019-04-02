@@ -36,6 +36,11 @@ bool MainMenu::init()
 void MainMenu::initUI()
 {
 	//set our sprite labels
+
+	Logo = Sprite::create("Backgrounds/Echoes_logo.png");
+	Logo->setPosition(Vec2(950, 900));
+	this->addChild(Logo, 10);
+
 	startText = Sprite::create("Text/start.png");
 	startText->setPosition(1920 / 2, 700);
 	this->addChild(startText, 10);
