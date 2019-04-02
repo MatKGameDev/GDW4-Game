@@ -259,10 +259,13 @@ void Boss1Scene::update(float dt)
 		}
 		else if (Hero::hero->health == 0)
 		{
+			//Hero::hero->reset(); //reset hero
+			//TileBase::deleteAllTiles();
+			//director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
+			//isTransitioning = true;
+
 			Hero::hero->reset(); //reset hero
-			TileBase::deleteAllTiles();
-			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
-			isTransitioning = true;
+			HeroStateManager::dying->onEnter();
 		}
 	}
 }
@@ -308,7 +311,6 @@ void Boss1Scene::updateEnemies(float dt)
 	}
 
 	//loop through each attack checking for collisions
-
 	for (auto i : boss->getLavaList())
 	{
 		if (Hero::hero->isHitboxCollision(i->getHitBox()))

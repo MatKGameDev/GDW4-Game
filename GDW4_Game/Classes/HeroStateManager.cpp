@@ -1,6 +1,7 @@
 #include "HeroStateManager.h"
 
 AttackingState* HeroStateManager::attacking = new AttackingState();
+DyingState* HeroStateManager::dying = new DyingState();
 FallingState* HeroStateManager::falling = new FallingState();
 GrapplingState* HeroStateManager::grappling = new GrapplingState();
 IdleState* HeroStateManager::idle = new IdleState();

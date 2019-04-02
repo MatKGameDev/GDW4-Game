@@ -7,7 +7,6 @@ GrappleJumpState::GrappleJumpState()
 {
 }
 
-
 GrappleJumpState::~GrappleJumpState()
 {
 }
@@ -26,15 +25,13 @@ void GrappleJumpState::onEnter()
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-
 	}
-	else
+	else //looking right
 	{
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_jump_right_animation_key");
 		auto action = cocos2d::Animate::create(anim);
 		Hero::hero->sprite->stopAllActions();
 		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-
 	}
 }
 
