@@ -12,7 +12,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 	attackType = BossAttack::Flamethrower;
 
 	//Get all animations
-	const auto startingAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_flame_PRE_animation_key",1.5);
+	const auto startingAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_flame_PRE_animation_key",0.5);
 	const auto midAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_flame_MID_animation_key",1.5);
 	const auto finishingAnimation = marcos::AnimationManager::getAnimation("boss_flame_POST_animation_key");
 
@@ -22,6 +22,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 		cocos2d::Sequence::create
 		(
 			cocos2d::Repeat::create(startingAnimation, 1),
+			cocos2d::DelayTime::create(.5f),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(1920, 230); }),
 			cocos2d::Repeat::create(midAnimation, 1),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(0, 0); }),
