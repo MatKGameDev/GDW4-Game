@@ -67,9 +67,11 @@ void ExplosiveArea::update(const float& deltaT)
  */
 void ExplosiveArea::addForceToHero()
 {
-	//Apply force to hero if the hero position is in range AND
-	if (isHeroInRange()) 
+	//Apply force to hero if the hero position is in range
+	if (isHeroInRange())
 		Hero::hero->force = calculateDirectionToHero() * constantG;
+	else
+		resetHeroForce();
 }
 
 /**
@@ -99,7 +101,7 @@ void ExplosiveArea::resetHeroForce() const
 bool ExplosiveArea::isHeroInRange() const
 {
 	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength()
-		< 250;
+		< 200;
 }
 
 /**
@@ -113,8 +115,8 @@ float ExplosiveArea::calculateDistanceSquare() const
 }
 
 //Explosive Bullet static members
-const float ExplosiveBullet::accelerationMultiplier = 2000;
-const float ExplosiveBullet::velocityMultiplier = 1250;
+const float ExplosiveBullet::accelerationMultiplier = 2500;
+const float ExplosiveBullet::velocityMultiplier = 1500;
 
 /**
  *@brief This initialize the data members and sprite action for the explosive bullet
@@ -162,6 +164,7 @@ void ExplosiveBullet::update(const float& deltaT)
 	if (!isWaiting)
 	{
 		//physics update
+		setUpPhysic(Hero::hero->sprite->getPosition());
 		velocity += acceleration * deltaT;
 		position += velocity * deltaT;
 
