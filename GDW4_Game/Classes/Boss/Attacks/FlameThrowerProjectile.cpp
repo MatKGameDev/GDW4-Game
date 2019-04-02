@@ -33,8 +33,6 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 
 	//Set hit box
 	hitBox = new HitBox(position, 0, 0);
-
-	dealingDamage = 2;
 }
 
 FlameThrower::~FlameThrower()

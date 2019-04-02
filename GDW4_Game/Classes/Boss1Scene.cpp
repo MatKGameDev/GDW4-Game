@@ -261,7 +261,7 @@ void Boss1Scene::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//FOR TESTING BOSS DEATH
-	 if (Hero::hero->health <= 0)
+		if (Hero::hero->health <= 0)
 		{
 			if (transitionDelay == 3.0f)
 			{

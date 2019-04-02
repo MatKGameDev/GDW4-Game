@@ -24,7 +24,7 @@ HudObject::HudObject(std::string filePath, cocos2d::Vec2 position)
 
 void HudObject::update(float dt)
 {
-	/*if (HudList.size() > 0)
+	if (HudList.size() > 0)
 	{
 		if (Hero::hero->health < HudList.size())
 		{
@@ -36,5 +36,5 @@ void HudObject::update(float dt)
 	{
 		HudList[0]->sprite->setVisible(0);
 		HudList.erase(HudList.begin());
-	}*/
+	}
 }
