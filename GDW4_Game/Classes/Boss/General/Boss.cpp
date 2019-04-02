@@ -7,7 +7,7 @@
 
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
-	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(10)
+	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(50)
 {
 	sprite->setPosition(230, 450);
 	initHitbox();

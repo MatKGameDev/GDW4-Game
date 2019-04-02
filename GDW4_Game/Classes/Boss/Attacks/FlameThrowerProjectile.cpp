@@ -11,7 +11,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 	bossPointer->getBossScene()->addChild(sprite, 16);
 
 	//Get all animations
-	const auto startingAnimation = marcos::AnimationManager::getAnimation("boss_flame_PRE_animation_key");
+	const auto startingAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_flame_PRE_animation_key",0.5);
 	const auto midAnimation = marcos::AnimationManager::getAnimationWithAnimationTime("boss_flame_MID_animation_key",1.5);
 	const auto finishingAnimation = marcos::AnimationManager::getAnimation("boss_flame_POST_animation_key");
 

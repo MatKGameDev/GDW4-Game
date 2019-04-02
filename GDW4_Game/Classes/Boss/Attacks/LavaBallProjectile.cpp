@@ -61,6 +61,7 @@ void LavaBall::update(const float& deltaT)
 {
 	if (!isWaiting)
 	{
+		//setUpPhysics();
 		velocity += acceleration * deltaT;
 		position += velocity * deltaT;
 		sprite->setPosition(position);
@@ -72,6 +73,12 @@ void LavaBall::hitByEnvironment()
 {
 	delete this;
 }
+
+void LavaBall::hitByHero()
+{
+	delete this;
+}
+
 
 void LavaBall::setUpPhysics()
 {

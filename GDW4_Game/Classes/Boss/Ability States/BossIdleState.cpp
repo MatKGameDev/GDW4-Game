@@ -3,7 +3,7 @@
 
 //Static function initialize
 int Idling4FirstBoss::numberOfCast = 0;
-const int Idling4FirstBoss::maxNumberOfCastPerRound = 5;
+const int Idling4FirstBoss::maxNumberOfCastPerRound = 20;
 
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
 	: FirstBossState(boss), cooldownBeforeNextAbility{ 1.f }
