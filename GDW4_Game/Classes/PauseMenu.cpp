@@ -29,6 +29,11 @@ bool PauseMenu::init()
 	initControllerListener();
 	initMusic();
 
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	
+	audio->resumeBackgroundMusic();
+	
+
 	scheduleUpdate();
 
 	return true;
