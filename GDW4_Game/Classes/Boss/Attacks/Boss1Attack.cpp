@@ -47,3 +47,8 @@ cocos2d::Rect Boss1LavaAttack::getHitBox() const
 {
 	return hitBox->hitBox;
 }
+
+Boss1LavaAttack::BossAttack Boss1LavaAttack::getAttackType() const
+{
+	return attackType;
+}

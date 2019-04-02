@@ -25,6 +25,7 @@ void FirstBossState::changeToIdleState() const
  */
 void FirstBossState::changeToDeathState() const
 {
+	bossPointer->setState(new DeathState(bossPointer));
 }
 
 /**

@@ -15,6 +15,7 @@ Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
 	invincibilityTimer(0),
 	health(3),
 	isAirborne(false),
+	bypassSpeedCap(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
 {
@@ -42,19 +43,29 @@ void Hero::createHero()
 void Hero::moveRight()
 {
 	lookState = LookDirection::lookingRight;
-	if (isAirborne)
-		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
-	else
-		velocity.x += movespeedIncrease;
+
+	//make sure hero isn't above max velocity
+	if (!(velocity.x > MAX_HORIZONTAL_VELOCITY || velocity.x < -MAX_HORIZONTAL_VELOCITY))
+	{
+		if (isAirborne)
+			velocity.x += movespeedIncrease * 0.7; //add some drag in the air
+		else
+			velocity.x += movespeedIncrease;
+	}
 }
 
 void Hero::moveLeft()
 {
 	lookState = LookDirection::lookingLeft;
-	if (isAirborne)
-		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
-	else
-		velocity.x -= movespeedIncrease;
+
+	//make sure hero isn't above max velocity
+	if (!(velocity.x > MAX_HORIZONTAL_VELOCITY || velocity.x < -MAX_HORIZONTAL_VELOCITY))
+	{
+		if (isAirborne)
+			velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
+		else
+			velocity.x -= movespeedIncrease;
+	}
 }
 
 //jump if not already airbourne
@@ -65,13 +76,24 @@ void Hero::jump()
 }
 
 //hero takes damage from any source
-void Hero::takeDamage()
+void Hero::takeDamage(float sourcePositionX)
 {
 	//make sure hero isn't already invulnerable
 	if (invincibilityTimer <= 0)
 	{
-		health--;
+		//health--;
 		invincibilityTimer = 0.99;
+
+		bypassSpeedCap = true;
+
+		//if we're not in any of the grappling states, go into falling state
+		if (HeroStateManager::currentState != HeroStateManager::grappling && HeroStateManager::currentState != HeroStateManager::shootingGrapple && HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+			HeroStateManager::falling->onEnter();
+		
+		if (this->getPosition().x < sourcePositionX)
+			Hero::hero->velocity = Vect2(-600, 400);
+		else //hero position().x <= sourcePositionX
+			Hero::hero->velocity = Vect2(600, 400);
 	}
 }
 
@@ -172,16 +194,19 @@ void Hero::updatePhysics(float dt)
 	}
 
 	//check max velocity
-	//for x
-	if (velocity.x > MAX_HORIZONTAL_VELOCITY) 
-		velocity.x = MAX_HORIZONTAL_VELOCITY;
-	else if (velocity.x < -MAX_HORIZONTAL_VELOCITY)
-		velocity.x = -MAX_HORIZONTAL_VELOCITY;
-	//for y
-	if (velocity.y > MAX_VERTICAL_VELOCITY)
-		velocity.y = MAX_VERTICAL_VELOCITY;
-	else if (velocity.y < -MAX_VERTICAL_VELOCITY)
-		velocity.y = -MAX_VERTICAL_VELOCITY;
+	if (!bypassSpeedCap)
+	{
+		//for x
+		if (velocity.x > MAX_HORIZONTAL_VELOCITY)
+			velocity.x = MAX_HORIZONTAL_VELOCITY;
+		else if (velocity.x < -MAX_HORIZONTAL_VELOCITY)
+			velocity.x = -MAX_HORIZONTAL_VELOCITY;
+		//for y
+		if (velocity.y > MAX_VERTICAL_VELOCITY)
+			velocity.y = MAX_VERTICAL_VELOCITY;
+		else if (velocity.y < -MAX_VERTICAL_VELOCITY)
+			velocity.y = -MAX_VERTICAL_VELOCITY;
+	}
 
 	//check for hero out of bounds
 	updateHitboxes();
@@ -204,7 +229,7 @@ void Hero::updateCollisions()
 		{
 			//check if it's a spike tile (deals damage)
 			if (TileBase::tileList[i]->checkAndResolveCollision(this) && TileBase::tileList[i]->type == TileType::spike)
-				this->takeDamage();
+				this->takeDamage(TileBase::tileList[i]->hitBox.getMidX());
 		}
 	}
 }
@@ -222,7 +247,11 @@ void Hero::update(float dt)
 
 	//update invincibility timer
 	if (invincibilityTimer > 0)
+	{
 		invincibilityTimer -= dt;
+		if (invincibilityTimer < 0.8f)
+			bypassSpeedCap = false;
+	}
 
 	updateHitboxes();
 	updateCollisions();

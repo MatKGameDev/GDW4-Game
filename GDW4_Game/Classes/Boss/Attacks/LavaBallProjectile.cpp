@@ -1,9 +1,12 @@
 #include "Boss/Attacks/LavaBallProjectile.h"
 #include "Boss/General/Boss.h"
+#include "Hero.h"
 
 LavaBall::LavaBall(int order, Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png")
 {
+	attackType = BossAttack::LavaBall;
+
 	//Set Position for the lava ball
 	switch (order)
 	{
@@ -12,11 +15,11 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 		position = cocos2d::Vec2(350, 500);
 		break;
 	case 2:
-		waitingTime = 1;
+		waitingTime = 1.1;
 		position = cocos2d::Vec2(350, 200);
 		break;
 	case 3:
-		waitingTime = 1.5;
+		waitingTime = 1.6;
 		position = cocos2d::Vec2(350, 750);
 		break;
 	default:
@@ -25,8 +28,8 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	
 	//Set physic variables
 	sprite->setPosition(position);
-	acceleration.set(2000, 0);
-	velocity.set(1000, 0);
+	/*acceleration.set(2000, 0);
+	velocity.set(1000, 0);*/
 
 	//Set sprite size
 	hitBox = new HitBox(position, 50.f, 50);
@@ -41,7 +44,11 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 		(
 			cocos2d::Repeat::create(animation->clone(), 1),
 			cocos2d::DelayTime::create(waitingTime),
-			cocos2d::CallFunc::create([&] {isWaiting = false; }),
+			cocos2d::CallFunc::create([&]
+	{
+		setUpPhysics();
+		isWaiting = false;
+	}),
 			nullptr
 		)
 	);
@@ -56,18 +63,28 @@ void LavaBall::update(const float& deltaT)
 {
 	if (!isWaiting)
 	{
+		//setUpPhysics();
 		velocity += acceleration * deltaT;
 		position += velocity * deltaT;
 		sprite->setPosition(position);
 		hitBox->updateHitBox(position);
-
-		//Delete the object when it goes out of the screen
-		if (position.x > 1920)
-			delete this;
 	}
 }
 
 void LavaBall::hitByEnvironment()
 {
 	delete this;
+}
+
+void LavaBall::hitByHero()
+{
+	delete this;
+}
+
+
+void LavaBall::setUpPhysics()
+{
+	const cocos2d::Vec2 tempVector = Hero::hero->sprite->getPosition() - position;
+	acceleration = tempVector.getNormalized() * 2000;
+	velocity = tempVector.getNormalized() * 750;
 }

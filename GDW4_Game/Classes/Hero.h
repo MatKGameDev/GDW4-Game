@@ -41,11 +41,13 @@ public:
 
 	int health;
 
+	bool bypassSpeedCap;
+
 	void moveRight();
 	void moveLeft();
 	void jump();
 
-	void takeDamage();
+	void takeDamage(float sourcePositionX);
 	void reset();
 
 	void updateArmPosition();

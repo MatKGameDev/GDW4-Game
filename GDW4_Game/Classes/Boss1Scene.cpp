@@ -55,7 +55,7 @@ void Boss1Scene::initGameObjects()
 void Boss1Scene::initSprites()
 {
 	//add background
-	background = Sprite::create("Backgrounds/background.png");
+	background = Sprite::create("Backgrounds/bossBackground.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
@@ -303,7 +303,7 @@ void Boss1Scene::updateEnemies(float dt)
 		//check for collision on boss
 		if (Hero::hero->isHitboxCollision(i->hitBox))
 		{
-			Hero::hero->takeDamage();
+			Hero::hero->takeDamage(i->hitBox.getMidX());
 		}
 	}
 
@@ -313,7 +313,11 @@ void Boss1Scene::updateEnemies(float dt)
 	{
 		if (Hero::hero->isHitboxCollision(i->getHitBox()))
 		{
-			Hero::hero->takeDamage();
+			if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
+				Hero::hero->takeDamage(i->getHitBox().getMinX());
+			else //not flamethrower attack
+				Hero::hero->takeDamage(i->getHitBox().getMidX());
+
 			i->hitByHero();
 		}
 	}
