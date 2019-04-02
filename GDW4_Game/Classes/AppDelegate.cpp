@@ -29,6 +29,7 @@
 #include "Tutorial.h"
 #include "HeroStateManager.h"
 #include "MainMenu.h"
+#include "InitialLoadScreen.h"
 #include "PauseMenu.h"
 
 USING_NS_CC;
@@ -66,7 +67,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
 
-	auto scene = MainMenu::createScene();
+	auto scene = InitialLoadScreen::createScene();
 	director->runWithScene(scene);
 
 	return true;

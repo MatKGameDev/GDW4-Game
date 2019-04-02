@@ -28,8 +28,6 @@ public:
 	void initMouseListener();
 	void initControllerListener();
 
-	void preloadAnimations();
-
 	void moveToNextMenuItem();
 	void moveToPreviousMenuItem();
 
