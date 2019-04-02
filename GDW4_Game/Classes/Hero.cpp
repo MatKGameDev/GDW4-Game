@@ -233,7 +233,10 @@ void Hero::updateCollisions()
 		{
 			//check if it's a spike tile (deals damage)
 			if (TileBase::tileList[i]->checkAndResolveCollision(this) && TileBase::tileList[i]->type == TileType::spike)
+			{
 				this->takeDamage(TileBase::tileList[i]->hitBox.getMidX());
+				this->health++;
+			}
 		}
 	}
 }
