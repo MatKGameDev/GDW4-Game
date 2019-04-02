@@ -124,7 +124,7 @@ void Boss1Scene::initSprites()
 	Hero::hero->sprite->setPosition(Vec2(700, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
-	Hero::hero->health = 3;
+	Hero::hero->health = 5;
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
