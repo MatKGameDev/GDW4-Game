@@ -13,21 +13,24 @@ ShootingGrappleState::~ShootingGrappleState()
 
 void ShootingGrappleState::onEnter()
 {
-	HeroStateManager::currentState = this;
+	if (HeroStateManager::currentState != HeroStateManager::dying)
+	{
+		HeroStateManager::currentState = this;
 
-	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
-	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_left_animation_key");
-		auto action = cocos2d::Animate::create(anim);
-		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-	}
-	else
-	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_right_animation_key");
-		auto action = cocos2d::Animate::create(anim);
-		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_left_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
+		else
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_right_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
 	}
 }
 

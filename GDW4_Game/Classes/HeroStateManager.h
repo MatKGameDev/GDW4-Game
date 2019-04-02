@@ -3,6 +3,7 @@
 #define HEROSTATEMANAGER_H
 
 #include "AttackingState.h"
+#include "DyingState.h"
 #include "FallingState.h"
 #include "GrapplingState.h"
 #include "IdleState.h"
@@ -20,6 +21,7 @@ public:
 
 	static HeroStateBase* currentState;
 	static AttackingState* attacking;
+	static DyingState* dying;
 	static FallingState* falling;
 	static GrapplingState* grappling;
 	static IdleState* idle;

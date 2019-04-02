@@ -176,7 +176,7 @@ void Grapple::predictCollision()
 //performs initial grapple shoot actions from a destination (mouse position)
 void Grapple::shoot(Vect2 destination)
 {
-	if (!isActive)
+	if (!isActive && HeroStateManager::currentState != HeroStateManager::dying)
 	{
 		//set all initial variables upon grapple being shot out
 		isActive = true;
@@ -216,7 +216,7 @@ void Grapple::shoot(Vect2 destination)
 //performs initial grapple shoot actions from an angle (controller stick)
 void Grapple::shoot(float a_theta)
 {
-	if (!isActive)
+	if (!isActive && HeroStateManager::currentState != HeroStateManager::dying)
 	{
 		//set all initial variables upon grapple being shot out
 		theta = a_theta;

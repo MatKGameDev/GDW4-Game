@@ -78,17 +78,21 @@ void Hero::jump()
 //hero takes damage from any source
 void Hero::takeDamage(float sourcePositionX)
 {
-	//make sure hero isn't already invulnerable
-	if (invincibilityTimer <= 0)
+	//make sure hero isn't already invulnerable or ded
+	if (invincibilityTimer <= 0 && HeroStateManager::currentState != HeroStateManager::dying)
 	{
-		//health--;
+		health--;
 		invincibilityTimer = 0.99;
 
 		bypassSpeedCap = true;
 
-		//if we're not in any of the grappling states, go into falling state
-		if (HeroStateManager::currentState != HeroStateManager::grappling && HeroStateManager::currentState != HeroStateManager::shootingGrapple && HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+		//if we're not in any of the grappling states or dying, go into falling state
+		if (HeroStateManager::currentState != HeroStateManager::grappling &&
+			HeroStateManager::currentState != HeroStateManager::shootingGrapple &&
+			HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+		{
 			HeroStateManager::falling->onEnter();
+		}
 		
 		if (this->getPosition().x < sourcePositionX)
 			Hero::hero->velocity = Vect2(-600, 400);
