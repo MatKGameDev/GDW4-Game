@@ -43,6 +43,7 @@ void Tutorial::initUI()
 {
 	//initialize help bubbles
 	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHint.png", cocos2d::Vec2(300, 300), 200, 500);
+	jumpHint->sprite->setScale(1.2);
 	this->addChild(jumpHint->sprite, 18);
 
 	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(2125, 450), 1950, 2300);
