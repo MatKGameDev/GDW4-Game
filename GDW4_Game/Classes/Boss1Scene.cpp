@@ -303,7 +303,7 @@ void Boss1Scene::updateEnemies(float dt)
 		//check for collision on boss
 		if (Hero::hero->isHitboxCollision(i->hitBox))
 		{
-			Hero::hero->takeDamage();
+			Hero::hero->takeDamage(i->hitBox.getMidX());
 		}
 	}
 
