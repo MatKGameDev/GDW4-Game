@@ -9,6 +9,7 @@
 #include "SpikeTile.h"
 #include "DeathScreen.h"
 #include "Hud.h"
+#include <SimpleAudioEngine.h>
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -32,6 +33,7 @@ bool Tutorial::init()
 	initGameObjects();
 	initSprites();
 	initListeners();
+	initMusic();
 
 	scheduleUpdate();
 
@@ -306,6 +308,12 @@ void Tutorial::initControllerListener()
 
 	//add the controller listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
+void Tutorial::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 //UPDATE

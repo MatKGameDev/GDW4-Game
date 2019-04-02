@@ -32,6 +32,7 @@ public:
 	void initMouseListener();
 	void initKeyboardListener();
 	void initControllerListener();
+	void initMusic();
 
 	void update(float dt);
 	void spawnEnemies();

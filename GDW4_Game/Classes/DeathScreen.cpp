@@ -2,6 +2,7 @@
 #include "MainMenu.h"
 #include "Tutorial.h"
 #include "Boss1Scene.h"
+#include <SimpleAudioEngine.h>
 
 Scene * DeathScreen::createScene()
 {
@@ -22,6 +23,7 @@ bool DeathScreen::init()
 
 	initUI();
 	initAnimations();
+	initMusic();
 	
 	//init listeners
 	initMouseListener();
@@ -65,6 +67,12 @@ void DeathScreen::initUI()
 
 void DeathScreen::initAnimations()
 {
+}
+
+void DeathScreen::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void DeathScreen::initMouseListener()
