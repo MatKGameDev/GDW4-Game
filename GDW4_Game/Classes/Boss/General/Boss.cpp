@@ -90,7 +90,7 @@ void Boss::takeDamage()
 	health--;
 
 	if (health == 0)
-		cocos2d::Director::getInstance()->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
+		state->changeToDeathState();
 }
 
 /**

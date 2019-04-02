@@ -151,6 +151,9 @@
     <ClCompile Include="..\Classes\SpikeTile.cpp">
       <Filter>Environmental Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Boss\Ability States\DeathState.cpp">
+      <Filter>Boss\Ability States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\IceProjectile.h" />
@@ -309,6 +312,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\SpikeTile.h">
       <Filter>Environmental Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Boss\Ability States\DeathState.h">
+      <Filter>Boss\Ability States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
