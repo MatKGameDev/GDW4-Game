@@ -43,20 +43,24 @@ bool Tutorial::init()
 void Tutorial::initUI()
 {
 	//initialize help bubbles
-	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHint.png", cocos2d::Vec2(300, 300), 200, 500);
 	this->addChild(jumpHint->sprite, 18);
 
-	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
+	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(2075, 450), 1950, 2300);
 	holdJumpHint->sprite->setScale(3.0);
 	this->addChild(holdJumpHint->sprite, 18);
 
-	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(1500, 600), 0, 1900);
+	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(3900, 375), 3690, 4050);
 	grapplingHint->sprite->setScale(1.2);
 	this->addChild(grapplingHint->sprite, 18);
 
-	HelpBubble* grappleJumpHint = new HelpBubble("HintBubbles/grappleJumpHint.png", cocos2d::Vec2(1900, 800), 0, 1900);
-	grappleJumpHint->sprite->setScale(1.2);
-	this->addChild(grappleJumpHint->sprite, 18);
+	HelpBubble* attackHint = new HelpBubble("HintBubbles/attackHint.png", cocos2d::Vec2(4650, 740), 4400, 4800);
+	attackHint->sprite->setScale(1.2);
+	this->addChild(attackHint->sprite, 18);
+
+	HelpBubble* dropHint = new HelpBubble("HintBubbles/dropHint.png", cocos2d::Vec2(5975, 875), 5700, 8800);
+	dropHint->sprite->setScale(1.2);
+	this->addChild(dropHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
