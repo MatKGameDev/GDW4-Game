@@ -1,5 +1,6 @@
 #include "PrettyPictureScene.h"
 #include "Boss1Scene.h"
+#include <SimpleAudioEngine.h>
 
 Scene * PrettyPictureScene::createScene()
 {
@@ -23,6 +24,9 @@ bool PrettyPictureScene::init()
 
 	timer = 0.0f;
 	isDone = false;
+
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->stopBackgroundMusic();
 
 	scheduleUpdate();
 
