@@ -173,7 +173,7 @@ void Tutorial::initSprites()
 	//delete any existing tiles before we import our map
 	TileBase::deleteAllTiles();
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest3.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Final.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
