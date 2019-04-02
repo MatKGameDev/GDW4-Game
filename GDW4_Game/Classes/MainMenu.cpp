@@ -1,6 +1,7 @@
 #include "MainMenu.h"
 #include "Tutorial.h"
 #include "ControlsMenu.h"
+#include "Boss1Scene.h"
 
 Scene * MainMenu::createScene()
 {
@@ -179,7 +180,7 @@ void MainMenu::update(float dt)
 void MainMenu::transitionScene()
 {
 	this->removeAllChildrenWithCleanup(true);
-	director->replaceScene(TransitionFade::create(1.f, Tutorial::createScene(), Color3B(0, 0, 0)));
+	director->replaceScene(TransitionFade::create(1.f, Boss1Scene::createScene(), Color3B(0, 0, 0)));
 	isTransitioning = true;
 }
 
