@@ -12,23 +12,23 @@ LavaBall::LavaBall(int order, Boss *bossInstance)
 	{
 	case 1:
 		waitingTime = 0.5;
-		position = cocos2d::Vec2(350, 450);
+		position = cocos2d::Vec2(350, 525);
 		break;
 	case 2:
 		waitingTime = 1.1;
-		position = cocos2d::Vec2(350, 600); 
+		position = cocos2d::Vec2(350, 675); 
 		break;
 	case 3:
 		waitingTime = 1.6;
-		position = cocos2d::Vec2(350, 300); 
+		position = cocos2d::Vec2(350, 375); 
 		break;
 	case 4:
 		waitingTime = 2.2;
-		position = cocos2d::Vec2(350, 750); 
+		position = cocos2d::Vec2(350, 825); 
 		break;
 	case 5:
 		waitingTime = 2.8;
-		position = cocos2d::Vec2(350, 150); 
+		position = cocos2d::Vec2(350, 225); 
 		break;
 	default:
 		throw;
