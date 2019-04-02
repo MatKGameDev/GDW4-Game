@@ -110,7 +110,6 @@ void Hero::reset()
 	moveState = MoveDirection::idle;
 	HeroStateManager::idle->onEnter();
 	Grapple::grapple->unLatch();
-	health = 3;
 }
 
 //updates the hero's arm position (only visible while grappling)

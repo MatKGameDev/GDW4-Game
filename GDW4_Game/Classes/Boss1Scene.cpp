@@ -19,6 +19,7 @@ bool Boss1Scene::init()
 	if (!Scene::init())
 		return false;
 
+	transitionDelay = 3.0f;
 	isTransitioning = false;
 
 	srand(time(NULL)); //seed rng
@@ -118,6 +119,7 @@ void Boss1Scene::initSprites()
 	Hero::hero->sprite->setPosition(Vec2(700, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
+	Hero::hero->health = 3;
 
 	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
@@ -259,13 +261,18 @@ void Boss1Scene::update(float dt)
 		}
 		else if (Hero::hero->health == 0)
 		{
-			//Hero::hero->reset(); //reset hero
-			//TileBase::deleteAllTiles();
-			//director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
-			//isTransitioning = true;
+			if (transitionDelay == 3.0f)
+			{
+				Hero::hero->reset(); //reset hero
+				HeroStateManager::dying->onEnter();
+			}
 
-			Hero::hero->reset(); //reset hero
-			HeroStateManager::dying->onEnter();
+			transitionDelay -= dt;
+			if (transitionDelay <= 0.0f)
+			{
+				director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
+				isTransitioning = true;
+			}
 		}
 	}
 }
