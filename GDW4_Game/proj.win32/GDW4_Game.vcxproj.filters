@@ -157,6 +157,9 @@
     <ClCompile Include="..\Classes\InitialLoadScreen.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\IceProjectile.h" />
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\InitialLoadScreen.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
