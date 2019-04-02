@@ -153,6 +153,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\AttackingState.cpp" />
     <ClCompile Include="..\Classes\Boss\Ability States\BossIdleState.cpp" />
+    <ClCompile Include="..\Classes\Boss\Ability States\DeathState.cpp" />
     <ClCompile Include="..\Classes\Boss\Ability States\ExplosiveBullet.cpp" />
     <ClCompile Include="..\Classes\Boss\Ability States\FirstBossState.cpp" />
     <ClCompile Include="..\Classes\Boss\Ability States\FlameSplit.cpp" />
@@ -209,6 +210,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AttackingState.h" />
     <ClInclude Include="..\Classes\Boss\Ability States\BossIdleState.h" />
+    <ClInclude Include="..\Classes\Boss\Ability States\DeathState.h" />
     <ClInclude Include="..\Classes\Boss\Ability States\ExplosiveBullet.h" />
     <ClInclude Include="..\Classes\Boss\Ability States\FirstBossState.h" />
     <ClInclude Include="..\Classes\Boss\Ability States\FlameSplit.h" />

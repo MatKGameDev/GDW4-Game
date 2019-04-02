@@ -7,7 +7,7 @@
 
 
 Boss::Boss(Hero* heroInstance, cocos2d::Scene* sceneForBoss, float height, float width)
-	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(10)
+	: sprite(cocos2d::Sprite::create()), bossScene(sceneForBoss), health(50)
 {
 	sprite->setPosition(230, 450);
 	initHitbox();
@@ -90,7 +90,7 @@ void Boss::takeDamage()
 	health--;
 
 	if (health == 0)
-		cocos2d::Director::getInstance()->replaceScene(TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0)));
+		state->changeToDeathState();
 }
 
 /**

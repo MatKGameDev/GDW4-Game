@@ -62,16 +62,11 @@ void ExplosiveArea::update(const float& deltaT)
 void ExplosiveArea::addForceToHero() const
 {
 	//Apply force to hero if the hero position is in range AND
-	if (isHeroInRange() && !appliedForce)
-	{
-		appliedForce = true;
-		Hero::hero->force += calculateDirectionToHero() * constantG;
-	}
+	if (isHeroInRange())
+		Hero::hero->force = calculateDirectionToHero() * constantG;
 	else
-	{
 		resetHeroForce();
-		appliedForce = false;
-	}
+	
 }
 
 /**
@@ -91,8 +86,7 @@ Vect2 ExplosiveArea::calculateDirectionToHero() const
  */
 void ExplosiveArea::resetHeroForce() const
 {
-	if (appliedForce)
-		Hero::hero->force = Vect2(0, 0);
+	Hero::hero->force = Vect2(0, 0);
 }
 
 /**
@@ -101,7 +95,8 @@ void ExplosiveArea::resetHeroForce() const
  */
 bool ExplosiveArea::isHeroInRange() const
 {
-	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength() < 200;
+	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength() 
+	< 300;
 }
 
 /**
@@ -111,7 +106,7 @@ bool ExplosiveArea::isHeroInRange() const
  */
 float ExplosiveArea::calculateDistanceSquare() const
 {
-	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLengthSq();
+	return Vec2(Hero::hero->getPosition().x - position.x, Hero::hero->getPosition().y - position.y).getLength();
 }
 
 //Explosive Bullet static members

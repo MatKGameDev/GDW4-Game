@@ -10,7 +10,11 @@ public:
 	//Functions
 	void update(const float &deltaT) override;
 	void hitByEnvironment() override;
+	void hitByHero() override;
 private:
 	float waitingTime;
 	bool isWaiting{ true };
+
+	//Private member functions
+	void setUpPhysics();
 };
