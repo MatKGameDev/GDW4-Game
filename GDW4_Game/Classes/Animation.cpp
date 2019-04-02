@@ -63,8 +63,8 @@ void marcos::AnimationManager::initBossStateAnimation()
 	addAnimation("Sprites/boss_explosive_attack_part1.png", 8, bossWidth, bossHeight, "boss_explosive_tell_PRE_animation_key");
 	addAnimation("Sprites/boss_explosive_attack_part2.png", 4, bossWidth, bossHeight, "boss_explosive_tell_POST_animation_key");
 	addAnimation("Sprites/boss_idle.png", 8, 5, bossWidth, bossHeight, "boss_idle_animation_key");
-	addAnimation("Sprites/BossDeathGame", 12, 4, bossWidth + 50, bossHeight, "boss_death_animation_key");
-	addAnimation("Sprites/boss_resting.png", 16, bossWidth, bossHeight, "boss_restinga_animation_key");
+	addAnimation("Sprites/BossDeathGame.png", 12, 4, bossWidth + 150, bossHeight, "boss_death_animation_key");
+	addAnimation("Sprites/boss_resting.png", 16, bossWidth, bossHeight, "boss_resting_animation_key");
 }
 
 /**

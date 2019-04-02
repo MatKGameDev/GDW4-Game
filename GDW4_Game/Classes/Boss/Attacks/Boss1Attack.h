@@ -32,6 +32,7 @@ public:
 	//Getters
 	cocos2d::Rect getHitBox() const;
 	BossAttack getAttackType() const;
+	int getDealingDamage() const;
 
 protected:
 	//Protected Variables
@@ -40,6 +41,7 @@ protected:
 	cocos2d::Sprite *sprite;
 	HitBox *hitBox;
 	BossAttack attackType;
+	int dealingDamage{ 1 };
 
 	//Protected Constructor
 	Boss1LavaAttack(Boss *bossInstance, const std::string& fileName);
