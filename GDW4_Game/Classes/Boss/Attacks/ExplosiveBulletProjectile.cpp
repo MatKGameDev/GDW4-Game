@@ -8,6 +8,7 @@ ExplosiveArea::ExplosiveArea(const cocos2d::Vec2& startPosition, Boss* bossInsta
 	//Set up the sprite
 	position = startPosition;
 	sprite->setPosition(position);
+	attackType = BossAttack::ExplosiveBullet;
 
 	hitBox = new HitBox(position, 120, 120, bossPointer->getBossScene());
 

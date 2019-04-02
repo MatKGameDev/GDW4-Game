@@ -55,7 +55,7 @@ void Boss1Scene::initGameObjects()
 void Boss1Scene::initSprites()
 {
 	//add background
-	background = Sprite::create("Backgrounds/background.png");
+	background = Sprite::create("Backgrounds/bossBackground.png");
 	background->setAnchorPoint(Vec2(0.0f, 0.0f));
 	this->addChild(background, 1);
 
@@ -301,7 +301,7 @@ void Boss1Scene::updateEnemies(float dt)
 	//check for collision on boss
 	if (Hero::hero->isHitboxCollision(boss->getHitBox()))
 	{
-		Hero::hero->takeDamage();
+		Hero::hero->takeDamage(boss->getHitBox().getMidX());
 	}
 
 	//loop through each attack checking for collisions
@@ -311,7 +311,7 @@ void Boss1Scene::updateEnemies(float dt)
 	{
 		if (Hero::hero->isHitboxCollision(boss->getLavaList()[i]->getHitBox())) 
 		{
-			Hero::hero->takeDamage();
+			Hero::hero->takeDamage(boss->getLavaList()[i]->getHitBox());
 
 		}
 	}*/
@@ -320,7 +320,11 @@ void Boss1Scene::updateEnemies(float dt)
 	{
 		if (Hero::hero->isHitboxCollision(i->getHitBox()))
 		{
-			Hero::hero->takeDamage();
+			if (i->getAttackType() == Boss1LavaAttack::BossAttack::Flamethrower)
+				Hero::hero->takeDamage(i->getHitBox().getMinX());
+			else //not flamethrower attack
+				Hero::hero->takeDamage(i->getHitBox().getMidX());
+
 			i->hitByHero();
 		}
 	}

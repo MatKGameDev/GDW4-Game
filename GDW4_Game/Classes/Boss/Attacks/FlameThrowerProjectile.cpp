@@ -5,6 +5,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/flame_sprite.png"), onTime(1.0f), drawNode(cocos2d::DrawNode::create())
 {
 	position.set(1000, 350);
+	attackType = BossAttack::Flamethrower;
 
 	//Play animation
 	sprite->stopAllActions();

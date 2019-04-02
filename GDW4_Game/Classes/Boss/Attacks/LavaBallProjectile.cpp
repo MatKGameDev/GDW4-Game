@@ -4,6 +4,7 @@
 LavaBall::LavaBall(int order, Boss *bossInstance)
 	: Boss1LavaAttack(bossInstance, "Sprites/spit_sprite.png")
 {
+	attackType = BossAttack::LavaBall;
 
 	//Set Position for the lava ball
 	switch (order)
