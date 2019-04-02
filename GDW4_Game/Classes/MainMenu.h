@@ -54,6 +54,8 @@ private:
 
 	Vec2 cursorPos;
 
+	Sprite* Logo;
+
 	Sprite* startText;
 	Sprite* controlsText;
 	Sprite* exitText;
