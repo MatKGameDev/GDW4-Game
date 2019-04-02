@@ -138,10 +138,19 @@ void Tutorial::initSprites()
 	backgroundL10->getTexture()->setTexParameters(params);
 	backgroundL10->setTextureRect(cocos2d::Rect(0, 0, fieldWidth, fieldHeight));
 
-	
+	foregroundL1 = Sprite::create("Backgrounds/foreground1.png");
+	foregroundL1->setAnchorPoint(Vec2(0.0f, 0.0f));
+	foregroundL1->getTexture()->setTexParameters(params);
+	foregroundL1->setTextureRect(cocos2d::Rect(0, -464, fieldWidth, 2048));
+
+	foregroundL2 = Sprite::create("Backgrounds/foreground2.png");
+	foregroundL2->setAnchorPoint(Vec2(0.0f, 0.0f));
+	foregroundL2->getTexture()->setTexParameters(params);
+	foregroundL2->setTextureRect(cocos2d::Rect(0, -464, fieldWidth, 2048));
 
 	//create parallax node for background layers
 	ParallaxNode* backGroundParallax = ParallaxNode::create();
+	ParallaxNode* foregroundParallax = ParallaxNode::create();
 
 	//add background layers to the parallax node with various scrolling speeds, push them all up a bit by using the offset
 	backGroundParallax->addChild(backgroundL1, -20, Vec2(0.05, 0.05), Vec2(0, 100));
@@ -156,8 +165,14 @@ void Tutorial::initSprites()
 	backGroundParallax->addChild(backgroundL10, -12, Vec2(0.91, 0.91), Vec2(0, 100));
 
 
+	foregroundParallax->addChild(foregroundL1, 91, Vec2(1.3, 1.3), Vec2(0, 00)); //foreground 1
+	foregroundParallax->addChild(foregroundL2, 90, Vec2(1.1, 1.1), Vec2(0, 00)); //foreground 2
+
+
 
 	this->addChild(backGroundParallax, -5);
+
+	this->addChild(foregroundParallax, 90);
 
 
 	//delete any existing tiles before we import our map
