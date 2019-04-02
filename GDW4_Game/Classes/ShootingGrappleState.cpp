@@ -13,23 +13,24 @@ ShootingGrappleState::~ShootingGrappleState()
 
 void ShootingGrappleState::onEnter()
 {
-	HeroStateManager::currentState = this;
-
-	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	if (HeroStateManager::currentState != HeroStateManager::dying)
 	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_left_animation_key");
-		auto action = cocos2d::Animate::create(anim);
-		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		HeroStateManager::currentState = this;
 
-	}
-	else
-	{
-		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_right_animation_key");
-		auto action = cocos2d::Animate::create(anim);
-		Hero::hero->sprite->stopAllActions();
-		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
-
+		if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_left_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
+		else
+		{
+			auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("shooting_grapple_right_animation_key");
+			auto action = cocos2d::Animate::create(anim);
+			Hero::hero->sprite->stopAllActions();
+			Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+		}
 	}
 }
 
@@ -39,10 +40,10 @@ void ShootingGrappleState::onExit()
 	if (Grapple::grapple->isActive)
 		HeroStateManager::grappling->onEnter();
 	
-	else if (Hero::hero->velocity < 0)
+	else if (Hero::hero->velocity.y < 0)
 		HeroStateManager::falling->onEnter();
 
-	else if (Hero::hero->velocity > 0)
+	else if (Hero::hero->velocity.y > 0)
 		HeroStateManager::jumping->onEnter();
 
 	else if (Hero::hero->moveState != Hero::MoveDirection::idle)
@@ -58,6 +59,11 @@ void ShootingGrappleState::handleInput(InputType input)
 	{
 	case InputType::p_space:
 		Hero::hero->jump();
+		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
 		break;
 	}
 }

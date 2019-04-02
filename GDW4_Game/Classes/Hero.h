@@ -39,11 +39,19 @@ public:
 	};
 	MoveDirection moveState;
 
+	int health;
+
+	bool bypassSpeedCap;
+
 	void moveRight();
 	void moveLeft();
 	void jump();
 
-	void takeDamage();
+	void takeDamage(float sourcePositionX, const int& damageTaken = 1);
+	void reset();
+
+	void updateArmPosition();
+	void updatePositionBasedOnArm();
 
 	void checkAndResolveOutOfBounds();
 	void updatePhysics(float dt) override;

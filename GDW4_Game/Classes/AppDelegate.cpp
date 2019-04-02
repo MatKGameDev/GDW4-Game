@@ -25,9 +25,12 @@
 
 
 #include "AppDelegate.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "Tutorial.h"
 #include "HeroStateManager.h"
+#include "MainMenu.h"
+#include "InitialLoadScreen.h"
+#include "PauseMenu.h"
 
 USING_NS_CC;
 
@@ -49,17 +52,22 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	if (!glview)
 	{
-		glview = GLViewImpl::createWithRect("GDW4 Game", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
-		//glview = GLViewImpl::createWithFullScreen("GDW4 Game");
+		glview = GLViewImpl::createWithRect("Echoes of Arem", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
+		//glview = GLViewImpl::createWithFullScreen("Echoes of Arem");
 		director->setOpenGLView(glview);
 	}
+
+	Controller::startDiscoveryController();
 
 	Hero::hero->createHero(); //create hero (calls private constructor)
 	Hero::hero->sprite->setPosition(Vec2(20.0f, 400.0f)); //set initial position
 	HeroStateManager::idle->onEnter();
+
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
 
-	auto scene = Tutorial::createScene();
+	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
+
+	auto scene = InitialLoadScreen::createScene();
 	director->runWithScene(scene);
 
 	return true;

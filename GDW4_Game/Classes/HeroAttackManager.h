@@ -1,4 +1,7 @@
 #pragma once
+#ifndef HEROATTACKMANAGER_H
+#define HEROATTACKMANAGER_H
+
 #include "EmptyAttack.h"
 #include "MeleeFireAttack.h"
 #include "ProjectileIceAttack.h"
@@ -23,3 +26,4 @@ public:
 	static void setCurrentAttack(HeroAttackTypes attackType, cocos2d::Scene* scene);
 	static void update(float dt);
 };
+#endif

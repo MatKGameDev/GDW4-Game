@@ -9,7 +9,7 @@ HeroAttackBase* HeroAttackManager::currentAttack = HeroAttackManager::empty; //i
 
 void HeroAttackManager::setCurrentAttack(HeroAttackTypes attackType, cocos2d::Scene* scene)
 {
-	if (currentAttack == empty) //make sure there isnt already an attack in progress
+	if (currentAttack == empty && !empty->onCooldown && HeroStateManager::currentState != HeroStateManager::dying) //make sure there isnt already an attack in progress
 	{
 		HeroStateManager::attacking->onEnter();
 		//check which attack type to set and call init function if applicable

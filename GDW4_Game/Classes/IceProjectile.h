@@ -1,4 +1,7 @@
 #pragma once
+#ifndef ICEPROJECTILE_H
+#define ICEPROJECTILE_H
+
 #include "GameObject.h"
 
 class IceProjectile : public GameObject
@@ -15,3 +18,4 @@ public:
 	void updateHitboxes() override;
 	void update(float dt);
 };
+#endif

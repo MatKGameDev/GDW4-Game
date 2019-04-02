@@ -34,8 +34,11 @@ void RunningState::onEnter()
 
 void RunningState::onExit()
 {
+	//check which state to go into next
 	if (Hero::hero->velocity.y < 0)
 		HeroStateManager::falling->onEnter();
+	else if (Hero::hero->velocity.y > 0)
+		HeroStateManager::jumping->onEnter();
 	else
 		HeroStateManager::idle->onEnter();
 }
@@ -85,6 +88,6 @@ void RunningState::update(float dt)
 		break;
 	}
 
-	if (Hero::hero->velocity.y < 0)
+	if (Hero::hero->velocity.y != 0)
 		onExit();
 }

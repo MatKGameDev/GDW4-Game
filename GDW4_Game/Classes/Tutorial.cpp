@@ -1,8 +1,14 @@
 #include "Tutorial.h"
-#include "Gameplay.h"
+#include "Boss1Scene.h"
 #include "PrettyPictureScene.h"
 #include <iostream>
 #include "HeroStateManager.h"
+#include "PauseMenu.h"
+#include "HelpBubble.h"
+#include "ControllerInput.h"
+#include "SpikeTile.h"
+#include "DeathScreen.h"
+#include "Hud.h"
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -15,6 +21,7 @@ bool Tutorial::init()
 	if (!Scene::init())
 		return false;
 
+	ControllerInput::isControllerUsed = false;
 	isTransitioning = false;
 	srand(time(NULL)); //seed rng
 	director = Director::getInstance();
@@ -22,6 +29,7 @@ bool Tutorial::init()
 	director->setAnimationInterval(1.0f / 60.0f);
 	director->setDisplayStats(1); //Remove this after debugging
 
+	initUI();
 	initGameObjects();
 	initSprites();
 	initListeners();
@@ -34,7 +42,21 @@ bool Tutorial::init()
 //initializes the user interface
 void Tutorial::initUI()
 {
+	//initialize help bubbles
+	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	this->addChild(jumpHint->sprite, 18);
 
+	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
+	holdJumpHint->sprite->setScale(3.0);
+	this->addChild(holdJumpHint->sprite, 18);
+
+	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(1500, 600), 0, 1900);
+	grapplingHint->sprite->setScale(1.2);
+	this->addChild(grapplingHint->sprite, 18);
+
+	HelpBubble* grappleJumpHint = new HelpBubble("HintBubbles/grappleJumpHint.png", cocos2d::Vec2(1900, 800), 0, 1900);
+	grappleJumpHint->sprite->setScale(1.2);
+	this->addChild(grappleJumpHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
@@ -42,8 +64,6 @@ void Tutorial::initGameObjects()
 	//set bounds for the scene
 	GameObject::MAX_X = 15000.0f;
 	GameObject::MAX_Y = 1080.0f;
-	
-	Hero::hero->sprite->setPosition(Vec2(20.0f, 200.0f)); //set initial position
 }
 
 void Tutorial::initSprites()
@@ -52,7 +72,7 @@ void Tutorial::initSprites()
 	Size size = Director::sharedDirector()->getVisibleSize();  //screen size
 	Vec2 center = Vec2(size.width / 2 + origin.x, size.height / 2 + origin.y); //center point
 
-	fieldWidth = size.width * 4;  //x boundary for camera
+	fieldWidth = 13888;  //x boundary for camera
 	fieldHeight = size.height - 40; //y boundary for camera
 
 	Texture2D::TexParams params;
@@ -112,8 +132,21 @@ void Tutorial::initSprites()
 	backgroundL10->getTexture()->setTexParameters(params);
 	backgroundL10->setTextureRect(cocos2d::Rect(0, 0, fieldWidth, fieldHeight));
 
+	
+	
+	foregroundL1 = Sprite::create("Backgrounds/foreground1.png");
+	foregroundL1->setAnchorPoint(Vec2(0.0f, 0.0f));
+	foregroundL1->getTexture()->setTexParameters(params);
+	foregroundL1->setTextureRect(cocos2d::Rect(0, -464, fieldWidth, 2048));
+
+	foregroundL2 = Sprite::create("Backgrounds/foreground2.png");
+	foregroundL2->setAnchorPoint(Vec2(0.0f, 0.0f));
+	foregroundL2->getTexture()->setTexParameters(params);
+	foregroundL2->setTextureRect(cocos2d::Rect(0, -464, fieldWidth, 2048));
+
 	//create parallax node for background layers
 	ParallaxNode* backGroundParallax = ParallaxNode::create();
+	ParallaxNode* foregroundParallax = ParallaxNode::create();
 
 	//add background layers to the parallax node with various scrolling speeds, push them all up a bit by using the offset
 	backGroundParallax->addChild(backgroundL1, -20, Vec2(0.05, 0.05), Vec2(0, 100));
@@ -126,15 +159,26 @@ void Tutorial::initSprites()
 	backGroundParallax->addChild(backgroundL8, -13, Vec2(0.85, 0.85), Vec2(0, 100));
 	backGroundParallax->addChild(backgroundL9, -12, Vec2(0.91, 0.91), Vec2(0, 100));
 	backGroundParallax->addChild(backgroundL10, -12, Vec2(0.91, 0.91), Vec2(0, 100));
+	
+	
+	foregroundParallax->addChild(foregroundL1, 91, Vec2(1.3, 1.3), Vec2(0, 00)); //foreground 1
+	foregroundParallax->addChild(foregroundL2, 90, Vec2(1.1, 1.1), Vec2(0, 00)); //foreground 2
+
+
 
 	this->addChild(backGroundParallax, -5);
 
+	this->addChild(foregroundParallax, 90);
+
+	//delete any existing tiles before we import our map
+	TileBase::deleteAllTiles();
 	//get the tilemap in
-	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/tutTest3.tmx"); //ayy it works
+	cocos2d::TMXTiledMap* testTileMap = TMXTiledMap::create("Tilemaps/Final.tmx"); //ayy it works
 	addChild(testTileMap, 1);
 
 	cocos2d::TMXLayer* groundLayer = testTileMap->getLayer("Ground");
 	cocos2d::TMXLayer* platformLayer = testTileMap->getLayer("platforms");
+	cocos2d::TMXLayer* spikeLayer = testTileMap->getLayer("spikes");
 
 	unsigned int tileMapWidth = testTileMap->getMapSize().width;   //map width
 	unsigned int tileMapHeight = testTileMap->getMapSize().height; //map height
@@ -142,6 +186,7 @@ void Tutorial::initSprites()
 	{
 		for (unsigned int y = 0; y < tileMapHeight; y++)  //height of map grid
 		{
+			//check for ground tile
 			cocos2d::Sprite* currentTile = groundLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
 			{
@@ -171,22 +216,32 @@ void Tutorial::initSprites()
 				}
 			}
 
+			//check for platform tile
 			currentTile = platformLayer->getTileAt(Vec2(x, y));
 			if (currentTile != NULL)
-			{
 				PlatformTile* newPlatformTile = new PlatformTile(currentTile->getPosition(), 64);
-			}
+
+			//check for spike tile
+			currentTile = spikeLayer->getTileAt(Vec2(x, y));
+			if (currentTile != NULL)
+				SpikeTile* newSpikeTile = new SpikeTile(currentTile->getPosition(), 64);
 		}
 	}
 
 	//add hero (singleton class)
+	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
+	Hero::hero->sprite->setPosition(Vec2(20, 200));
+	Hero::hero->lookState = Hero::LookDirection::lookingRight;
+	HeroStateManager::idle->onEnter();
 
 	//use a follow camera with strict dimensions for horizontal scrolling
-	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 0, fieldWidth, fieldHeight)));
+	this->runAction(Follow::create(Hero::hero->sprite, Rect(0, 50, fieldWidth, fieldHeight)));
 
-	this->addChild(Hero::hero->arm, 21); //add hero arm
+	Hero::hero->arm = cocos2d::Sprite::create("Sprites/armV2.png");
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
+	Hero::hero->arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+	this->addChild(Hero::hero->arm, 21); //add hero arm
 
 	//add hero hurtbox FOR TESTING PURPOSES
 	testHurtbox = DrawNode::create();
@@ -194,19 +249,34 @@ void Tutorial::initSprites()
 	//add fire melee attack hixbox FOR TESTING PURPOSES
 	testMeleeAttack = DrawNode::create();
 	this->addChild(testMeleeAttack, 40);
-	
-	//add grapple sprite and tip
+
+	//add grapple sprite
+	//add repeating pattern to grapple sprite
+	Grapple::grapple->sprite = Sprite::create("Sprites/grapple.png");
+	Grapple::grapple->sprite->getTexture()->setTexParameters(params);
+	Grapple::grapple->sprite->setVisible(0);
+	Grapple::grapple->sprite->setAnchorPoint(Vec2(0.5, 0));
 	this->addChild(Grapple::grapple->sprite, 5);
-	this->addChild(Grapple::grapple->tip, 6);
+
+	//grapple tip sprite
+	Grapple::grapple->tip = Sprite::create("Sprites/grappleTip.png");
+	//Grapple::grapple->tip->setAnchorPoint(Vec2(0.5, 0));
+	this->addChild(Grapple::grapple->tip, 7);
+
+	//grapple destination indicator
+	Grapple::grapple->indicator = Sprite::create("Sprites/grappleIndicator.png");
+	Grapple::grapple->indicator->setVisible(0);
+	this->addChild(Grapple::grapple->indicator, 6);
 }
 
 void Tutorial::initListeners()
 {
 	//Init the mouse listener
 	initMouseListener();
-
 	//Init the keyboard listener
 	initKeyboardListener();
+	//init controller listener
+	initControllerListener();
 }
 
 void Tutorial::initMouseListener()
@@ -239,8 +309,23 @@ void Tutorial::initKeyboardListener()
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Tutorial::keyDownCallback, this);
 	keyboardListener->onKeyReleased = CC_CALLBACK_2(Tutorial::keyUpCallback, this);
 
-	//Add the keyboard listener to the dispatcher
+	//add the keyboard listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+}
+
+void Tutorial::initControllerListener()
+{
+	controllerListener = EventListenerController::create();
+
+	//set up callbacks
+	controllerListener->onKeyDown = CC_CALLBACK_3(Tutorial::buttonPressCallback, this);
+	controllerListener->onKeyUp = CC_CALLBACK_3(Tutorial::buttonReleaseCallback, this);
+	controllerListener->onAxisEvent = CC_CALLBACK_3(Tutorial::axisEventCallback, this);
+
+	controllerListener->onConnected = [](cocos2d::Controller* controller, cocos2d::Event* evt) {};
+
+	//add the controller listener to the dispatcher
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
 }
 
 //UPDATE
@@ -250,8 +335,6 @@ void Tutorial::update(float dt)
 	{
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
-		//if (hero->invincibilityTimer > 0)
-		//	flickerSprite(); //flicker sprite if it's invincible
 
 		testHurtbox->clear();
 		//DRAW HURTBOX FOR TESTING
@@ -276,13 +359,33 @@ void Tutorial::update(float dt)
 		updateEnemies(dt);  //update enemies
 
 		//check if we should move to the next scene
-		if (Hero::hero->moveBox.getMaxX() >= 6000)
+		if (Hero::hero->moveBox.getMaxX() >= 13888)
 		{
-			Grapple::grapple->unLatch();
-			this->removeAllChildrenWithCleanup(true);
-			TileBase::deleteAllTiles();
+			Hero::hero->reset();
+			Hero::hero->lookState = Hero::LookDirection::lookingRight; //make sure they're looking right (over the clif)
+			HelpBubble::deleteAllInstances();
 			director->replaceScene(TransitionFade::create(1.5f, PrettyPictureScene::createScene(), Color3B(0, 0, 0)));
 			isTransitioning = true;
+		}
+		else if (Hero::hero->health == 0) //check for ded
+		{
+			Hero::hero->reset(); //reset hero
+			HelpBubble::deleteAllInstances();
+			director->replaceScene(TransitionFade::create(2.0f, DeathScreen::createScene(), Color3B(0, 0, 0)));
+			isTransitioning = true;
+		}
+	}
+	else //we are transitioning
+	{
+		//move hero down to the nearest block so they arent floating
+		Hero::hero->velocity.y = -400;
+		Hero::hero->updatePhysics(dt);
+
+		unsigned int tileListSize = TileBase::tileList.size();
+		for (unsigned int i = 0; i < tileListSize; i++)
+		{
+			if (TileBase::tileList[i]->checkAndResolveCollision(Hero::hero))
+				HeroStateManager::idle->onEnter();
 		}
 	}
 }
@@ -303,6 +406,19 @@ void Tutorial::updateObjects(float dt)
 	//update all ice projectiles
 	for (unsigned int i = 0; i < IceProjectile::iceProjectileList.size(); i++)
 		IceProjectile::iceProjectileList[i]->update(dt);
+
+	//update all help bubbles
+	unsigned int numHelpBubbles = HelpBubble::helpBubbleList.size();
+	for (unsigned int i = 0; i < numHelpBubbles; i++)
+		HelpBubble::helpBubbleList[i]->update(dt);
+
+	
+	//update UI
+	for (unsigned int i = 0; i < HudObject::HudList.size(); i++)
+	{
+		HudObject::HudList[i]->update(dt);
+	}
+
 }
 
 void Tutorial::updateEnemies(float dt)
@@ -314,15 +430,6 @@ void Tutorial::updateEnemies(float dt)
 void Tutorial::removeAllObjects()
 {
 
-}
-
-//flickers sprite every 1/10th of a second (typically to display invincibility)
-void Tutorial::flickerSprite()
-{
-	//if (((int)(ship->invincibilityTimer * 10)) % 2 == 1)
-	//	ship->sprite->setZOrder(0); //flicker the ship (hide it behind background)
-	//else
-	//	ship->sprite->setZOrder(10); //show the ship again
 }
 
 //--- Callbacks ---//
@@ -344,7 +451,7 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseClickPosition.y += 1080;
 
 		auto mouseGameViewPosition = mouseClickPosition;
-		mouseGameViewPosition.y -= 50;
+		mouseGameViewPosition.y += 45;
 
 		//calculate proper x position for grapple
 		if (Hero::hero->getPosition().x > 1920/2)
@@ -355,7 +462,6 @@ void Tutorial::mouseDownCallback(Event* event)
 		}
 
 		Grapple::grapple->shoot(Vect2(mouseGameViewPosition)); //shoot the grapple
-		HeroStateManager::shootingGrapple->onEnter(); //put hero in grapple state
 	}
 }
 
@@ -387,13 +493,13 @@ void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		Hero::hero->moveState = Hero::MoveDirection::movingRight;
 		break;
 
-	case EventKeyboard::KeyCode::KEY_S:
-		HeroStateManager::currentState->handleInput(InputType::p_s);
-		HeroAttackBase::isSKeyHeld = true;
-		break;
-
 	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = true;
+		break;
+
+	case EventKeyboard::KeyCode::KEY_S:
+		HeroStateManager::currentState->handleInput(InputType::p_s);
+		//HeroAttackBase::isSKeyHeld = true;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
@@ -406,8 +512,11 @@ void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		break;
 
 	case EventKeyboard::KeyCode::KEY_E:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
+		//HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
+
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		director->pushScene(PauseMenu::createScene());
 	}
 }
 
@@ -427,16 +536,118 @@ void Tutorial::keyUpCallback(EventKeyboard::KeyCode keyCode, Event* event)
 			Hero::hero->moveState = Hero::MoveDirection::idle;
 		break;
 
-	case EventKeyboard::KeyCode::KEY_S:
-		HeroAttackBase::isSKeyHeld = false;
-		break;
-
 	case EventKeyboard::KeyCode::KEY_W:
 		HeroAttackBase::isWKeyHeld = false;
 		break;
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
+	}
+}
+
+void Tutorial::buttonPressCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+		HeroStateManager::currentState->handleInput(InputType::p_space);
+		break;
+
+	case ControllerInput::Start:
+		director->pushScene(PauseMenu::createScene());
+		break;
+	}
+}
+
+void Tutorial::buttonReleaseCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	case ControllerInput::A:
+		HeroStateManager::currentState->handleInput(InputType::r_space);
+		break;
+	}
+}
+
+void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * event)
+{
+	switch (keyCode)
+	{
+	//x axis of the left stick
+	case ControllerInput::leftStickX:
+		//moving to the left
+		if (controller->getKeyStatus(keyCode).value <= -1)
+		{
+			ControllerInput::isLeftStickIdle = false;
+			ControllerInput::isControllerUsed = true; //controller has been used this playthrough
+			HeroStateManager::currentState->handleInput(InputType::p_a);
+			Hero::hero->lookState = Hero::LookDirection::lookingLeft;
+			Hero::hero->moveState = Hero::MoveDirection::movingLeft;
+		}
+		//moving to the right
+		else if (controller->getKeyStatus(keyCode).value >= 1)
+		{
+			ControllerInput::isLeftStickIdle = false;
+			ControllerInput::isControllerUsed = true; //controller has been used this playthrough
+			HeroStateManager::currentState->handleInput(InputType::p_d);
+			Hero::hero->lookState = Hero::LookDirection::lookingRight;
+			Hero::hero->moveState = Hero::MoveDirection::movingRight;
+		}
+		else if (!ControllerInput::isLeftStickIdle) //not moving AND left stick isn't at rest
+		{
+			Hero::hero->moveState = Hero::MoveDirection::idle;
+			ControllerInput::isLeftStickIdle = true;
+		}
+		break;
+
+	//y axis of the left stick
+	case ControllerInput::leftStickY:
+		if (controller->getKeyStatus(keyCode).value >= 1)
+			HeroAttackBase::isWKeyHeld = true;
+		else
+		{
+			HeroAttackBase::isWKeyHeld = false;
+			if (controller->getKeyStatus(keyCode).value <= -1)
+				HeroStateManager::currentState->handleInput(InputType::p_s);
+		}
+		break;
+
+	case ControllerInput::leftTrigger:
+		//check for attack
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isLeftTriggerReset)
+		{
+			ControllerInput::isLeftTriggerReset = false;
+			HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //can pass a nullptr because we dont need to add anything to the scene for melee attacks
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isLeftTriggerReset = true;
+		break;
+
+	case ControllerInput::rightTrigger:
+		if (controller->getKeyStatus(keyCode).value >= 1 && ControllerInput::isRightTriggerReset)
+		{
+			ControllerInput::isRightTriggerReset = false;
+
+			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
+			XinputManager::instance->update();
+			XinputController* controller1 = XinputManager::instance->getController(0); 
+			Stick sticks[2];
+			controller1->getSticks(sticks);
+
+			//calculate angle (in radians) using atan2 with the right stick's y and x values
+			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
+
+			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
+			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+			{
+				//calculate angle (in radians) using atan2 with the right stick's y and x values
+				grappleAngle = atan2(0.0f, 0.0f);
+			}
+			Grapple::grapple->shoot(grappleAngle); //shoot grapple
+		}
+		else if (controller->getKeyStatus(keyCode).value <= -1)
+			ControllerInput::isRightTriggerReset = true;
 		break;
 	}
 }

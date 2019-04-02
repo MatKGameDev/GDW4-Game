@@ -1,4 +1,7 @@
 #pragma once
+#ifndef MELEEFIREATTACK_H
+#define MELEEFIREATTACK_H
+
 #include "HeroAttackBase.h"
 
 class MeleeFireAttack : public HeroAttackBase
@@ -15,3 +18,4 @@ public:
 
 	void update(float dt);
 };
+#endif

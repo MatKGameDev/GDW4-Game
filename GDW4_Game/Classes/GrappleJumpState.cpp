@@ -7,7 +7,6 @@ GrappleJumpState::GrappleJumpState()
 {
 }
 
-
 GrappleJumpState::~GrappleJumpState()
 {
 }
@@ -19,7 +18,21 @@ void GrappleJumpState::onEnter()
 	Grapple::grapple->unLatch();
 	Hero::hero->jump();
 
-	Hero::hero->sprite->stopAllActions();
+	HeroStateManager::currentState = this;
+	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	{
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_jump_left_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	}
+	else //looking right
+	{
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_jump_right_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::Repeat::create(action->clone(), 1));
+	}
 }
 
 void GrappleJumpState::onExit()
@@ -34,10 +47,6 @@ void GrappleJumpState::handleInput(InputType input)
 {
 	switch (input)
 	{
-	case InputType::r_space:
-		//variable jump height
-		Hero::hero->velocity.y /= 1.5;
-		break;
 	}
 }
 

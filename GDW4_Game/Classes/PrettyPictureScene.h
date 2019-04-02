@@ -1,4 +1,7 @@
 #pragma once
+#ifndef PRETTYPICTURESCENE_H
+#define PRETTYPICTURESCENE_H
+
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -19,4 +22,4 @@ private:
 	bool isDone;
 	float timer;
 };
-
+#endif

@@ -2,24 +2,25 @@
 #include "HeroAttackManager.h"
 #include "HeroStateManager.h"
 #include "TileBase.h"
-#include <iostream>
+#include "Grapple.h"
 
 Hero* Hero::hero = 0;
 
 Hero::Hero() : GameObject(Vect2(700, 150), "Sprites/shooting_test.png"),
-	JUMP_VELOCITY(575),
+	JUMP_VELOCITY(610),
 	MAX_HORIZONTAL_VELOCITY(300),
 	MAX_VERTICAL_VELOCITY(850),
 	DRAG_VELOCITY(30),
 	movespeedIncrease(70),
 	invincibilityTimer(0),
+	health(5),
 	isAirborne(false),
+	bypassSpeedCap(false),
 	lookState(LookDirection::lookingRight),
 	moveState(MoveDirection::idle)
 {
 	//initialize arm
-	arm = cocos2d::Sprite::create("Sprites/arm_right.png");
-	arm->setAnchorPoint(Vec2(0.5f, 0.0f));
+	arm = cocos2d::Sprite::create("Sprites/armV2.png");
 
 	mass = 5;					
 
@@ -42,19 +43,29 @@ void Hero::createHero()
 void Hero::moveRight()
 {
 	lookState = LookDirection::lookingRight;
-	if (isAirborne)
-		velocity.x += movespeedIncrease * 0.7; //add some drag in the air
-	else
-		velocity.x += movespeedIncrease;
+
+	//make sure hero isn't above max velocity
+	if (!(velocity.x > MAX_HORIZONTAL_VELOCITY || velocity.x < -MAX_HORIZONTAL_VELOCITY))
+	{
+		if (isAirborne)
+			velocity.x += movespeedIncrease * 0.7; //add some drag in the air
+		else
+			velocity.x += movespeedIncrease;
+	}
 }
 
 void Hero::moveLeft()
 {
 	lookState = LookDirection::lookingLeft;
-	if (isAirborne)
-		velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
-	else
-		velocity.x -= movespeedIncrease;
+
+	//make sure hero isn't above max velocity
+	if (!(velocity.x > MAX_HORIZONTAL_VELOCITY || velocity.x < -MAX_HORIZONTAL_VELOCITY))
+	{
+		if (isAirborne)
+			velocity.x -= movespeedIncrease * 0.7; //add some drag in the air
+		else
+			velocity.x -= movespeedIncrease;
+	}
 }
 
 //jump if not already airbourne
@@ -65,13 +76,65 @@ void Hero::jump()
 }
 
 //hero takes damage from any source
-void Hero::takeDamage()
+void Hero::takeDamage(float sourcePositionX, const int& damageTaken)
 {
-	//make sure hero isn't already invulnerable
-	if (invincibilityTimer <= 0)
+	if (damageTaken == 0)
+		return;
+	//make sure hero isn't already invulnerable or ded
+	if (invincibilityTimer <= 0 && HeroStateManager::currentState != HeroStateManager::dying)
 	{
+		health-= damageTaken;
 		invincibilityTimer = 0.99;
+
+		bypassSpeedCap = true;
+
+		//if we're not in any of the grappling states or dying, go into falling state
+		if (HeroStateManager::currentState != HeroStateManager::grappling &&
+			HeroStateManager::currentState != HeroStateManager::shootingGrapple &&
+			HeroStateManager::currentState != HeroStateManager::holdingPlatform)
+		{
+			HeroStateManager::falling->onEnter();
+		}
+		
+		if (this->getPosition().x < sourcePositionX)
+			Hero::hero->velocity = Vect2(-600, 400);
+		else //hero position().x <= sourcePositionX
+			Hero::hero->velocity = Vect2(600, 400);
 	}
+}
+
+//resets hero after a death or victory
+void Hero::reset()
+{
+	invincibilityTimer = 0.0f;
+	velocity = Vect2(0, 0);
+	force = Vect2(0, 0);
+	moveState = MoveDirection::idle;
+	HeroStateManager::idle->onEnter();
+	Grapple::grapple->unLatch();
+}
+
+//updates the hero's arm position (only visible while grappling)
+void Hero::updateArmPosition()
+{
+	float armRightOffset = 23;
+	float armLeftOffset = 30;
+	float armYOffset = 25;
+	if (Grapple::grapple->lookDirectionOnShoot == LookDirection::lookingRight)
+		arm->setPosition(Vec2(this->getPosition().x - armRightOffset, this->getPosition().y + armYOffset)); //update arm position each frame
+	else //hero looking left
+		arm->setPosition(Vec2(this->getPosition().x + armLeftOffset, this->getPosition().y + armYOffset)); //update arm position each frame
+}
+
+void Hero::updatePositionBasedOnArm()
+{
+	float armRightOffset = 23;
+	float armLeftOffset = 30;
+	float armYOffset = 25;
+	if (Grapple::grapple->lookDirectionOnShoot == LookDirection::lookingRight)
+		this->sprite->setPosition(Vec2(arm->getPosition().x + armRightOffset, arm->getPosition().y - armYOffset)); //update hero based on arm position when being pulled in
+	else //hero looking left
+		this->sprite->setPosition(Vec2(arm->getPosition().x - armLeftOffset, arm->getPosition().y - armYOffset)); //update hero based on arm position when being pulled in
 }
 
 //checks if the character is out of bounds and performs appropriate actions
@@ -136,16 +199,19 @@ void Hero::updatePhysics(float dt)
 	}
 
 	//check max velocity
-	//for x
-	if (velocity.x > MAX_HORIZONTAL_VELOCITY) 
-		velocity.x = MAX_HORIZONTAL_VELOCITY;
-	else if (velocity.x < -MAX_HORIZONTAL_VELOCITY)
-		velocity.x = -MAX_HORIZONTAL_VELOCITY;
-	//for y
-	if (velocity.y > MAX_VERTICAL_VELOCITY)
-		velocity.y = MAX_VERTICAL_VELOCITY;
-	else if (velocity.y < -MAX_VERTICAL_VELOCITY)
-		velocity.y = -MAX_VERTICAL_VELOCITY;
+	if (!bypassSpeedCap)
+	{
+		//for x
+		if (velocity.x > MAX_HORIZONTAL_VELOCITY)
+			velocity.x = MAX_HORIZONTAL_VELOCITY;
+		else if (velocity.x < -MAX_HORIZONTAL_VELOCITY)
+			velocity.x = -MAX_HORIZONTAL_VELOCITY;
+		//for y
+		if (velocity.y > MAX_VERTICAL_VELOCITY)
+			velocity.y = MAX_VERTICAL_VELOCITY;
+		else if (velocity.y < -MAX_VERTICAL_VELOCITY)
+			velocity.y = -MAX_VERTICAL_VELOCITY;
+	}
 
 	//check for hero out of bounds
 	updateHitboxes();
@@ -161,9 +227,19 @@ void Hero::updateHitboxes()
 //updates any collisions dealing with the hero and other objects
 void Hero::updateCollisions()
 {
-	unsigned int tileListSize = TileBase::tileList.size();
-	for (unsigned int i = 0; i < tileListSize; i++)
-		TileBase::tileList[i]->checkAndResolveCollision(this);
+	if (HeroStateManager::currentState != HeroStateManager::grappling)
+	{
+		unsigned int tileListSize = TileBase::tileList.size();
+		for (unsigned int i = 0; i < tileListSize; i++)
+		{
+			//check if it's a spike tile (deals damage)
+			if (TileBase::tileList[i]->checkAndResolveCollision(this) && TileBase::tileList[i]->type == TileType::spike)
+			{
+				this->takeDamage(TileBase::tileList[i]->hitBox.getMidX());
+				this->health++;
+			}
+		}
+	}
 }
 
 //updates all the things
@@ -179,11 +255,20 @@ void Hero::update(float dt)
 
 	//update invincibility timer
 	if (invincibilityTimer > 0)
+	{
 		invincibilityTimer -= dt;
+		if (invincibilityTimer < 0.8f)
+			bypassSpeedCap = false;
+	}
 
 	updateHitboxes();
 	updateCollisions();
 	HeroAttackManager::update(dt);
+	updateArmPosition();
 
-	arm->setPosition(Vec2(getPosition().x, getPosition().y + 12)); //update arm position each frame
+	//show grapple sprite and rotate properly
+	Grapple::grapple->startPoint = Vect2(arm->getPosition()); //have grapple start point move with the hero
+	float grappleDistance = Vect2::calculateDistance(Grapple::grapple->startPoint, Grapple::grapple->grappleTip);
+	Grapple::grapple->sprite->setTextureRect(cocos2d::Rect(Grapple::grapple->startPoint.x, Grapple::grapple->startPoint.y, 4, grappleDistance));
+	Grapple::grapple->sprite->setPosition(Vec2(Grapple::grapple->startPoint.x, Grapple::grapple->startPoint.y));
 }

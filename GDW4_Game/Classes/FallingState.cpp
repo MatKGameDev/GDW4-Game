@@ -15,13 +15,30 @@ FallingState::~FallingState()
 void FallingState::onEnter()
 {
 	HeroStateManager::currentState = this;
+	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	{
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("falling_left_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 
-	Hero::hero->sprite->stopAllActions();
+	}
+	else
+	{
+		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("falling_right_animation_key");
+		auto action = cocos2d::Animate::create(anim);
+		Hero::hero->sprite->stopAllActions();
+		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
+
+	}
 }
 
 void FallingState::onExit()
 {
-	HeroStateManager::idle->onEnter();
+	if (Hero::hero->moveState == Hero::MoveDirection::idle)
+		HeroStateManager::idle->onEnter();
+	else //moving
+		HeroStateManager::running->onEnter();
 }
 
 void FallingState::handleInput(InputType input)
@@ -44,6 +61,11 @@ void FallingState::handleInput(InputType input)
 			Hero::hero->lookState = Hero::LookDirection::lookingRight;
 			onEnter();
 		}
+		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
 		break;
 	}
 }

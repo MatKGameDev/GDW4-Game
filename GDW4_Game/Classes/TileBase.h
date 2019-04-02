@@ -1,4 +1,7 @@
 #pragma once
+#ifndef TILEBASE_H
+#define TILEBASE_H
+
 #include "cocos2d.h"
 
 class GameObject; //forward declare
@@ -6,7 +9,8 @@ class GameObject; //forward declare
 enum TileType
 {
 	platform,
-	ground
+	ground,
+	spike
 };
 
 //base class for a tile
@@ -24,3 +28,4 @@ public:
 	bool checkGeneralCollision(GameObject* otherObject);
 	virtual bool checkAndResolveCollision(GameObject* otherObject) = 0;
 };
+#endif

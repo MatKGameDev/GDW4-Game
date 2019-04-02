@@ -1,4 +1,7 @@
 #pragma once
+#ifndef IDLESTATE_H
+#define IDLESTATE_H
+
 #include "HeroStateBase.h"
 
 class IdleState : public HeroStateBase
@@ -10,5 +13,7 @@ public:
 	void onEnter();
 	void onExit();
 	void handleInput(InputType input);
+
 	void update(float dt);
 };
+#endif

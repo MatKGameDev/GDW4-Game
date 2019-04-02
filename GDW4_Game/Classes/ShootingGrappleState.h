@@ -1,4 +1,7 @@
 #pragma once
+#ifndef SHOOTINGGRAPPLESTATE_H
+#define SHOOTINGGRAPPLESTATE_H
+
 #include "HeroStateBase.h"
 
 class ShootingGrappleState : public HeroStateBase
@@ -10,5 +13,7 @@ public:
 	void onEnter();
 	void onExit();
 	void handleInput(InputType input);
+
 	void update(float dt);
 };
+#endif

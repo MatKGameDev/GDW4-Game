@@ -30,6 +30,9 @@ void AttackingState::onExit()
 	else if (Hero::hero->velocity < 0)
 		HeroStateManager::falling->onEnter();
 
+	else if (Hero::hero->velocity > 0)
+		HeroStateManager::jumping->onEnter();
+
 	else if (Hero::hero->moveState != Hero::MoveDirection::idle)
 		HeroStateManager::running->onEnter();
 
@@ -42,16 +45,13 @@ void AttackingState::handleInput(InputType input)
 {
 	switch (input)
 	{
-	case InputType::p_a:
-		Hero::hero->moveLeft();
-		break;
-
-	case InputType::p_d:
-		Hero::hero->moveRight();
-		break;
-
 	case InputType::p_space:
 		Hero::hero->jump();
+		break;
+
+	case InputType::r_space:
+		//variable jump height
+		Hero::hero->velocity.y /= 1.5;
 		break;
 	}
 }

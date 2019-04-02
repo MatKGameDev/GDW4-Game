@@ -1,6 +1,7 @@
 #include "TileBase.h"
 #include "PlatformTile.h"
 #include "GroundTile.h"
+#include "SpikeTile.h"
 #include "Hero.h"
 
 std::vector<TileBase*> TileBase::tileList = std::vector<TileBase*>();
@@ -8,14 +9,17 @@ std::vector<TileBase*> TileBase::tileList = std::vector<TileBase*>();
 TileBase::TileBase(cocos2d::Vec2 position, float tileSize)
 {
 	hitBox.setRect(position.x, position.y, tileSize, tileSize);
+	type = TileType::spike;
 	tileList.push_back(this);
 }
 
+//clears all tile vectors
 void TileBase::deleteAllTiles()
 {
 	tileList.clear();
 	PlatformTile::platformTileList.clear();
 	GroundTile::groundTileList.clear();
+	SpikeTile::spikeTileList.clear();
 }
 
 bool TileBase::checkGeneralCollision(GameObject * otherObject)

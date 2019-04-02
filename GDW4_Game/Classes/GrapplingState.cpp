@@ -15,7 +15,8 @@ void GrapplingState::onEnter()
 {
 	HeroStateManager::currentState = this;
 
-	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft)
+	Hero::hero->lookState = Grapple::grapple->lookDirectionOnShoot;
+	if (Hero::hero->lookState == Hero::LookDirection::lookingLeft) //hero should be facing left
 	{
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_left_animation_key");
 		auto action = cocos2d::Animate::create(anim);
@@ -23,7 +24,7 @@ void GrapplingState::onEnter()
 		Hero::hero->sprite->runAction(cocos2d::RepeatForever::create(action->clone()));
 
 	}
-	else
+	else //hero should be facing right
 	{
 		auto anim = cocos2d::AnimationCache::getInstance()->getAnimation("grapple_right_animation_key");
 		auto action = cocos2d::Animate::create(anim);
