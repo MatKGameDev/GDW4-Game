@@ -23,6 +23,7 @@ public:
 	bool init();
 	void initUI();
 	void initAnimations();
+	void initMusic();
 
 	void initMouseListener();
 	void initControllerListener();

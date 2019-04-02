@@ -1,6 +1,7 @@
 #include "MainMenu.h"
 #include "Tutorial.h"
 #include "ControlsMenu.h"
+#include "SimpleAudioEngine.h"
 #include "Boss1Scene.h"
 
 Scene * MainMenu::createScene()
@@ -22,6 +23,9 @@ bool MainMenu::init()
 
 	initUI();
 	initAnimations();
+	initMusic();
+
+
 
 	//init listeners
 	initMouseListener();
@@ -69,6 +73,12 @@ void MainMenu::initAnimations()
 	sprite->setAnchorPoint(Vec2(0, 0));
 	sprite->setPosition(0, 0);
 	this->addChild(sprite, -5);
+}
+
+void MainMenu::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("Music/TutorialMusic.mp3", true);
 }
 
 void MainMenu::initMouseListener()

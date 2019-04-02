@@ -8,6 +8,7 @@
 #include "VictoryScreen.h"
 #include "Boss/Attacks/Projectiles.h"
 #include "Hud.h"
+#include <SimpleAudioEngine.h>
 
 cocos2d::Scene* Boss1Scene::createScene()
 {
@@ -32,6 +33,7 @@ bool Boss1Scene::init()
 	initSprites();
 	initListeners();
 	initUI();
+	initMusic();
 	scheduleUpdate();
 
 	return true;
@@ -219,6 +221,12 @@ void Boss1Scene::initControllerListener()
 
 	//add the controller listener to the dispatcher
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
+}
+
+void Boss1Scene::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("Music/BossMusic.mp3",true);
 }
 
 //UPDATE

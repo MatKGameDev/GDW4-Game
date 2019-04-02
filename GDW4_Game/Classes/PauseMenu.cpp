@@ -2,6 +2,7 @@
 #include "Tutorial.h"
 #include "Boss1Scene.h"
 #include "ControlsMenu.h"
+#include <SimpleAudioEngine.h>
 
 Scene * PauseMenu::createScene()
 {
@@ -26,6 +27,7 @@ bool PauseMenu::init()
 	//init listeners
 	initMouseListener();
 	initControllerListener();
+	initMusic();
 
 	scheduleUpdate();
 
@@ -59,6 +61,12 @@ void PauseMenu::initUI()
 
 void PauseMenu::initAnimations()
 {
+}
+
+void PauseMenu::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void PauseMenu::initMouseListener()

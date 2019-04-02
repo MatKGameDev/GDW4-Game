@@ -1,4 +1,5 @@
 #include "ControlsMenu.h"
+#include <SimpleAudioEngine.h>
 
 Scene * ControlsMenu::createScene()
 {
@@ -19,6 +20,7 @@ bool ControlsMenu::init()
 	initAnimations();
 	initMouseListener();
 	initControllerListener();
+	initMusic();
 
 	scheduleUpdate();
 
@@ -44,6 +46,12 @@ void ControlsMenu::initUI()
 
 void ControlsMenu::initAnimations()
 {
+}
+
+void ControlsMenu::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void ControlsMenu::initMouseListener()
