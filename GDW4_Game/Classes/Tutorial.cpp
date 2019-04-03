@@ -240,7 +240,7 @@ void Tutorial::initSprites()
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
-	Hero::hero->sprite->setPosition(Vec2(20, 200));
+	Hero::hero->sprite->setPosition(Vec2(50, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingRight;
 	HeroStateManager::idle->onEnter();
 

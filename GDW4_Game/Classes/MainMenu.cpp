@@ -3,6 +3,7 @@
 #include "ControlsMenu.h"
 #include "SimpleAudioEngine.h"
 #include "Boss1Scene.h"
+#include "HeroStateManager.h"
 
 Scene * MainMenu::createScene()
 {
@@ -25,11 +26,12 @@ bool MainMenu::init()
 	initAnimations();
 	initMusic();
 
-
-
 	//init listeners
 	initMouseListener();
 	initControllerListener();
+
+	Hero::hero->lookState = Hero::LookDirection::lookingRight;
+	Hero::hero->velocity.x = 0;
 
 	scheduleUpdate();
 
