@@ -535,7 +535,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
 			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
-			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+			if (sticks[RS].x < 0.3 && sticks[RS].x > -0.3 && sticks[RS].y <= 0.3f && sticks[RS].y > -0.3f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
 				grappleAngle = atan2(0.0f, 0.0f);

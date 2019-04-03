@@ -38,7 +38,6 @@ bool Tutorial::init()
 	//Init music
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
 	audio->playBackgroundMusic("wonderPlace.wav");
-
 	
 	scheduleUpdate();
 
@@ -243,7 +242,6 @@ void Tutorial::initSprites()
 	this->addChild(Hero::hero->sprite, 20);
 	Hero::hero->sprite->setPosition(Vec2(20, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingRight;
-	Hero::hero->velocity.x = 0;
 	HeroStateManager::idle->onEnter();
 
 	//use a follow camera with strict dimensions for horizontal scrolling
@@ -446,7 +444,12 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseGameViewPosition.y += 45;
 
 		//calculate proper x position for grapple
-		if (Hero::hero->getPosition().x > 1920/2)
+		if (Hero::hero->getPosition().x > (fieldWidth - (1920 / 2)))
+		{
+			mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
+			mouseGameViewPosition.x += (fieldWidth - (1920 / 2));
+		}
+		else if (Hero::hero->getPosition().x > 1920/2)
 		{
 			//do some simple math to convert mouse click position on screen to in-game world position
 			mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
@@ -618,15 +621,15 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 
 			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
 			XinputManager::instance->update();
-			XinputController* controller1 = XinputManager::instance->getController(0); 
+			XinputController* controller1 = XinputManager::instance->getController(0);
 			Stick sticks[2];
 			controller1->getSticks(sticks);
 
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
-			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+			//check if right stick is at rest (account for reading being slightly off or controller not being perfectly calibrated)
+			if (sticks[RS].x < 0.3 && sticks[RS].x > -0.3 && sticks[RS].y <= 0.3f && sticks[RS].y > -0.3f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
 				grappleAngle = atan2(0.0f, 0.0f);

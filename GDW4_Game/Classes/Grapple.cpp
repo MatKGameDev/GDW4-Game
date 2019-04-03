@@ -57,8 +57,8 @@ void Grapple::predictCollision()
 		//calculate angle (in radians) using atan2 with the right stick's y and x values
 		float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-		//check if right stick is at rest (add a small buffer account for reading being slightly off or controller rest not being perfectly calibrated)
-		if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+		//check if right stick is at rest (add a small buffer account for reading being slightly off or controller not being perfectly calibrated)
+		if (sticks[RS].x < 0.3 && sticks[RS].x > -0.3 && sticks[RS].y <= 0.3f && sticks[RS].y > -0.3f)
 		{
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
 			grappleAngle = atan2(0.0f, 1.0f);
