@@ -32,7 +32,7 @@ void HudObject::update(float dt)
 			HudList.erase(HudList.begin() + Hero::hero->health);
 		}
 	}
-	else if (Hero::hero->health == 0)
+	else if (Hero::hero->health <= 0)
 	{
 		HudList[0]->sprite->setVisible(0);
 		HudList.erase(HudList.begin());

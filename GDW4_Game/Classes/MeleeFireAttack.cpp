@@ -19,7 +19,7 @@ void MeleeFireAttack::attackUp()
 		Hero::hero->hurtBox.getMinX() - 20,
 		Hero::hero->getBottomPos() + Hero::hero->height / 1.5,
 		Hero::hero->hurtBox.size.width + 40,
-		120);
+		130);
 }
 void MeleeFireAttack::attackDown()
 {
@@ -27,14 +27,14 @@ void MeleeFireAttack::attackDown()
 		Hero::hero->hurtBox.getMinX() - 20,
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
 		Hero::hero->hurtBox.size.width + 40,
-		-120);
+		-130);
 }
 void MeleeFireAttack::attackLeft()
 {
 	hitbox.setRect(
-		Hero::hero->hurtBox.getMaxX() - 120,
+		Hero::hero->hurtBox.getMaxX() - 130,
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		120,
+		130,
 		50);
 }
 void MeleeFireAttack::attackRight()
@@ -42,7 +42,7 @@ void MeleeFireAttack::attackRight()
 	hitbox.setRect(
 		Hero::hero->hurtBox.getMinX(),
 		Hero::hero->getBottomPos() + Hero::hero->height / 2.5,
-		120,
+		130,
 		50);
 }
 

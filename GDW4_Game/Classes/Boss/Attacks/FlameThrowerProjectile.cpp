@@ -22,7 +22,7 @@ FlameThrower::FlameThrower(Boss *bossInstance)
 		cocos2d::Sequence::create
 		(
 			cocos2d::Repeat::create(startingAnimation, 1),
-			cocos2d::DelayTime::create(.5f),
+			cocos2d::DelayTime::create(.1f),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(1920, 230); }),
 			cocos2d::Repeat::create(midAnimation, 1),
 			cocos2d::CallFunc::create([&] {hitBox->setNewSize(0, 0); }),

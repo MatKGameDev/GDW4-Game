@@ -42,6 +42,8 @@ bool Boss1Scene::init()
 //initializes the user interface
 void Boss1Scene::initUI()
 {
+	HudObject::deleteAllInstances();
+
 	for (int i = 0; i < Hero::hero->health; i++)
 	{
 		HudObject* health = new HudObject("Sprites/PlayerHealth.png", cocos2d::Vec2(70 + (70 * i), 1000));
@@ -237,11 +239,17 @@ void Boss1Scene::update(float dt)
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
 
+		if (Hero::hero->moveBox.getMinX() < 350.0f)
+		{
+			Hero::hero->sprite->setPositionX(350 + (Hero::hero->moveBox.size.width / 2.0f));
+			Hero::hero->velocity.x = 0.0f;
+		}
+
 		spawnEnemies();     //spawn enemies if needed 
 		updateObjects(dt);  //update objects
 		updateEnemies(dt);  //update enemies
 
-		//FOR TESTING BOSS DEATH
+		//hero death
 		if (Hero::hero->health <= 0)
 		{
 			if (transitionDelay == 3.0f)

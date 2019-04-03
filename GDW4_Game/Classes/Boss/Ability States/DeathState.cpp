@@ -3,10 +3,12 @@
 #include "Animation.h"
 #include "Boss/General/Boss.h"
 #include "VictoryScreen.h"
+#include "Hero.h"
 
 DeathState::DeathState(Boss* bossInstance)
 	: FirstBossState(bossInstance)
 {
+	Hero::hero->health = 100; //make sure hero doesnt die during transition
 	//Get animation
 	cocos2d::Animate* animation = marcos::AnimationManager::
 		getAnimation("boss_death_animation_key");
@@ -32,6 +34,7 @@ DeathState::DeathState(Boss* bossInstance)
 void DeathState::changeToVictoryScreen()
 {
 	removeAllElements();
+	Hero::hero->reset(); //reset hero
 	cocos2d::Director::getInstance()->replaceScene
 	(
 		TransitionFade::create(2.0f, VictoryScreen::createScene(), Color3B(0, 0, 0))
