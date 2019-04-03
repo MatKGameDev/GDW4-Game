@@ -1,5 +1,6 @@
 #include "VictoryScreen.h"
 #include "MainMenu.h"
+#include <SimpleAudioEngine.h>
 
 Scene * VictoryScreen::createScene()
 {
@@ -17,7 +18,6 @@ bool VictoryScreen::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	initUI();
 	initAnimations();
@@ -25,6 +25,7 @@ bool VictoryScreen::init()
 	//init listeners
 	initMouseListener();
 	initControllerListener();
+	initMusic();
 
 	scheduleUpdate();
 
@@ -58,6 +59,12 @@ void VictoryScreen::initUI()
 
 void VictoryScreen::initAnimations()
 {
+}
+
+void VictoryScreen::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void VictoryScreen::initMouseListener()

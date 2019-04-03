@@ -52,8 +52,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
 	if (!glview)
 	{
-		glview = GLViewImpl::createWithRect("Echoes of Arem", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
-		//glview = GLViewImpl::createWithFullScreen("Echoes of Arem");
+		//glview = GLViewImpl::createWithRect("Echoes of Arem", Rect(0.0f, 0.0f, 1920.f, 1080.f), 1.0f, false);
+		glview = GLViewImpl::createWithFullScreen("Echoes of Arem");
 		director->setOpenGLView(glview);
 	}
 
@@ -66,9 +66,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 	Grapple::grapple->initGrapple(); //create grapple (calls private constructor)
 
 	XinputManager::instance->create(); //create xinputmanager instance (calls private constructor)
-
+	director->setDisplayStats(false);
 	auto scene = InitialLoadScreen::createScene();
 	director->runWithScene(scene);
+	Director::getInstance()->setDisplayStats(false);
 
 	return true;
 }

@@ -2,6 +2,7 @@
 #include "MainMenu.h"
 #include "Tutorial.h"
 #include "Boss1Scene.h"
+#include <SimpleAudioEngine.h>
 
 Scene * DeathScreen::createScene()
 {
@@ -19,10 +20,10 @@ bool DeathScreen::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	initUI();
 	initAnimations();
+	initMusic();
 	
 	//init listeners
 	initMouseListener();
@@ -66,6 +67,12 @@ void DeathScreen::initUI()
 
 void DeathScreen::initAnimations()
 {
+}
+
+void DeathScreen::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void DeathScreen::initMouseListener()

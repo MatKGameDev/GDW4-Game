@@ -9,6 +9,7 @@
 #include "SpikeTile.h"
 #include "DeathScreen.h"
 #include "Hud.h"
+#include <SimpleAudioEngine.h>
 
 cocos2d::Scene* Tutorial::createScene()
 {
@@ -27,13 +28,17 @@ bool Tutorial::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	initUI();
 	initGameObjects();
 	initSprites();
 	initListeners();
+	initMusic();
 
+	//Init music
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("wonderPlace.wav");
+	
 	scheduleUpdate();
 
 	return true;
@@ -43,20 +48,25 @@ bool Tutorial::init()
 void Tutorial::initUI()
 {
 	//initialize help bubbles
-	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHintTest.png", cocos2d::Vec2(190, 400), 200, 500);
+	HelpBubble* jumpHint = new HelpBubble("HintBubbles/jumpHint.png", cocos2d::Vec2(300, 300), 200, 500);
+	jumpHint->sprite->setScale(1.2);
 	this->addChild(jumpHint->sprite, 18);
 
-	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(1150, 300), 800, 1200);
-	holdJumpHint->sprite->setScale(3.0);
+	HelpBubble* holdJumpHint = new HelpBubble("HintBubbles/holdJumpHint.png", cocos2d::Vec2(2125, 450), 1950, 2300);
+	holdJumpHint->sprite->setScale(1.2);
 	this->addChild(holdJumpHint->sprite, 18);
 
-	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(1500, 600), 0, 1900);
+	HelpBubble* grapplingHint = new HelpBubble("HintBubbles/grapplingHint.png", cocos2d::Vec2(3900, 375), 3690, 4050);
 	grapplingHint->sprite->setScale(1.2);
 	this->addChild(grapplingHint->sprite, 18);
 
-	HelpBubble* grappleJumpHint = new HelpBubble("HintBubbles/grappleJumpHint.png", cocos2d::Vec2(1900, 800), 0, 1900);
-	grappleJumpHint->sprite->setScale(1.2);
-	this->addChild(grappleJumpHint->sprite, 18);
+	HelpBubble* attackHint = new HelpBubble("HintBubbles/attackHint.png", cocos2d::Vec2(4650, 740), 4400, 4800);
+	attackHint->sprite->setScale(1.2);
+	this->addChild(attackHint->sprite, 18);
+
+	HelpBubble* dropHint = new HelpBubble("HintBubbles/dropHint.png", cocos2d::Vec2(5975, 875), 5600, 6200);
+	dropHint->sprite->setScale(1.2);
+	this->addChild(dropHint->sprite, 18);
 }
 
 void Tutorial::initGameObjects()
@@ -132,8 +142,6 @@ void Tutorial::initSprites()
 	backgroundL10->getTexture()->setTexParameters(params);
 	backgroundL10->setTextureRect(cocos2d::Rect(0, 0, fieldWidth, fieldHeight));
 
-	
-	
 	foregroundL1 = Sprite::create("Backgrounds/foreground1.png");
 	foregroundL1->setAnchorPoint(Vec2(0.0f, 0.0f));
 	foregroundL1->getTexture()->setTexParameters(params);
@@ -159,8 +167,8 @@ void Tutorial::initSprites()
 	backGroundParallax->addChild(backgroundL8, -13, Vec2(0.85, 0.85), Vec2(0, 100));
 	backGroundParallax->addChild(backgroundL9, -12, Vec2(0.91, 0.91), Vec2(0, 100));
 	backGroundParallax->addChild(backgroundL10, -12, Vec2(0.91, 0.91), Vec2(0, 100));
-	
-	
+
+
 	foregroundParallax->addChild(foregroundL1, 91, Vec2(1.3, 1.3), Vec2(0, 00)); //foreground 1
 	foregroundParallax->addChild(foregroundL2, 90, Vec2(1.1, 1.1), Vec2(0, 00)); //foreground 2
 
@@ -169,6 +177,7 @@ void Tutorial::initSprites()
 	this->addChild(backGroundParallax, -5);
 
 	this->addChild(foregroundParallax, 90);
+
 
 	//delete any existing tiles before we import our map
 	TileBase::deleteAllTiles();
@@ -242,13 +251,6 @@ void Tutorial::initSprites()
 	Hero::hero->arm->setVisible(0); //make arm invisible to begin with
 	Hero::hero->arm->setAnchorPoint(Vec2(0.5f, 0.0f));
 	this->addChild(Hero::hero->arm, 21); //add hero arm
-
-	//add hero hurtbox FOR TESTING PURPOSES
-	testHurtbox = DrawNode::create();
-	this->addChild(testHurtbox, 30);
-	//add fire melee attack hixbox FOR TESTING PURPOSES
-	testMeleeAttack = DrawNode::create();
-	this->addChild(testMeleeAttack, 40);
 
 	//add grapple sprite
 	//add repeating pattern to grapple sprite
@@ -328,6 +330,12 @@ void Tutorial::initControllerListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
 }
 
+void Tutorial::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
+}
+
 //UPDATE
 void Tutorial::update(float dt)
 {
@@ -335,24 +343,6 @@ void Tutorial::update(float dt)
 	{
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
-
-		testHurtbox->clear();
-		//DRAW HURTBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin.x, Hero::hero->hurtBox.origin.y),
-			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-			Color4F(1.0f, 0.0f, 0.0f, 0.f));
-		//DRAW MOVEBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-			Color4F(0.0f, 1.0f, 0.0f, .0f));
-
-		testMeleeAttack->clear();
-		//DRAW MELEE ATTACK HITBOX FOR TESTING
-		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
-			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-			Color4F(1.0f, 0.7f, 0.8f, 0.2f));
 
 		spawnEnemies();     //spawn enemies if needed 
 		updateObjects(dt);  //update objects
@@ -454,7 +444,12 @@ void Tutorial::mouseDownCallback(Event* event)
 		mouseGameViewPosition.y += 45;
 
 		//calculate proper x position for grapple
-		if (Hero::hero->getPosition().x > 1920/2)
+		if (Hero::hero->getPosition().x > (fieldWidth - (1920 / 2)))
+		{
+			mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
+			mouseGameViewPosition.x += (fieldWidth - (1920 / 2));
+		}
+		else if (Hero::hero->getPosition().x > 1920/2)
 		{
 			//do some simple math to convert mouse click position on screen to in-game world position
 			mouseGameViewPosition.x -= 1920 / 2; //update if screen size changes
@@ -504,11 +499,6 @@ void Tutorial::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		HeroStateManager::currentState->handleInput(InputType::p_space);
-		break;
-
-		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	case EventKeyboard::KeyCode::KEY_Q:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
 		break;
 
 	case EventKeyboard::KeyCode::KEY_E:
@@ -631,15 +621,15 @@ void Tutorial::axisEventCallback(Controller * controller, int keyCode, Event * e
 
 			//use xinput stuff to get a more accurate reading on the stick input than cocos' controller support
 			XinputManager::instance->update();
-			XinputController* controller1 = XinputManager::instance->getController(0); 
+			XinputController* controller1 = XinputManager::instance->getController(0);
 			Stick sticks[2];
 			controller1->getSticks(sticks);
 
 			//calculate angle (in radians) using atan2 with the right stick's y and x values
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
-			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
-			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+			//check if right stick is at rest (account for reading being slightly off or controller not being perfectly calibrated)
+			if (sticks[RS].x < 0.3 && sticks[RS].x > -0.3 && sticks[RS].y <= 0.3f && sticks[RS].y > -0.3f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
 				grappleAngle = atan2(0.0f, 0.0f);

@@ -1,5 +1,6 @@
 #include "PrettyPictureScene.h"
 #include "Boss1Scene.h"
+#include <SimpleAudioEngine.h>
 
 Scene * PrettyPictureScene::createScene()
 {
@@ -15,7 +16,6 @@ bool PrettyPictureScene::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 	
 	image = Sprite::create("Backgrounds/cutscene.png");
 	image->setAnchorPoint(Vec2(0.0f, 0.0f));
@@ -24,6 +24,9 @@ bool PrettyPictureScene::init()
 
 	timer = 0.0f;
 	isDone = false;
+
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->stopBackgroundMusic();
 
 	scheduleUpdate();
 

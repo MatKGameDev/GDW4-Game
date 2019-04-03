@@ -24,6 +24,7 @@ public:
 	bool init();
 	void initUI();
 	void initAnimations();
+	void initMusic();
 
 	void initMouseListener();
 	void initControllerListener();
@@ -53,6 +54,8 @@ private:
 	EventListenerController* controllerListener;
 
 	Vec2 cursorPos;
+
+	Sprite* Logo;
 
 	Sprite* startText;
 	Sprite* controlsText;

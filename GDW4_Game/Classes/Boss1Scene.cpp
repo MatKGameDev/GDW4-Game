@@ -8,6 +8,7 @@
 #include "VictoryScreen.h"
 #include "Boss/Attacks/Projectiles.h"
 #include "Hud.h"
+#include <SimpleAudioEngine.h>
 
 cocos2d::Scene* Boss1Scene::createScene()
 {
@@ -27,12 +28,12 @@ bool Boss1Scene::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	initGameObjects();
 	initSprites();
 	initListeners();
 	initUI();
+	initMusic();
 	scheduleUpdate();
 
 	return true;
@@ -41,11 +42,16 @@ bool Boss1Scene::init()
 //initializes the user interface
 void Boss1Scene::initUI()
 {
+	HudObject::deleteAllInstances();
+
 	for (int i = 0; i < Hero::hero->health; i++)
 	{
 		HudObject* health = new HudObject("Sprites/PlayerHealth.png", cocos2d::Vec2(70 + (70 * i), 1000));
 		this->addChild(health->sprite, 100);
 	}
+
+	HudObject* BossHealthBar = new HudObject("Sprites/BossHealth.png", cocos2d::Vec2(1000, 1000));
+	this->addChild(BossHealthBar->sprite, 100);
 }
 
 void Boss1Scene::initGameObjects()
@@ -121,7 +127,7 @@ void Boss1Scene::initSprites()
 	//add hero (singleton class)
 	Hero::hero->sprite = Sprite::create("Sprites/shooting_test.png");
 	this->addChild(Hero::hero->sprite, 20);
-	Hero::hero->sprite->setPosition(Vec2(700, 200));
+	Hero::hero->sprite->setPosition(Vec2(1700, 200));
 	Hero::hero->lookState = Hero::LookDirection::lookingLeft; //make sure they're looking towards the boss
 	HeroStateManager::idle->onEnter();
 	Hero::hero->health = 5;
@@ -134,12 +140,6 @@ void Boss1Scene::initSprites()
 	//add boss
 	this->addChild(boss->getSprite(), 17);
 
-	//add hero hurtbox FOR TESTING PURPOSES
-	testHurtbox = DrawNode::create();
-	this->addChild(testHurtbox, 30);
-	//add fire melee attack hixbox FOR TESTING PURPOSES
-	testMeleeAttack = DrawNode::create();
-	this->addChild(testMeleeAttack, 40);
 
 	//add grapple sprite
 	//add repeating pattern to grapple sprite
@@ -225,6 +225,12 @@ void Boss1Scene::initControllerListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(controllerListener, this);
 }
 
+void Boss1Scene::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("Music/BossMusic.mp3",true);
+}
+
 //UPDATE
 void Boss1Scene::update(float dt)
 {
@@ -233,32 +239,18 @@ void Boss1Scene::update(float dt)
 		Grapple::grapple->update(dt, this); //update grapple
 		Hero::hero->update(dt); //update our hero
 
-		testHurtbox->clear();
-		//DRAW HURTBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->hurtBox.origin),
-			Vec2(Hero::hero->hurtBox.origin.x + Hero::hero->hurtBox.size.width,
-				Hero::hero->hurtBox.origin.y + Hero::hero->hurtBox.size.height),
-			Color4F(1.0f, 0.0f, 0.0f, 0.f));
-		//DRAW MOVEBOX FOR TESTING
-		testHurtbox->drawSolidRect(Vec2(Hero::hero->moveBox.origin.x, Hero::hero->moveBox.origin.y),
-			Vec2(Hero::hero->moveBox.origin.x + Hero::hero->moveBox.size.width,
-				Hero::hero->moveBox.origin.y + Hero::hero->moveBox.size.height),
-			Color4F(0.0f, 1.0f, 0.0f, .0f));
-		//DRAW BOSS HITBOX FOR TESTING
-
-
-		testMeleeAttack->clear();
-		//DRAW MELEE ATTACK HITBOX FOR TESTING
-		testMeleeAttack->drawSolidRect(HeroAttackManager::currentAttack->hitbox.origin,
-			Vec2(HeroAttackManager::currentAttack->hitbox.getMaxX(), HeroAttackManager::currentAttack->hitbox.getMaxY()),
-			Color4F(1.0f, 0.7f, 0.8f, 0.3f));
+		if (Hero::hero->moveBox.getMinX() < 350.0f)
+		{
+			Hero::hero->sprite->setPositionX(350 + (Hero::hero->moveBox.size.width / 2.0f));
+			Hero::hero->velocity.x = 0.0f;
+		}
 
 		spawnEnemies();     //spawn enemies if needed 
 		updateObjects(dt);  //update objects
 		updateEnemies(dt);  //update enemies
 
-		//FOR TESTING BOSS DEATH
-	 if (Hero::hero->health <= 0)
+		//hero death
+		if (Hero::hero->health <= 0)
 		{
 			if (transitionDelay == 3.0f)
 			{
@@ -411,11 +403,6 @@ void Boss1Scene::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event)
 		HeroStateManager::currentState->handleInput(InputType::p_space);
 		break;
 
-		//ATTACKS FOR TESTING. TODO: remove later and set to proper keybinds (numbers to swap between attacks?)
-	case EventKeyboard::KeyCode::KEY_Q:
-		HeroAttackManager::setCurrentAttack(HeroAttackTypes::meleeFireA, nullptr); //scene can be nullptr since we dont actually add anything to the scene in melee attacks
-		break;
-
 	case EventKeyboard::KeyCode::KEY_E:
 		//HeroAttackManager::setCurrentAttack(HeroAttackTypes::projectileIceA, this);
 		break;
@@ -548,7 +535,7 @@ void Boss1Scene::axisEventCallback(Controller * controller, int keyCode, Event *
 			float grappleAngle = atan2(sticks[RS].x, sticks[RS].y);
 
 			//check if right stick is at rest (account for reading being slightly off or controller rest not being perfectly calibrated)
-			if (sticks[RS].x < 0.1 && sticks[RS].x > -0.1 && sticks[RS].y <= 0.1f && sticks[RS].y > -0.1f)
+			if (sticks[RS].x < 0.3 && sticks[RS].x > -0.3 && sticks[RS].y <= 0.3f && sticks[RS].y > -0.3f)
 			{
 				//calculate angle (in radians) using atan2 with the right stick's y and x values
 				grappleAngle = atan2(0.0f, 0.0f);

@@ -2,6 +2,7 @@
 #include "Tutorial.h"
 #include "Boss1Scene.h"
 #include "ControlsMenu.h"
+#include <SimpleAudioEngine.h>
 
 Scene * PauseMenu::createScene()
 {
@@ -19,7 +20,6 @@ bool PauseMenu::init()
 	director = Director::getInstance();
 	//Setting the default animation rate for the director
 	director->setAnimationInterval(1.0f / 60.0f);
-	director->setDisplayStats(1); //Remove this after debugging
 
 	initUI();
 	initAnimations();
@@ -27,6 +27,12 @@ bool PauseMenu::init()
 	//init listeners
 	initMouseListener();
 	initControllerListener();
+	initMusic();
+
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	
+	audio->resumeBackgroundMusic();
+	
 
 	scheduleUpdate();
 
@@ -60,6 +66,12 @@ void PauseMenu::initUI()
 
 void PauseMenu::initAnimations()
 {
+}
+
+void PauseMenu::initMusic()
+{
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->resumeBackgroundMusic();
 }
 
 void PauseMenu::initMouseListener()

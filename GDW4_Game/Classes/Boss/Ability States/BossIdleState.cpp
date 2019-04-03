@@ -6,7 +6,7 @@ int Idling4FirstBoss::numberOfCast = 0;
 const int Idling4FirstBoss::maxNumberOfCastPerRound = 7;
 
 Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
-	: FirstBossState(boss), cooldownBeforeNextAbility{ 2.f }
+	: FirstBossState(boss), cooldownBeforeNextAbility{ 2.5f }
 {
 	//Get the animation
 	const auto animationForIdling = marcos::AnimationManager::getAnimation("boss_idle_animation_key");
@@ -21,7 +21,6 @@ Idling4FirstBoss::Idling4FirstBoss(Boss *boss)
  */
 Idling4FirstBoss::~Idling4FirstBoss()
 {
-	//numberOfCast = 0;
 }
 
 /**

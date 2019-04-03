@@ -7,4 +7,5 @@ public:
 	DeathState(Boss *bossInstance);
 private:
 	void changeToVictoryScreen();
+	void removeAllElements();
 };

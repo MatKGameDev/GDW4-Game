@@ -13,6 +13,7 @@
 #include "PlatformTile.h"
 #include "GroundTile.h"
 #include "XinputManager.h"
+#include "SimpleAudioEngine.h"
 
 using namespace cocos2d;
 
@@ -32,6 +33,7 @@ public:
 	void initMouseListener();
 	void initKeyboardListener();
 	void initControllerListener();
+	void initMusic();
 
 	void update(float dt);
 	void spawnEnemies();
@@ -82,5 +84,6 @@ private:
 
 	DrawNode* testHurtbox; //for testing hurtbox
 	DrawNode* testMeleeAttack; //for testing melee attack
+
 };
 #endif
